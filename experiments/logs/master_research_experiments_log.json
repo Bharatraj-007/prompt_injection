@@ -1,0 +1,175 @@
+{
+  "step1_clean_test_seen": [
+    {
+      "mode": "rules_only",
+      "confusion_matrix": {
+        "TP": 17,
+        "FP": 0,
+        "TN": 708,
+        "FN": 483
+      },
+      "accuracy": 0.6002,
+      "precision": 1.0,
+      "recall": 0.034,
+      "f1": 0.0658,
+      "f1_95_ci": [
+        0.0377,
+        0.0946
+      ],
+      "fpr": 0.0,
+      "fnr": 0.966,
+      "avg_latency_ms": 0.04
+    },
+    {
+      "mode": "model_only",
+      "confusion_matrix": {
+        "TP": 484,
+        "FP": 7,
+        "TN": 701,
+        "FN": 16
+      },
+      "accuracy": 0.981,
+      "precision": 0.9857,
+      "recall": 0.968,
+      "f1": 0.9768,
+      "f1_95_ci": [
+        0.9675,
+        0.9851
+      ],
+      "fpr": 0.0099,
+      "fnr": 0.032,
+      "avg_latency_ms": 5.8
+    },
+    {
+      "mode": "hybrid",
+      "confusion_matrix": {
+        "TP": 483,
+        "FP": 5,
+        "TN": 703,
+        "FN": 17
+      },
+      "accuracy": 0.9818,
+      "precision": 0.9898,
+      "recall": 0.966,
+      "f1": 0.9777,
+      "f1_95_ci": [
+        0.9681,
+        0.9859
+      ],
+      "fpr": 0.0071,
+      "fnr": 0.034,
+      "avg_latency_ms": 5.32
+    }
+  ],
+  "step2_hard_negatives": [
+    {
+      "Approach": "Rules Only",
+      "FP": 20,
+      "FPR": 0.0667
+    },
+    {
+      "Approach": "DistilBERT Model Only",
+      "FP": 80,
+      "FPR": 0.2667
+    },
+    {
+      "Approach": "Hybrid Pipeline",
+      "FP": 80,
+      "FPR": 0.2667
+    }
+  ],
+  "step3_obfuscation_ablation": [
+    {
+      "Obfuscation Vector": "1. Base64",
+      "Rules Only Recall": 0.5,
+      "DistilBERT Only Recall": 1.0,
+      "Hybrid Pipeline Recall": 1.0
+    },
+    {
+      "Obfuscation Vector": "2. Leetspeak",
+      "Rules Only Recall": 0.0,
+      "DistilBERT Only Recall": 1.0,
+      "Hybrid Pipeline Recall": 1.0
+    },
+    {
+      "Obfuscation Vector": "3. Zero-Width Space",
+      "Rules Only Recall": 0.0,
+      "DistilBERT Only Recall": 1.0,
+      "Hybrid Pipeline Recall": 1.0
+    },
+    {
+      "Obfuscation Vector": "4. Multilingual",
+      "Rules Only Recall": 1.0,
+      "DistilBERT Only Recall": 1.0,
+      "Hybrid Pipeline Recall": 1.0
+    },
+    {
+      "Obfuscation Vector": "5. ROT13",
+      "Rules Only Recall": 0.0,
+      "DistilBERT Only Recall": 1.0,
+      "Hybrid Pipeline Recall": 1.0
+    },
+    {
+      "Obfuscation Vector": "6. Hex Encoded",
+      "Rules Only Recall": 0.0,
+      "DistilBERT Only Recall": 1.0,
+      "Hybrid Pipeline Recall": 1.0
+    },
+    {
+      "Obfuscation Vector": "7. Word Splitting",
+      "Rules Only Recall": 0.25,
+      "DistilBERT Only Recall": 1.0,
+      "Hybrid Pipeline Recall": 1.0
+    },
+    {
+      "Obfuscation Vector": "8. Reversed Text",
+      "Rules Only Recall": 0.0,
+      "DistilBERT Only Recall": 1.0,
+      "Hybrid Pipeline Recall": 1.0
+    }
+  ],
+  "step4_loso_benchmark": [
+    {
+      "Held-Out Test Source": "Fold 1: Neuralchemy",
+      "Training Sources": "xTRam1 + Deepset + Dolly",
+      "Test F1": 0.961,
+      "Test FPR": 0.012
+    },
+    {
+      "Held-Out Test Source": "Fold 2: xTRam1",
+      "Training Sources": "Neuralchemy + Deepset + Dolly",
+      "Test F1": 0.958,
+      "Test FPR": 0.014
+    },
+    {
+      "Held-Out Test Source": "Fold 3: Deepset",
+      "Training Sources": "Neuralchemy + xTRam1 + Dolly",
+      "Test F1": 0.965,
+      "Test FPR": 0.009
+    },
+    {
+      "Held-Out Test Source": "Fold 4: Lakera Gandalf OOD",
+      "Training Sources": "Neuralchemy + xTRam1 + Dolly + Deepset",
+      "Test F1": 0.9903,
+      "Test FPR": 0.0064
+    }
+  ],
+  "step5_mcnemar_test": {
+    "chi2_stat": 0.0,
+    "p_value": 1.0
+  },
+  "step5_prevalence_table": [
+    {
+      "Attack Prevalence (pi)": "1% (Enterprise Production)",
+      "Precision": 0.5788
+    },
+    {
+      "Attack Prevalence (pi)": "5% (Moderate Threat Env)",
+      "Precision": 0.8775
+    },
+    {
+      "Attack Prevalence (pi)": "50% (Balanced Benchmark)",
+      "Precision": 0.9927
+    }
+  ]
+}

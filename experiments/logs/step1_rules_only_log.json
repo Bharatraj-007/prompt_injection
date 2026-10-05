@@ -1,0 +1,20 @@
+{
+  "mode": "rules_only",
+  "confusion_matrix": {
+    "TP": 17,
+    "FP": 0,
+    "TN": 708,
+    "FN": 483
+  },
+  "accuracy": 0.6002,
+  "precision": 1.0,
+  "recall": 0.034,
+  "f1": 0.0658,
+  "f1_95_ci": [
+    0.0377,
+    0.0946
+  ],
+  "fpr": 0.0,
+  "fnr": 0.966,
+  "avg_latency_ms": 0.04
+}
