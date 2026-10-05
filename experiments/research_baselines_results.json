@@ -1,0 +1,38 @@
+{
+  "dataset_audit": {
+    "train_samples": 7000,
+    "clean_test_seen_samples": 1208,
+    "minhash_duplicates_removed": 292,
+    "test_unseen_samples": 1553
+  },
+  "tfidf_logistic_regression_baseline": {
+    "in_domain": {
+      "accuracy": 0.9627,
+      "precision": 0.9577,
+      "recall": 0.952,
+      "f1": 0.9549,
+      "f1_95_ci": [
+        0.9411,
+        0.9655
+      ],
+      "fpr": 0.0297,
+      "pr_auc": 0.9914,
+      "latency_ms": 0.0
+    },
+    "ood_unseen": {
+      "accuracy": 0.9749,
+      "precision": 0.9868,
+      "recall": 0.9627,
+      "f1": 0.9746,
+      "fpr": 0.0129
+    }
+  },
+  "hard_negative_benign_benchmark": {
+    "samples": 100,
+    "false_positive_rate": 0.2
+  },
+  "obfuscation_benchmark_at_scale": {
+    "samples": 400,
+    "detection_recall": 1.0
+  }
+}
