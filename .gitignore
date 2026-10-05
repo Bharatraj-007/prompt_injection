@@ -1,0 +1,21 @@
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data & Models (Large binaries)
+raw_data/
+data/
+models/
+results_seed_*/
+
+# Virtual Environments
+venv/
+env/
+ENV/
+
+# System & IDE Files
+.DS_Store
+.vscode/
+.idea/
+*.log
