@@ -101,7 +101,7 @@ def train_crossguard(seeds=[42, 7, 123], epochs=4, batch_size=16, lr=3e-5):
         optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01)
         total_steps = len(train_loader) * epochs
         scheduler = get_cosine_schedule_with_warmup(optimizer, num_warmup_steps=int(total_steps*0.1), num_training_steps=total_steps)
-        scaler = torch.cuda.amp.GradScaler(enabled=device.type=='cuda')
+        scaler = torch.amp.GradScaler('cuda', enabled=device.type=='cuda')
 
         bce_loss_fn = nn.CrossEntropyLoss()
 
@@ -119,7 +119,7 @@ def train_crossguard(seeds=[42, 7, 123], epochs=4, batch_size=16, lr=3e-5):
                 b_rule_score = batch['rule_score'].to(device)
                 b_labels = batch['label'].to(device)
 
-                with torch.cuda.amp.autocast(enabled=device.type=='cuda'):
+                with torch.amp.autocast('cuda', enabled=device.type=='cuda'):
                     outputs = model(b_sys_ids, b_sys_mask, b_user_ids, b_user_mask, b_char_ids, b_rule_score)
                     logits = outputs['logits']
                     context_vec = outputs['context_vector']

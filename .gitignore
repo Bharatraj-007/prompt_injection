@@ -7,6 +7,8 @@ __pycache__/
 raw_data/
 data/
 models/
+checkpoints/
+*.pt
 results_seed_*/
 
 # Virtual Environments
