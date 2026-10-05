@@ -17,17 +17,19 @@ class Layer1Preprocessor:
         hidden_char_pattern = re.compile(r'[\u200B-\u200D\uFEFF\u00A0\u200E\u200F\u202A-\u202E]')
         cleaned = hidden_char_pattern.sub('', normalized)
         
-        # 3. Base64 auto-detection & decoding
+        # 3. Base64 auto-detection & decoding (stricter validation to prevent false positives)
         decoded_payloads = []
-        b64_matches = re.findall(r'(?:[A-Za-z0-9+/]{4}){3,}(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?', cleaned)
+        b64_matches = re.findall(r'\b[A-Za-z0-9+/]{12,}={0,2}\b', cleaned)
         for b64_str in b64_matches:
-            if len(b64_str) >= 8:
-                try:
-                    decoded = base64.b64decode(b64_str).decode('utf-8', errors='ignore')
-                    if len(decoded.strip()) > 3 and decoded.isprintable():
-                        decoded_payloads.append(decoded)
-                except Exception:
-                    pass
+            try:
+                decoded_bytes = base64.b64decode(b64_str, validate=True)
+                decoded = decoded_bytes.decode('utf-8', errors='ignore')
+                # Check if decoded content is predominantly readable text (alphanumeric/spaces)
+                printable_count = sum(1 for c in decoded if c.isalnum() or c in ' .,!?_-')
+                if len(decoded.strip()) >= 5 and (printable_count / len(decoded)) >= 0.8:
+                    decoded_payloads.append(decoded)
+            except Exception:
+                pass
 
         augmented_text = cleaned
         if decoded_payloads:
@@ -85,9 +87,12 @@ class Layer3TransformerClassifier:
     def _load_model(self):
         if os.path.exists(self.model_path):
             try:
+                import torch
                 from transformers import pipeline
-                self.pipeline = pipeline("text-classification", model=self.model_path, tokenizer=self.model_path)
-                print(f"[OK] Layer 3: Loaded transformer model from {self.model_path}")
+                device_id = 0 if torch.cuda.is_available() else -1
+                device_name = torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU"
+                self.pipeline = pipeline("text-classification", model=self.model_path, tokenizer=self.model_path, device=device_id)
+                print(f"[OK] Layer 3: Loaded transformer model on GPU ({device_name}) from {self.model_path}")
             except Exception as e:
                 print(f"[!] Layer 3: Could not load trained transformer ({e}). Using rule-based fallback.")
                 self.pipeline = None
@@ -126,10 +131,13 @@ class Layer4ScoreFusion:
         self.threshold = threshold
 
     def fuse(self, rule_score: float, model_score: float) -> dict:
-        fused_score = (self.rule_weight * rule_score) + (self.model_weight * model_score)
-        # Apply safety boost if rule_score is exceptionally high (>0.9)
+        fused_raw = (self.rule_weight * rule_score) + (self.model_weight * model_score)
+        # Apply safety boost if rule_score is exceptionally high (>=0.9)
         if rule_score >= 0.9:
-            fused_score = max(fused_score, rule_score)
+            fused_raw = max(fused_raw, rule_score)
+
+        # Clamp fused score between 0.0 and 1.0
+        fused_score = min(1.0, max(0.0, fused_raw))
 
         is_blocked = fused_score >= self.threshold
         return {
