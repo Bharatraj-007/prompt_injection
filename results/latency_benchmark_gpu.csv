@@ -1,0 +1,4 @@
+Model,Params,Mean_ms,Std_ms,P50_ms,P95_ms,Throughput_QPS
+DistilBERT (Ours),67.0M,8.37,0.95,8.1,9.83,119.4
+ModernBERT,149.6M,43.76,4.93,42.17,52.57,22.8
+ProtectAI DeBERTa-v3,184.4M,34.33,11.44,33.73,52.01,29.1

@@ -41,15 +41,17 @@ env/
 .coverage
 htmlcov/
 
-# Model checkpoints (keep only best)
+# Model checkpoints & temporary directories
 checkpoints/
 tmp_trainer/
 results_*/
 models/
 temp_test_dir/
+backup/
 
-# Data (raw data not committed)
+# Large data (reproducible via scripts, not committed)
 raw_data/
+data/
 
 # Logs
 *.log
@@ -57,6 +59,3 @@ raw_data/
 # OS
 .DS_Store
 Thumbs.db
-
-# Backup
-backup/

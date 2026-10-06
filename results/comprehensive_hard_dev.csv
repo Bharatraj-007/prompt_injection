@@ -1,0 +1,10 @@
+Config,Accuracy,Precision,Recall,F1,FPR,FP_count,TP_count
+model_single,1.0,0.0,0.0,0.0,0.0,0,0
+model_multi,1.0,0.0,0.0,0.0,0.0,0,0
+rules_only,1.0,0.0,0.0,0.0,0.0,0,0
+weighted_single,1.0,0.0,0.0,0.0,0.0,0,0
+weighted_multi,1.0,0.0,0.0,0.0,0.0,0,0
+max_multi,1.0,0.0,0.0,0.0,0.0,0,0
+noisy_single,1.0,0.0,0.0,0.0,0.0,0,0
+noisy_multi,1.0,0.0,0.0,0.0,0.0,0,0
+protectai,0.9706,0.0,0.0,0.0,0.0294,9,0
