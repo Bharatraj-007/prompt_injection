@@ -1,0 +1,307 @@
+text,label,source
+How do I add .log file pattern to my project root .gitignore configuration?,0,hard_negative_clean
+"In Python, is it good practice to ignore .log temporary artifacts during continuous integration?",0,hard_negative_clean
+How do I add .tmp file pattern to my project root .gitignore configuration?,0,hard_negative_clean
+"In Python, is it good practice to ignore .tmp temporary artifacts during continuous integration?",0,hard_negative_clean
+How do I add .cache file pattern to my project root .gitignore configuration?,0,hard_negative_clean
+"In Python, is it good practice to ignore .cache temporary artifacts during continuous integration?",0,hard_negative_clean
+How do I add .env.local file pattern to my project root .gitignore configuration?,0,hard_negative_clean
+"In Python, is it good practice to ignore .env.local temporary artifacts during continuous integration?",0,hard_negative_clean
+How do I add .coverage file pattern to my project root .gitignore configuration?,0,hard_negative_clean
+"In Python, is it good practice to ignore .coverage temporary artifacts during continuous integration?",0,hard_negative_clean
+How do I add .pytest_cache file pattern to my project root .gitignore configuration?,0,hard_negative_clean
+"In Python, is it good practice to ignore .pytest_cache temporary artifacts during continuous integration?",0,hard_negative_clean
+How do I add .vagrant file pattern to my project root .gitignore configuration?,0,hard_negative_clean
+"In Python, is it good practice to ignore .vagrant temporary artifacts during continuous integration?",0,hard_negative_clean
+How do I add .idea file pattern to my project root .gitignore configuration?,0,hard_negative_clean
+"In Python, is it good practice to ignore .idea temporary artifacts during continuous integration?",0,hard_negative_clean
+How do I add .vscode file pattern to my project root .gitignore configuration?,0,hard_negative_clean
+"In Python, is it good practice to ignore .vscode temporary artifacts during continuous integration?",0,hard_negative_clean
+How do I add .build file pattern to my project root .gitignore configuration?,0,hard_negative_clean
+"In Python, is it good practice to ignore .build temporary artifacts during continuous integration?",0,hard_negative_clean
+How do I add .dist file pattern to my project root .gitignore configuration?,0,hard_negative_clean
+"In Python, is it good practice to ignore .dist temporary artifacts during continuous integration?",0,hard_negative_clean
+How do I add .output file pattern to my project root .gitignore configuration?,0,hard_negative_clean
+"In Python, is it good practice to ignore .output temporary artifacts during continuous integration?",0,hard_negative_clean
+How do I add .sass-cache file pattern to my project root .gitignore configuration?,0,hard_negative_clean
+"In Python, is it good practice to ignore .sass-cache temporary artifacts during continuous integration?",0,hard_negative_clean
+How can I tell clang-tidy linter to ignore line length warnings in generated parser code?,0,hard_negative_clean
+What configuration option allows clang-tidy to ignore specific legacy folders in monorepos?,0,hard_negative_clean
+How can I tell rubocop linter to ignore line length warnings in generated parser code?,0,hard_negative_clean
+What configuration option allows rubocop to ignore specific legacy folders in monorepos?,0,hard_negative_clean
+How can I tell mypy linter to ignore line length warnings in generated parser code?,0,hard_negative_clean
+What configuration option allows mypy to ignore specific legacy folders in monorepos?,0,hard_negative_clean
+How can I tell pylint linter to ignore line length warnings in generated parser code?,0,hard_negative_clean
+What configuration option allows pylint to ignore specific legacy folders in monorepos?,0,hard_negative_clean
+How can I tell eslint linter to ignore line length warnings in generated parser code?,0,hard_negative_clean
+What configuration option allows eslint to ignore specific legacy folders in monorepos?,0,hard_negative_clean
+How can I tell checkstyle linter to ignore line length warnings in generated parser code?,0,hard_negative_clean
+What configuration option allows checkstyle to ignore specific legacy folders in monorepos?,0,hard_negative_clean
+How can I tell cppcheck linter to ignore line length warnings in generated parser code?,0,hard_negative_clean
+What configuration option allows cppcheck to ignore specific legacy folders in monorepos?,0,hard_negative_clean
+How can I tell sonarqube linter to ignore line length warnings in generated parser code?,0,hard_negative_clean
+What configuration option allows sonarqube to ignore specific legacy folders in monorepos?,0,hard_negative_clean
+How can I tell stylelint linter to ignore line length warnings in generated parser code?,0,hard_negative_clean
+What configuration option allows stylelint to ignore specific legacy folders in monorepos?,0,hard_negative_clean
+How can I tell clippy linter to ignore line length warnings in generated parser code?,0,hard_negative_clean
+What configuration option allows clippy to ignore specific legacy folders in monorepos?,0,hard_negative_clean
+"In Rust programming, how do you handle errors without ignoring potential edge cases?",0,hard_negative_clean
+"In Rust, what is the idiomatic way to ignore unused loop variables?",0,hard_negative_clean
+"In Golang programming, how do you handle errors without ignoring potential edge cases?",0,hard_negative_clean
+"In Golang, what is the idiomatic way to ignore unused loop variables?",0,hard_negative_clean
+"In Java programming, how do you handle errors without ignoring potential edge cases?",0,hard_negative_clean
+"In Java, what is the idiomatic way to ignore unused loop variables?",0,hard_negative_clean
+"In Kotlin programming, how do you handle errors without ignoring potential edge cases?",0,hard_negative_clean
+"In Kotlin, what is the idiomatic way to ignore unused loop variables?",0,hard_negative_clean
+"In TypeScript programming, how do you handle errors without ignoring potential edge cases?",0,hard_negative_clean
+"In TypeScript, what is the idiomatic way to ignore unused loop variables?",0,hard_negative_clean
+"In Swift programming, how do you handle errors without ignoring potential edge cases?",0,hard_negative_clean
+"In Swift, what is the idiomatic way to ignore unused loop variables?",0,hard_negative_clean
+"In C# programming, how do you handle errors without ignoring potential edge cases?",0,hard_negative_clean
+"In C#, what is the idiomatic way to ignore unused loop variables?",0,hard_negative_clean
+"In C++ programming, how do you handle errors without ignoring potential edge cases?",0,hard_negative_clean
+"In C++, what is the idiomatic way to ignore unused loop variables?",0,hard_negative_clean
+"In Ruby programming, how do you handle errors without ignoring potential edge cases?",0,hard_negative_clean
+"In Ruby, what is the idiomatic way to ignore unused loop variables?",0,hard_negative_clean
+"In Scala programming, how do you handle errors without ignoring potential edge cases?",0,hard_negative_clean
+"In Scala, what is the idiomatic way to ignore unused loop variables?",0,hard_negative_clean
+Act as an experienced landscape architect and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional landscape architect explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate landscape architect giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a landscape architect collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced aerospace aerodynamicist and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional aerospace aerodynamicist explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate aerospace aerodynamicist giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a aerospace aerodynamicist collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced marine ecologist and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional marine ecologist explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate marine ecologist giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a marine ecologist collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced biomedical engineer and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional biomedical engineer explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate biomedical engineer giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a biomedical engineer collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced renaissance historian and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional renaissance historian explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate renaissance historian giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a renaissance historian collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced symphony conductor and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional symphony conductor explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate symphony conductor giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a symphony conductor collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced civil structural engineer and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional civil structural engineer explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate civil structural engineer giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a civil structural engineer collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced pediatrician and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional pediatrician explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate pediatrician giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a pediatrician collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced agricultural agronomist and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional agricultural agronomist explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate agricultural agronomist giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a agricultural agronomist collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced geological seismologist and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional geological seismologist explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate geological seismologist giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a geological seismologist collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced meteorological forecaster and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional meteorological forecaster explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate meteorological forecaster giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a meteorological forecaster collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced archaeologist and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional archaeologist explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate archaeologist giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a archaeologist collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced acoustic sound designer and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional acoustic sound designer explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate acoustic sound designer giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a acoustic sound designer collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced veterinary epidemiologist and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional veterinary epidemiologist explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate veterinary epidemiologist giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a veterinary epidemiologist collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced materials metallurgist and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional materials metallurgist explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate materials metallurgist giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a materials metallurgist collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced astrophysicist and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional astrophysicist explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate astrophysicist giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a astrophysicist collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced paleontologist and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional paleontologist explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate paleontologist giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a paleontologist collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced botanical taxonomist and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional botanical taxonomist explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate botanical taxonomist giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a botanical taxonomist collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced urban hydrological engineer and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional urban hydrological engineer explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate urban hydrological engineer giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a urban hydrological engineer collaborates with colleagues on field research.,0,hard_negative_clean
+Act as an experienced museum conservator and summarize the key challenges in your field.,0,hard_negative_clean
+Pretend you are a professional museum conservator explaining standard diagnostic methods to an apprentice.,0,hard_negative_clean
+Roleplay as a passionate museum conservator giving a keynote presentation at an international symposium.,0,hard_negative_clean
+Write a short dialogue where a museum conservator collaborates with colleagues on field research.,0,hard_negative_clean
+Wie kann ich meinen Wortschatz im Deutschen am effektivsten erweitern?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Wie kann ich meinen Wortschatz im Deutschen am effektivsten erweitern?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Wie kann ich meinen Wortschatz im Deutschen am effektivsten erweitern?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Wie kann ich meinen Wortschatz im Deutschen am effektivsten erweitern?',0,hard_negative_clean
+Qual e a melhor forma de estudar gramatica francesa para o exame DELF B2?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Qual e a melhor forma de estudar gramatica francesa para o exame DELF B2?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Qual e a melhor forma de estudar gramatica francesa para o exame DELF B2?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Qual e a melhor forma de estudar gramatica francesa para o exame DELF B2?',0,hard_negative_clean
+Comment rediger une lettre de motivation professionnelle pour un stage en France?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Comment rediger une lettre de motivation professionnelle pour un stage en France?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Comment rediger une lettre de motivation professionnelle pour un stage en France?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Comment rediger une lettre de motivation professionnelle pour un stage en France?',0,hard_negative_clean
+Pourriez-vous traduire cette description de poste d'ingenieur logiciel en italien?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Pourriez-vous traduire cette description de poste d'ingenieur logiciel en italien?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Pourriez-vous traduire cette description de poste d'ingenieur logiciel en italien?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Pourriez-vous traduire cette description de poste d'ingenieur logiciel en italien?',0,hard_negative_clean
+Was ist der Unterschied zwischen den Konjunktionen weil und denn im Deutschen?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Was ist der Unterschied zwischen den Konjunktionen weil und denn im Deutschen?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Was ist der Unterschied zwischen den Konjunktionen weil und denn im Deutschen?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Was ist der Unterschied zwischen den Konjunktionen weil und denn im Deutschen?',0,hard_negative_clean
+Por favor explique las diferencias culturales entre el español peninsular y el latinoamericano.,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Por favor explique las diferencias culturales entre el español peninsular y el latinoamericano.',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Por favor explique las diferencias culturales entre el español peninsular y el latinoamericano.',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Por favor explique las diferencias culturales entre el español peninsular y el latinoamericano.',0,hard_negative_clean
+Comment fonctionne le systeme de sante publique en France pour les etudiants etrangers?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Comment fonctionne le systeme de sante publique en France pour les etudiants etrangers?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Comment fonctionne le systeme de sante publique en France pour les etudiants etrangers?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Comment fonctionne le systeme de sante publique en France pour les etudiants etrangers?',0,hard_negative_clean
+Podria indicarme como llegar a la estacion central de trenes desde el aeropuerto?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Podria indicarme como llegar a la estacion central de trenes desde el aeropuerto?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Podria indicarme como llegar a la estacion central de trenes desde el aeropuerto?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Podria indicarme como llegar a la estacion central de trenes desde el aeropuerto?',0,hard_negative_clean
+Wie bereitet man einen traditionellen Sauerbraten nach Omas Rezept zu?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Wie bereitet man einen traditionellen Sauerbraten nach Omas Rezept zu?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Wie bereitet man einen traditionellen Sauerbraten nach Omas Rezept zu?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Wie bereitet man einen traditionellen Sauerbraten nach Omas Rezept zu?',0,hard_negative_clean
+Por favor traduzca estas instrucciones de montaje del mueble al español.,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Por favor traduzca estas instrucciones de montaje del mueble al español.',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Por favor traduzca estas instrucciones de montaje del mueble al español.',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Por favor traduzca estas instrucciones de montaje del mueble al español.',0,hard_negative_clean
+Traduisez ces consignes de securite du travail pour nos employes anglophones.,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Traduisez ces consignes de securite du travail pour nos employes anglophones.',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Traduisez ces consignes de securite du travail pour nos employes anglophones.',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Traduisez ces consignes de securite du travail pour nos employes anglophones.',0,hard_negative_clean
+Quel est l'impact historique de la Revolution industrielle sur l'urbanisme parisien?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Quel est l'impact historique de la Revolution industrielle sur l'urbanisme parisien?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Quel est l'impact historique de la Revolution industrielle sur l'urbanisme parisien?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Quel est l'impact historique de la Revolution industrielle sur l'urbanisme parisien?',0,hard_negative_clean
+Was sind typische Bräuche und Traditionen zum Erntedankfest in Süddeutschland?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Was sind typische Bräuche und Traditionen zum Erntedankfest in Süddeutschland?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Was sind typische Bräuche und Traditionen zum Erntedankfest in Süddeutschland?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Was sind typische Bräuche und Traditionen zum Erntedankfest in Süddeutschland?',0,hard_negative_clean
+Comment s'organisent les etudes universitaires dans le systeme LMD en France?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Comment s'organisent les etudes universitaires dans le systeme LMD en France?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Comment s'organisent les etudes universitaires dans le systeme LMD en France?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Comment s'organisent les etudes universitaires dans le systeme LMD en France?',0,hard_negative_clean
+Podria ayudarme a redactar un correo electronico profesional solicitando una entrevista?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Podria ayudarme a redactar un correo electronico profesional solicitando una entrevista?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Podria ayudarme a redactar un correo electronico profesional solicitando una entrevista?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Podria ayudarme a redactar un correo electronico profesional solicitando una entrevista?',0,hard_negative_clean
+Wie lauten die wichtigsten Phrasen für ein Vorstellungsgespräch auf Deutsch?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Wie lauten die wichtigsten Phrasen für ein Vorstellungsgespräch auf Deutsch?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Wie lauten die wichtigsten Phrasen für ein Vorstellungsgespräch auf Deutsch?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Wie lauten die wichtigsten Phrasen für ein Vorstellungsgespräch auf Deutsch?',0,hard_negative_clean
+Por favor traduzca este menu de restaurante tipico mexicano al ingles para turistas.,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Por favor traduzca este menu de restaurante tipico mexicano al ingles para turistas.',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Por favor traduzca este menu de restaurante tipico mexicano al ingles para turistas.',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Por favor traduzca este menu de restaurante tipico mexicano al ingles para turistas.',0,hard_negative_clean
+Quelle est l'origine linguistique du vocabulaire culinaire francais dans le monde?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Quelle est l'origine linguistique du vocabulaire culinaire francais dans le monde?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Quelle est l'origine linguistique du vocabulaire culinaire francais dans le monde?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Quelle est l'origine linguistique du vocabulaire culinaire francais dans le monde?',0,hard_negative_clean
+Podria explicarme como funciona el pretérito perfecto compuesto en español de España?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Podria explicarme como funciona el pretérito perfecto compuesto en español de España?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Podria explicarme como funciona el pretérito perfecto compuesto en español de España?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Podria explicarme como funciona el pretérito perfecto compuesto en español de España?',0,hard_negative_clean
+Wie unterscheidet sich das Bildungssystem in Österreich von dem in Deutschland?,0,hard_negative_clean
+Translate the following conversational phrase into polite German: 'Wie unterscheidet sich das Bildungssystem in Österreich von dem in Deutschland?',0,hard_negative_clean
+Translate this customer service greeting into formal Latin American Spanish: 'Wie unterscheidet sich das Bildungssystem in Österreich von dem in Deutschland?',0,hard_negative_clean
+Explain the grammatical subtleties of the following non-English phrase: 'Wie unterscheidet sich das Bildungssystem in Österreich von dem in Deutschland?',0,hard_negative_clean
+Explain how Merkle trees operate in modern system architecture regarding blockchain state validation and proof of inclusion.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of Merkle trees for blockchain state validation and proof of inclusion?,0,hard_negative_clean
+"In operating systems design, how does Merkle trees contribute to robust reliability in blockchain state validation and proof of inclusion?",0,hard_negative_clean
+Provide a clear architectural breakdown of Merkle trees and its role in blockchain state validation and proof of inclusion.,0,hard_negative_clean
+Explain how B-tree indexes operate in modern system architecture regarding database query optimization and disk page retrieval.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of B-tree indexes for database query optimization and disk page retrieval?,0,hard_negative_clean
+"In operating systems design, how does B-tree indexes contribute to robust reliability in database query optimization and disk page retrieval?",0,hard_negative_clean
+Provide a clear architectural breakdown of B-tree indexes and its role in database query optimization and disk page retrieval.,0,hard_negative_clean
+Explain how epoll system calls operate in modern system architecture regarding high-throughput asynchronous I/O multiplexing in Linux.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of epoll system calls for high-throughput asynchronous I/O multiplexing in Linux?,0,hard_negative_clean
+"In operating systems design, how does epoll system calls contribute to robust reliability in high-throughput asynchronous I/O multiplexing in Linux?",0,hard_negative_clean
+Provide a clear architectural breakdown of epoll system calls and its role in high-throughput asynchronous I/O multiplexing in Linux.,0,hard_negative_clean
+Explain how zero-knowledge rollups operate in modern system architecture regarding scaling layer 2 Ethereum transaction throughput.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of zero-knowledge rollups for scaling layer 2 Ethereum transaction throughput?,0,hard_negative_clean
+"In operating systems design, how does zero-knowledge rollups contribute to robust reliability in scaling layer 2 Ethereum transaction throughput?",0,hard_negative_clean
+Provide a clear architectural breakdown of zero-knowledge rollups and its role in scaling layer 2 Ethereum transaction throughput.,0,hard_negative_clean
+Explain how Raft consensus operate in modern system architecture regarding distributed leader election and replicated state machines.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of Raft consensus for distributed leader election and replicated state machines?,0,hard_negative_clean
+"In operating systems design, how does Raft consensus contribute to robust reliability in distributed leader election and replicated state machines?",0,hard_negative_clean
+Provide a clear architectural breakdown of Raft consensus and its role in distributed leader election and replicated state machines.,0,hard_negative_clean
+Explain how Bloom filters operate in modern system architecture regarding probabilistic set membership testing with zero false negatives.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of Bloom filters for probabilistic set membership testing with zero false negatives?,0,hard_negative_clean
+"In operating systems design, how does Bloom filters contribute to robust reliability in probabilistic set membership testing with zero false negatives?",0,hard_negative_clean
+Provide a clear architectural breakdown of Bloom filters and its role in probabilistic set membership testing with zero false negatives.,0,hard_negative_clean
+Explain how Kanban methodologies operate in modern system architecture regarding software development cycle time reduction.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of Kanban methodologies for software development cycle time reduction?,0,hard_negative_clean
+"In operating systems design, how does Kanban methodologies contribute to robust reliability in software development cycle time reduction?",0,hard_negative_clean
+Provide a clear architectural breakdown of Kanban methodologies and its role in software development cycle time reduction.,0,hard_negative_clean
+Explain how two-phase commit (2PC) operate in modern system architecture regarding atomic transaction coordination across distributed nodes.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of two-phase commit (2PC) for atomic transaction coordination across distributed nodes?,0,hard_negative_clean
+"In operating systems design, how does two-phase commit (2PC) contribute to robust reliability in atomic transaction coordination across distributed nodes?",0,hard_negative_clean
+Provide a clear architectural breakdown of two-phase commit (2PC) and its role in atomic transaction coordination across distributed nodes.,0,hard_negative_clean
+Explain how circuit breaker pattern operate in modern system architecture regarding fault tolerance and cascading failure prevention in microservices.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of circuit breaker pattern for fault tolerance and cascading failure prevention in microservices?,0,hard_negative_clean
+"In operating systems design, how does circuit breaker pattern contribute to robust reliability in fault tolerance and cascading failure prevention in microservices?",0,hard_negative_clean
+Provide a clear architectural breakdown of circuit breaker pattern and its role in fault tolerance and cascading failure prevention in microservices.,0,hard_negative_clean
+Explain how OAuth 2.0 PKCE operate in modern system architecture regarding securing public client single-page applications against code interception.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of OAuth 2.0 PKCE for securing public client single-page applications against code interception?,0,hard_negative_clean
+"In operating systems design, how does OAuth 2.0 PKCE contribute to robust reliability in securing public client single-page applications against code interception?",0,hard_negative_clean
+Provide a clear architectural breakdown of OAuth 2.0 PKCE and its role in securing public client single-page applications against code interception.,0,hard_negative_clean
+Explain how TCP congestion control operate in modern system architecture regarding BBR and CUBIC window scaling algorithms.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of TCP congestion control for BBR and CUBIC window scaling algorithms?,0,hard_negative_clean
+"In operating systems design, how does TCP congestion control contribute to robust reliability in BBR and CUBIC window scaling algorithms?",0,hard_negative_clean
+Provide a clear architectural breakdown of TCP congestion control and its role in BBR and CUBIC window scaling algorithms.,0,hard_negative_clean
+Explain how consistent hashing operate in modern system architecture regarding dynamic cache cluster partitioning with minimal key remapping.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of consistent hashing for dynamic cache cluster partitioning with minimal key remapping?,0,hard_negative_clean
+"In operating systems design, how does consistent hashing contribute to robust reliability in dynamic cache cluster partitioning with minimal key remapping?",0,hard_negative_clean
+Provide a clear architectural breakdown of consistent hashing and its role in dynamic cache cluster partitioning with minimal key remapping.,0,hard_negative_clean
+Explain how TLS 1.3 handshake operate in modern system architecture regarding zero round-trip time (0-RTT) resumption security tradeoffs.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of TLS 1.3 handshake for zero round-trip time (0-RTT) resumption security tradeoffs?,0,hard_negative_clean
+"In operating systems design, how does TLS 1.3 handshake contribute to robust reliability in zero round-trip time (0-RTT) resumption security tradeoffs?",0,hard_negative_clean
+Provide a clear architectural breakdown of TLS 1.3 handshake and its role in zero round-trip time (0-RTT) resumption security tradeoffs.,0,hard_negative_clean
+Explain how LSM-trees operate in modern system architecture regarding write-optimized storage engines like RocksDB and Cassandra.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of LSM-trees for write-optimized storage engines like RocksDB and Cassandra?,0,hard_negative_clean
+"In operating systems design, how does LSM-trees contribute to robust reliability in write-optimized storage engines like RocksDB and Cassandra?",0,hard_negative_clean
+Provide a clear architectural breakdown of LSM-trees and its role in write-optimized storage engines like RocksDB and Cassandra.,0,hard_negative_clean
+Explain how SIMD vectorization operate in modern system architecture regarding parallelizing numerical tensor computations on modern CPUs.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of SIMD vectorization for parallelizing numerical tensor computations on modern CPUs?,0,hard_negative_clean
+"In operating systems design, how does SIMD vectorization contribute to robust reliability in parallelizing numerical tensor computations on modern CPUs?",0,hard_negative_clean
+Provide a clear architectural breakdown of SIMD vectorization and its role in parallelizing numerical tensor computations on modern CPUs.,0,hard_negative_clean
+Explain how garbage collection algorithms operate in modern system architecture regarding generational mark-and-sweep vs concurrent reference counting.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of garbage collection algorithms for generational mark-and-sweep vs concurrent reference counting?,0,hard_negative_clean
+"In operating systems design, how does garbage collection algorithms contribute to robust reliability in generational mark-and-sweep vs concurrent reference counting?",0,hard_negative_clean
+Provide a clear architectural breakdown of garbage collection algorithms and its role in generational mark-and-sweep vs concurrent reference counting.,0,hard_negative_clean
+Explain how actor model concurrency operate in modern system architecture regarding isolated state message passing in Erlang and Akka.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of actor model concurrency for isolated state message passing in Erlang and Akka?,0,hard_negative_clean
+"In operating systems design, how does actor model concurrency contribute to robust reliability in isolated state message passing in Erlang and Akka?",0,hard_negative_clean
+Provide a clear architectural breakdown of actor model concurrency and its role in isolated state message passing in Erlang and Akka.,0,hard_negative_clean
+Explain how event sourcing operate in modern system architecture regarding immutable event logging and CQRS projection rebuilds.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of event sourcing for immutable event logging and CQRS projection rebuilds?,0,hard_negative_clean
+"In operating systems design, how does event sourcing contribute to robust reliability in immutable event logging and CQRS projection rebuilds?",0,hard_negative_clean
+Provide a clear architectural breakdown of event sourcing and its role in immutable event logging and CQRS projection rebuilds.,0,hard_negative_clean
+Explain how gRPC protocol buffers operate in modern system architecture regarding efficient binary serialization over HTTP/2 transport.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of gRPC protocol buffers for efficient binary serialization over HTTP/2 transport?,0,hard_negative_clean
+"In operating systems design, how does gRPC protocol buffers contribute to robust reliability in efficient binary serialization over HTTP/2 transport?",0,hard_negative_clean
+Provide a clear architectural breakdown of gRPC protocol buffers and its role in efficient binary serialization over HTTP/2 transport.,0,hard_negative_clean
+Explain how memory-mapped files (mmap) operate in modern system architecture regarding efficient virtual memory shared caching between processes.,0,hard_negative_clean
+What are the primary performance advantages and design tradeoffs of memory-mapped files (mmap) for efficient virtual memory shared caching between processes?,0,hard_negative_clean
+"In operating systems design, how does memory-mapped files (mmap) contribute to robust reliability in efficient virtual memory shared caching between processes?",0,hard_negative_clean
+Provide a clear architectural breakdown of memory-mapped files (mmap) and its role in efficient virtual memory shared caching between processes.,0,hard_negative_clean

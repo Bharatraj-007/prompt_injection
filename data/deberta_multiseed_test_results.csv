@@ -1,0 +1,2 @@
+seed,model,test_seen_acc,test_seen_f1,test_seen_f1_ci,test_seen_prec,test_seen_rec,test_seen_fpr,test_seen_TP,test_seen_FP,test_seen_TN,test_seen_FN,test_unseen_acc,test_unseen_f1,test_unseen_fpr,forward_latency_ms,e2e_latency_ms
+42,microsoft/deberta-v3-base,0.5861,0.0,0.0-0.0,0.0,0.0,0.0,0,0,708,500,0.4964,0.0,0.0,46.73,47.65

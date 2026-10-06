@@ -1,0 +1,9 @@
+{
+  "1": {
+    "epoch": 1,
+    "train_loss": 0.0172,
+    "eval_loss": NaN,
+    "eval_accuracy": 0.5851,
+    "eval_f1": 0.0
+  }
+}

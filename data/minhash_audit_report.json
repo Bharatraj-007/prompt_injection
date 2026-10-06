@@ -1,0 +1,68 @@
+{
+  "exact_duplicates": {
+    "train_vs_val": 0,
+    "train_vs_test_seen": 0,
+    "val_vs_test_seen": 0,
+    "test_unseen_vs_train": 5,
+    "test_unseen_vs_val": 1,
+    "test_unseen_vs_seen": 1
+  },
+  "internal_train_near_duplicates": {
+    "count": 866,
+    "percentage": 11.85
+  },
+  "splits_audit": {
+    "val": {
+      "total_samples": 1500,
+      "near_duplicates_with_train": 290,
+      "benign_near_duplicates": 42,
+      "injection_near_duplicates": 248,
+      "contamination_percentage": 19.33,
+      "clean_samples_remaining": 1210,
+      "label_distribution": {
+        "0": 708,
+        "1": 502
+      },
+      "clean_file_path": "D:\\prompt_injection\\data\\clean_val.csv"
+    },
+    "test_seen": {
+      "total_samples": 1500,
+      "near_duplicates_with_train": 292,
+      "benign_near_duplicates": 42,
+      "injection_near_duplicates": 250,
+      "contamination_percentage": 19.47,
+      "clean_samples_remaining": 1208,
+      "label_distribution": {
+        "0": 708,
+        "1": 500
+      },
+      "clean_file_path": "D:\\prompt_injection\\data\\clean_test_seen.csv"
+    },
+    "test_unseen": {
+      "total_samples": 1552,
+      "near_duplicates_with_train": 11,
+      "benign_near_duplicates": 11,
+      "injection_near_duplicates": 0,
+      "contamination_percentage": 0.71,
+      "clean_samples_remaining": 1541,
+      "label_distribution": {
+        "1": 776,
+        "0": 765
+      },
+      "clean_file_path": "D:\\prompt_injection\\data\\clean_test_unseen.csv"
+    }
+  },
+  "cross_split_leakage": {
+    "clean_val_vs_clean_test_seen_near_duplicates": 37,
+    "clean_test_unseen_vs_clean_val_near_duplicates": 3,
+    "clean_test_unseen_vs_clean_test_seen_near_duplicates": 2
+  },
+  "contamination_impact": {
+    "val_original_benign": 750,
+    "test_seen_original_benign": 750,
+    "val_benign_removed": 42,
+    "test_seen_benign_removed": 42,
+    "val_final_benign": 708,
+    "test_seen_final_benign": 708
+  }
+}

@@ -13,9 +13,9 @@ class LosslessSanitizerEngine:
         hidden_pattern = re.compile(r'[\u200B-\u200D\uFEFF\u00A0\u200E\u200F\u202A-\u202E]')
         cleaned = hidden_pattern.sub('', normalized)
 
-        # Base64 auto-decoding
+        # Base64 auto-decoding — capped at 1000 chars to prevent ReDoS
         decoded_payloads = []
-        b64_matches = re.findall(r'\b[A-Za-z0-9+/]{12,}={0,2}\b', cleaned)
+        b64_matches = re.findall(r'\b[A-Za-z0-9+/]{12,1000}={0,2}\b', cleaned)
         for b64_str in b64_matches:
             try:
                 decoded_bytes = base64.b64decode(b64_str, validate=True)

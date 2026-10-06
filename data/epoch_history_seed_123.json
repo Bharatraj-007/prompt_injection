@@ -1,0 +1,23 @@
+{
+  "1": {
+    "epoch": 1,
+    "train_loss": 0.1369,
+    "eval_loss": 0.1202,
+    "eval_accuracy": 0.9686,
+    "eval_f1": 0.9611
+  },
+  "2": {
+    "epoch": 2,
+    "train_loss": 0.0424,
+    "eval_loss": 0.0827,
+    "eval_accuracy": 0.981,
+    "eval_f1": 0.9768
+  },
+  "3": {
+    "epoch": 3,
+    "train_loss": 0.0213,
+    "eval_loss": 0.0953,
+    "eval_accuracy": 0.9793,
+    "eval_f1": 0.9748
+  }
+}

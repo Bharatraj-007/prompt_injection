@@ -1,0 +1,29 @@
+# Conda environment specification for reproducibility
+# Create with: conda env create -f environment.yml
+# Activate with: conda activate prompt_injection_detector
+
+name: prompt_injection_detector
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.11
+  - pytorch=2.0.1
+  - pytorch-cuda=11.8
+  - pip
+  - pip:
+      - transformers>=5.0.0,<6.0.0
+      - datasets>=2.12.0,<3.0.0
+      - huggingface_hub>=0.14.0,<1.0.0
+      - pandas>=2.0.0,<3.0.0
+      - numpy>=1.24.0,<2.0.0
+      - scikit-learn>=1.2.0,<2.0.0
+      - datasketch>=1.6.0,<2.0.0
+      - streamlit>=1.25.0,<2.0.0
+      - matplotlib>=3.7.0,<4.0.0
+      - seaborn>=0.12.0,<1.0.0
+      - python-Levenshtein>=0.21.0,<1.0.0
+      - pytest>=7.0.0,<8.0.0
+      - pytest-cov>=4.0.0,<5.0.0

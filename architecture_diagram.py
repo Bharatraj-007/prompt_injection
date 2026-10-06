@@ -22,7 +22,7 @@ def generate_diagram():
         ("Layer 1: Preprocessing\n(NFKC Unicode, Hidden Char Strip, Base64 Decode)", 0.35, 0.76, c_l1),
         ("Layer 2: Rule Filter\n(Multi-Lingual Regex & Heuristics)", 0.15, 0.62, c_l2),
         ("Layer 3: Transformer Model\n(DeBERTa-v3 / DistilBERT Classifier)", 0.55, 0.62, c_l3),
-        ("Layer 4: Score Fusion & Thresholding\n(Fused Score = 0.3 * L2 + 0.7 * L3)", 0.35, 0.48, c_l4),
+        ("Layer 4: Score Fusion & Thresholding\n(Noisy-OR: 1 - (1-rule)*(1-model))", 0.35, 0.48, c_l4),
         ("Layer 5: Prompt Hardening & Canary Token\n(Inject dynamic dynamic token instructions)", 0.35, 0.34, c_l5),
         ("Target LLM Inference\n(Generates Raw Response)", 0.35, 0.22, c_input),
         ("Layer 6: Output Guard\n(Canary Leakage & Secret Redaction)", 0.35, 0.10, c_l6),

@@ -1,0 +1,10 @@
+variant,accuracy,precision,recall,f1,fpr
+Model Only (Single-view),0.9793,0.9897,0.96,0.9746,0.0071
+Model Only (Multi-view),0.9644,0.9454,0.97,0.9576,0.0395
+Weighted Average (Single-view),0.6002,1.0,0.034,0.0658,0.0
+Weighted Average (Multi-view),0.6051,1.0,0.046,0.088,0.0
+Max Fusion (Single-view),0.9793,0.9897,0.96,0.9746,0.0071
+Max Fusion (Multi-view),0.9644,0.9454,0.97,0.9576,0.0395
+Noisy-OR (Single-view),0.9793,0.9897,0.96,0.9746,0.0071
+Noisy-OR (Multi-view),0.9644,0.9454,0.97,0.9576,0.0395
+Baseline: ProtectAI (External),0.9363,0.9907,0.854,0.9173,0.0056
