@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-10-30 22:13:36",
+  "environment": "LOCAL_STAGING",
+  "browser_framework": "NOT_INSTALLED",
+  "apptest_startup_seconds": 7.24,
+  "soak_operations_total": 300,
+  "soak_successful_operations": 300,
+  "soak_failed_operations": 0,
+  "soak_metrics": {
+    "attack_recall_pct": 100.0,
+    "benign_fpr_pct": 0.0
+  },
+  "soak_latency_ms": {
+    "mean": 28.19,
+    "median_p50": 24.1,
+    "p95": 51.89,
+    "p99": 79.43,
+    "min": 10.45,
+    "max": 197.32
+  },
+  "telemetry_write_latency_ms": {
+    "mean": 8.38,
+    "median_p50": 8.2,
+    "p95": 10.43
+  },
+  "memory_rss_mb": {
+    "before_soak": 1062.79,
+    "after_soak": 1060.08,
+    "growth": -2.71
+  },
+  "pytest_suite": {
+    "total": 177,
+    "passed": 177,
+    "failed": 0,
+    "exit_code": 0
+  }
+}

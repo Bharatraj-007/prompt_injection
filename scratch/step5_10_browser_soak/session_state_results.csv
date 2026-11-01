@@ -1,0 +1,8 @@
+test_name,description,session_id_a,session_id_b,observed_behavior,latency_ms,status
+Browser Refresh Simulation,AppTest reload cycle initializes clean session state without fatal crash,refresh_session_1,refresh_session_2,Page reloaded successfully; clean session context created,128.5,PASSED
+UI Tab Switching Simulation,"Switching between Chat, Document Scanner, Analytics, and DPI tabs",tab_sess,tab_sess,Tab elements render independently without state collision,1.2,PASSED
+Repeated Sequential Requests,Ensures sequential turns increment IDs and persist distinct turn entries,seq_test_session,seq_test_session,Turn 1->2->3 successfully processed in sequence,32.0,PASSED
+New Session Initialization,New session starts with clean history and zero residue,seq_test_session,new_isolated_session,Clean session created with independent event ID,10.53,PASSED
+Chat & Document Switch Interaction,Document scan state and chat turn state remain isolated,new_isolated_session,new_isolated_session,Document scanned and chat executed without state corruption,22.91,PASSED
+Cross-Session Boundary Isolation,Session B cannot access or infer turns recorded in Session A,user_alpha_sess,user_beta_sess,Session B analysis shows zero previous turns from Session A,0.02,PASSED
+Attack Containment & State Unpoisoning,Blocked attack in one session does not bias subsequent sessions,attack_session,benign_session,Attack BLOCKED in Session A; Benign question ALLOWED in Session B,21.55,PASSED

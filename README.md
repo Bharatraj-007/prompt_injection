@@ -1,6 +1,7 @@
 # 🛡️ Empirical Evaluation and Defense Pipeline for Prompt Injection Attacks
 
 [![Python 3.11](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
+[![Tests: 71 Passed](https://img.shields.io/badge/Tests-71%20Passed-brightgreen.svg)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.25+-red.svg)](https://streamlit.io/)
 [![Changelog](https://img.shields.io/badge/Changelog-v1--frozen-brightgreen.svg)](docs/CHANGELOG.md)
@@ -18,7 +19,7 @@ An empirical research and defense pipeline investigating small transformer class
 
 ---
 
-## 🏗️ 6-Layer Architecture Overview
+## 🏗️ 7-Layer Hybrid Architecture Overview
 
 ```
                        +---------------------------------------+
@@ -30,17 +31,17 @@ An empirical research and defense pipeline investigating small transformer class
                        | Layer 1: Preprocessing & Decoding     |
                        | (NFKC, Hidden Chars, Base64/Hex)      |
                        +---------------------------------------+
-                                     /           \
-                                    v             v
-            +-------------------------------+    +-------------------------------+
-            | Layer 2: Rule Filter Engine   |    | Layer 3: Transformer Model    |
-            | (Deterministic Regex/Heur.)   |    | (DistilBERT Fine-tuned)       |
-            +-------------------------------+    +-------------------------------+
-                                    \             /
-                                     v           v
+                                     /     |     \
+                                    v      v      v
+            +--------------------+  +--------------------+  +-------------------------+
+            | Layer 2: Rules     |  | Layer 3: DistilBERT|  | Layer 7: LLM as a Judge |
+            | (Regex/Heuristic)  |  | (Fine-Tuned CLS)   |  | (Groq / xAI / GPU / FB) |
+            +--------------------+  +--------------------+  +-------------------------+
+                                    \      |      /
+                                     v     v     v
                        +---------------------------------------+
-                       | Layer 4: Probabilistic Score Fusion   |
-                       | Noisy-OR / Validation-Tuned Weighted  |
+                       | Layer 4: Multi-Layer Score Fusion     |
+                       | Noisy-OR Probabilistic Ensemble       |
                        +---------------------------------------+
                                            |
                                            v
@@ -57,7 +58,7 @@ An empirical research and defense pipeline investigating small transformer class
                                            v
                        +---------------------------------------+
                        | Layer 6: Output Guard Verifier        |
-                       | (Egress Check for Leaked Canaries)    |
+                       | (Canary Egress & LLM Output Audit)    |
                        +---------------------------------------+
                                            |
                                            v
@@ -67,9 +68,13 @@ An empirical research and defense pipeline investigating small transformer class
                        +---------------------------------------+
 ```
 
-> **Note on Layers 5 & 6**: Layers 1–4 constitute the **pre-LLM ingress firewall** evaluated below. Layers 5 and 6 are modular prompt engineering templates and egress substring verifiers; they do not classify input text and do not require an active LLM generation step for detector benchmarking.
->
-> **Note on Extensions**: The `extensions_crossguard/` directory contains experimental future-work prototypes that are not part of the core evaluated pipeline.
+### ⚖️ Layer 7: LLM as a Judge (Defender)
+The LLM Judge serves as the high-intelligence security analyst layer of the defense pipeline:
+- **Groq Cloud API (`GroqJudge`)**: Ultra-low latency inference (<300ms) with `llama-3.3-70b-versatile`, `llama-3.1-8b-instant`, `mixtral-8x7b-32768`.
+- **xAI Grok API (`XaiGrokJudge`)**: OpenAI-compatible client integration supporting `grok-2-latest` and `grok-beta`.
+- **Local GPU Judge (`LocalGPUJudge`)**: Runs locally on NVIDIA CUDA (RTX 4050 6GB) using HuggingFace models (`Qwen/Qwen2.5-1.5B-Instruct`) with zero API token costs.
+- **Heuristic Fallback Judge (`FallbackJudge`)**: Ensures zero system crashes and full offline resilience if network or API keys are unavailable.
+- **GPU Diagnostics**: Real-time VRAM allocation tracking and live monitoring via `python -m nvitop`.
 
 ---
 
@@ -96,12 +101,12 @@ python data_prep.py
 # 3. MinHash LSH contamination audit (removes Jaccard >= 0.80 near-duplicates)
 python minhash_audit.py
 ```
-*Audit finding*: MinHash deduplication removed **250 of 750 (33.3%)** candidate test attacks and 42 of 750 safe prompts that contaminated the training split.
+*Audit finding*: MinHash deduplication removed **301 of 1,500 (20.07%)** candidate test_seen samples, **293 of 1,500 (19.53%)** validation samples, and **14 of 1,552 (0.90%)** test_unseen samples that contaminated the training split ($Jaccard \ge 0.80$). An additional cross-split quarantine removed 39 test_seen and 2 test_unseen samples, enforcing strict zero-leakage partitions: **Clean Test Seen** ($N=1,160$), **Clean Test Unseen** ($N=1,536$), and **Clean Val** ($N=1,207$).
 
 ### Step 3: Model Training
 ```bash
 # Train DistilBERT across Seed 42 (reproducible deterministic training)
-python train_all.py distilbert --epochs 3 --batch_size 32 --lr 3e-5
+python train.py
 
 # Or train alternative backbones (ModernBERT)
 python train_all.py modernbert
@@ -109,7 +114,7 @@ python train_all.py modernbert
 
 ### Step 4: Run Tests & Evaluation
 ```bash
-# 1. Run unit tests
+# 1. Run unit tests (71 tests passing)
 pytest tests/ -v
 
 # 2. Run full evaluation across seen, unseen, and hard-negatives
@@ -123,37 +128,42 @@ streamlit run app.py
 
 ## 📊 Empirical Findings & Benchmark Results
 
-### 1. In-Distribution Clean Test Set ($N = 1,208$)
-*Hardware: NVIDIA RTX 4050 Laptop GPU (6GB), CUDA 11.8*
+### 1. In-Distribution Clean Test Set ($N = 1,160$)
+*Hardware: NVIDIA RTX 4050 Laptop GPU (6GB), PyTorch CUDA*
 
-| Defense Approach | Accuracy | Precision | Recall | F1-Score | FPR |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Rules Only (Layer 2)** | 0.6043 | 1.0000 | 0.0440 | 0.0843 | **0.00%** |
-| **Model Only (Single-View)** | **0.9793** | 0.9897 | 0.9600 | **0.9746** | 0.71% |
-| **Model Only (Multi-View)** | 0.9785 | 0.9877 | 0.9600 | 0.9736 | 0.85% |
-| **Weighted Average ($0.3R + 0.7M$)** | **0.9793** | 0.9897 | 0.9600 | **0.9746** | 0.71% |
-| **Noisy-OR Fusion (Multi-View)** | 0.9785 | 0.9877 | 0.9600 | 0.9736 | 0.85% |
-| **Baseline: ProtectAI (Zero-Shot)** | 0.9363 | 0.9907 | 0.8540 | 0.9173 | 0.56% |
+| Defense Approach | Accuracy | Precision | Recall | F1-Score | FPR | Latency |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Rules Only (Layer 2)** | 0.6172 | 1.0000 | 0.0452 | 0.0864 | **0.00%** | **0.05 ms** |
+| **Model Only (DistilBERT)** | **0.9759** | **0.9781** | **0.9613** | **0.9696** | 1.44% | 4.64 ms |
+| **Hybrid Pipeline (Noisy-OR)** | **0.9759** | **0.9781** | **0.9613** | **0.9696** | 1.44% | 10.96 ms |
 
 **Key Takeaways**:
-- **Rules add zero decision changes on clean data**: DistilBERT alone caught 480 of 500 attacks and produced 5 false alarms out of 708 benign prompts.
-- **Model Comparison**: DistilBERT ($F_1 = 0.9746$) and ModernBERT ($F_1 = 0.9717$) are statistically comparable (McNemar's test $p = 0.4531$, not significant).
-- **Calibration**: Expected Calibration Error (ECE) is identical for Model Only ($0.0110$) and Noisy-OR ($0.0109$).
+- **Rules add zero decision divergence on clean data**: DistilBERT caught 447 of 465 attacks and produced 10 false alarms out of 695 benign prompts.
+- **Statistical Significance**: McNemar's test between DistilBERT model-only and Noisy-OR hybrid yields $\chi^2 = 0.0$, $p = 1.0$ (no significant difference on clean test data).
+- **Calibration**: Expected Calibration Error (ECE, 10 bins) is $0.0109$ for Model Only and $0.0110$ for Hybrid Noisy-OR.
+- **Decision Equivalence**: At threshold $\theta = 0.50$, Noisy-OR ($1 - (1 - r)(1 - m)$) and Max Fusion ($\max(r, m)$) yield 100% identical binary blocking decisions because Layer 2 heuristic rules only fire with high confidence ($w \ge 0.85$).
 
 ---
 
-### 2. Out-of-Domain Unseen Test Sets
+### 2. Out-of-Domain Unseen Test Set ($N = 1,536$)
 
-| Test Split | Defense Model | Accuracy | Recall | F1-Score | FPR |
-| :--- | :--- | :---: | :---: | :---: | :---: |
-| **Lakera Attacks + Dolly OOD** ($N=1,541$) | Model Single-View | 0.9799 | 0.9626 | 0.9797 | 0.26% |
-| | Multi-View Pipeline | 0.9870 | **0.9768** | 0.9870 | 0.26% |
-| | ProtectAI (Zero-Shot) | **1.0000** | **1.0000** | **1.0000** | **0.00%** |
-| **Lakera Attacks + Alpaca OOD** ($N=1,552$) | Model Single-View | 0.9633 | 0.9626 | 0.9632 | 3.61% |
-| | Multi-View Pipeline | 0.9691 | **0.9768** | 0.9693 | 3.87% |
-| | ProtectAI (Zero-Shot) | **0.9994** | **1.0000** | **0.9994** | **0.13%** |
+| Test Split | Defense Model | Accuracy | Precision | Recall | F1-Score | FPR |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
+| **Clean Test Unseen (OOD)** ($N=1,536$) | Hybrid Pipeline (Noisy-OR) | **0.9844** | **0.9947** | **0.9742** | **0.9844** | **0.53%** |
 
-*Note*: Replacing Dolly benign prompts with Alpaca (never seen in training) reveals a higher out-of-domain false positive rate ($0.26\% \to 3.61\%$). ProtectAI evaluated zero-shot demonstrates strong generalization on plain semantic text.
+*Empirical Generalization Note*: Clean Test Unseen F1 is $+0.0148$ relative to Clean Test Seen. This difference is driven primarily by prompt length and structure: the unseen set has an average length of 71.0 characters versus 173.2 characters in the seen test set, resulting in lower subword token fragmentation.
+
+---
+
+### 3. Independent Adversarial Evaluation Suite ($N = 350$)
+
+| Metric | Measured Value | Wilson 95% Confidence Interval |
+| :--- | :---: | :---: |
+| **Overall Suite Accuracy** | **96.29%** | 93.8% — 97.8% |
+| **Attack Detection Rate (Recall)** | **293 / 300 (97.67%)** | 95.3% — 98.9% |
+| **Benign Look-Alike FPR** | **6 / 50 (12.00%)** | 5.6% — 23.8% |
+
+*Defense-in-Depth Clarification*: Layers 5 (Dynamic Cryptographic Canary) and 6 (Output Guard Inspection) provide output-level defense against system prompt exfiltration and payload execution. They are validated via automated verification suites rather than input classification tables.
 
 ---
 
@@ -197,15 +207,16 @@ streamlit run app.py
 ---
 
 ### 5. Latency & Throughput Benchmark (Single GPU, Batch Size 1)
-*Measured over 50 warm-up runs and 200 timed iterations on RTX 4050 Mobile GPU:*
+*CUDA-synchronized dynamic latencies measured over 20 warm-up runs and 100 timed iterations on NVIDIA RTX 4050 Laptop GPU:*
 
-| Model Architecture | Parameters | Mean Latency | 95th Percentile | Throughput |
-| :--- | :---: | :---: | :---: | :---: |
-| **DistilBERT (Ours)** | **67.0M** | **8.37 ms ± 0.95 ms** | **9.83 ms** | **119.4 QPS** |
-| **ProtectAI DeBERTa-v3** | 184.4M | 34.33 ms ± 11.44 ms | 52.01 ms | 29.1 QPS |
-| **ModernBERT** | 149.6M | 43.76 ms ± 4.93 ms | 52.57 ms | 22.8 QPS |
+| Pipeline Component | Parameter Scale | Mean Latency | Median Latency | 95th Percentile | Execution Mode |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Layer 2 Rules** | Heuristic Regex | **0.05 ms** | 0.04 ms | 0.08 ms | CPU Deterministic |
+| **Layer 3 DistilBERT Forward** | 67.0M | **4.64 ms** | 4.60 ms | 4.92 ms | Local RTX 4050 GPU (FP32) |
+| **Hybrid Pipeline End-to-End** | Multi-Layer | **10.96 ms** | 10.56 ms | 12.86 ms | Local GPU Pipeline |
+| **Layer 7 LLM Judge (Cloud)** | 70B / Grok-2 | **~300 - 800 ms** | ~450 ms | ~950 ms | Cloud API (Groq / xAI) |
 
-DistilBERT delivers **4.1x higher throughput** than ProtectAI and **5.2x higher throughput** than ModernBERT under identical runtime conditions.
+The local GPU hybrid pipeline processes requests with sub-11 ms latency, while Layer 7 LLM Judge provides asynchronous deep reasoning without blocking critical real-time traffic.
 
 ---
 
@@ -220,23 +231,32 @@ prompt_injection/
 ├── environment.yml                # Conda environment specification
 ├── app.py                         # Interactive Streamlit defense UI
 ├── config.py                      # Centralized configuration & thresholds
-├── guard.py                       # 6-Layer core pipeline implementation
-├── train.py                       # Base training routine
+├── guard.py                       # 7-Layer core pipeline implementation
+├── train.py                       # Base training routine with validation selection & NaN/Inf weight checks
 ├── train_all.py                   # Multi-architecture CLI trainer
-├── evaluate.py                    # Evaluation and threshold sweep script
+├── evaluate.py                    # Dynamic latency, ECE, McNemar test & evaluation suite
 ├── evaluate_all_fusions.py        # Fusion & multi-view ablation harness
-├── data_prep.py                   # Dataset partitioning & balance verification
-├── minhash_audit.py               # Contamination and near-duplicate audit
-├── download_all_data.py           # Corpus download automation
+├── data_prep.py                   # Dataset partitioning & Stanford Alpaca OOD integration
+├── minhash_audit.py               # Contamination audit & cross-split near-duplicate quarantine
+├── download_all_data.py           # Corpus download automation (no runtime pip subprocesses)
 ├── architecture_diagram.py        # System diagram renderer
 ├── run_complete_pipeline.bat      # Windows automated execution script
 ├── docs/                          # Documentation & changelog
 │   └── CHANGELOG.md               # Engineering fixes & audit history
-├── tests/                         # Unit tests (pytest)
-│   ├── test_normalization.py
-│   ├── test_rules.py
-│   └── test_fusion.py
+├── tests/                         # Unit tests (71 passed via pytest)
+│   ├── test_leakage_and_splits.py    # Zero-leakage & cross-split quarantine isolation tests
+│   ├── test_normalization_fixes.py  # Prompt length preservation, leetspeak & Unicode tests
+│   ├── test_training_safety.py       # Checkpoint weight verification & class weights tests
+│   ├── test_evaluation_metrics.py    # ECE calibration, McNemar statistical & Wilson CI tests
+│   ├── test_output_guard.py          # Dynamic canary uniqueness & output guard leak tests
+│   ├── test_normalization.py         # Layer 1 de-obfuscation & normalization tests
+│   ├── test_rules.py                 # Layer 2 regex heuristic pattern tests
+│   ├── test_fusion.py                # Layer 4 Noisy-OR probabilistic fusion tests
+│   └── test_llm_judge.py             # Layer 7 LLM Judge, API key isolation & think-tag tests
 ├── results/                       # Consolidated evaluation CSV and JSON outputs
+│   ├── test_seen_sample_predictions.csv
+│   ├── test_unseen_sample_predictions.csv
+│   ├── adversarial_suite_predictions.csv
 │   ├── comprehensive_test_seen.csv
 │   ├── comprehensive_test_unseen_dolly.csv
 │   ├── comprehensive_test_unseen_alpaca.csv
@@ -245,7 +265,7 @@ prompt_injection/
 │   ├── comprehensive_obfuscation_breakdown.csv
 │   ├── latency_benchmark_gpu.csv
 │   └── minhash_audit_report.json
-├── plots/                         # Publication-quality charts & curves
+├── plots/                         # Publication-quality charts & curves (200 DPI PNGs)
 └── extensions_crossguard/         # Prototype future-work extensions (not evaluated)
 ```
 

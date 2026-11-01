@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-10-30 21:40:57",
+  "model_path": "D:\\prompt_injection\\models\\prompt_injection_detector\\model.safetensors",
+  "expected_sha256": "b5d574ff13f79a7d3b6bd76e387b216644c47bce1af761d15c58fd868519d1ba",
+  "actual_sha256": "b5d574ff13f79a7d3b6bd76e387b216644c47bce1af761d15c58fd868519d1ba",
+  "sha256_intact": true,
+  "expected_threshold": 0.6,
+  "actual_threshold": 0.6,
+  "threshold_intact": true,
+  "offline_mode_enforced": true,
+  "external_api_calls_made": 0,
+  "model_retraining_performed": false,
+  "git_staged_empty": true,
+  "preservation_status": "VERIFIED_PRESERVED"
+}

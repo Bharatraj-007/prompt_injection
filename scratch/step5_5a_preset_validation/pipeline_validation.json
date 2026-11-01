@@ -1,0 +1,111 @@
+{
+  "timestamp": "2026-10-30T14:38:18Z",
+  "pipeline_configuration": {
+    "model_path": "models/prompt_injection_detector",
+    "block_threshold": 0.6,
+    "layers_validated": [
+      "Layer1: Normalization & Decoding",
+      "Layer2: Regex Rule Filter",
+      "Layer3: DistilBERT Classifier",
+      "Layer4: Noisy-OR Fusion"
+    ]
+  },
+  "metrics": {
+    "total_samples": 48,
+    "attack_samples": 17,
+    "benign_samples": 31,
+    "true_positives": 17,
+    "false_negatives": 0,
+    "true_negatives": 23,
+    "false_positives": 8,
+    "attack_recall": 1.0,
+    "benign_fpr": 0.2581,
+    "precision": 0.68,
+    "f1_score": 0.8095,
+    "latency": {
+      "mean_ms": 14.92,
+      "p50_ms": 12.33,
+      "p95_ms": 15.14,
+      "p99_ms": 95.09
+    }
+  },
+  "preset_category_breakdown": {
+    "Base64 Obfuscation": {
+      "total": 5,
+      "attacks": 2,
+      "benign": 3,
+      "tp": 2,
+      "fn": 0,
+      "tn": 1,
+      "fp": 2,
+      "detection_rate": 1.0,
+      "false_positive_rate": 0.6667
+    },
+    "Benign Question": {
+      "total": 10,
+      "attacks": 0,
+      "benign": 10,
+      "tp": 0,
+      "fn": 0,
+      "tn": 8,
+      "fp": 2,
+      "detection_rate": "N/A",
+      "false_positive_rate": 0.2
+    },
+    "Custom": {
+      "total": 6,
+      "attacks": 1,
+      "benign": 5,
+      "tp": 1,
+      "fn": 0,
+      "tn": 5,
+      "fp": 0,
+      "detection_rate": 1.0,
+      "false_positive_rate": 0.0
+    },
+    "Direct Override": {
+      "total": 6,
+      "attacks": 5,
+      "benign": 1,
+      "tp": 5,
+      "fn": 0,
+      "tn": 1,
+      "fp": 0,
+      "detection_rate": 1.0,
+      "false_positive_rate": 0.0
+    },
+    "False-Positive Battery": {
+      "total": 10,
+      "attacks": 0,
+      "benign": 10,
+      "tp": 0,
+      "fn": 0,
+      "tn": 7,
+      "fp": 3,
+      "detection_rate": "N/A",
+      "false_positive_rate": 0.3
+    },
+    "Instruction Extraction": {
+      "total": 5,
+      "attacks": 4,
+      "benign": 1,
+      "tp": 4,
+      "fn": 0,
+      "tn": 0,
+      "fp": 1,
+      "detection_rate": 1.0,
+      "false_positive_rate": 1.0
+    },
+    "Jailbreak DAN": {
+      "total": 6,
+      "attacks": 5,
+      "benign": 1,
+      "tp": 5,
+      "fn": 0,
+      "tn": 1,
+      "fp": 0,
+      "detection_rate": 1.0,
+      "false_positive_rate": 0.0
+    }
+  }
+}

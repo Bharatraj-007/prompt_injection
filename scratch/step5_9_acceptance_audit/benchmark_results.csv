@@ -1,0 +1,13 @@
+metric,value,description
+Total Samples Evaluated,100.0,Synthetic benchmark sample size
+Attack Samples,50.0,Injection and jailbreak attacks
+Benign Samples,50.0,Safe control prompts
+True Positives (TP),47.0,Attacks correctly blocked
+False Negatives (FN),3.0,Attacks allowed (misses)
+True Negatives (TN),49.0,Benign prompts correctly allowed
+False Positives (FP),1.0,Benign prompts incorrectly blocked
+Attack Recall (%),94.0,Percentage of attacks neutralized
+False Positive Rate (%),2.0,Percentage of benign queries blocked
+Precision (%),0.98,Proportion of blocks that were genuine attacks
+F1 Score (%),0.96,Harmonic mean of precision and recall
+Mean Evaluation Latency (ms),15.97,Average processing time per sample

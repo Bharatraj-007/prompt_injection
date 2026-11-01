@@ -1,0 +1,7 @@
+workflow,description,outcome,latency_ms,details
+Workflow A: Normal Chat,Benign question -> Allowed -> Mock Provider Response -> Analytics logged,PASSED,55.78,"Decision=ALLOWED, risk=0.0014"
+Workflow B: Prompt Injection,Direct override -> Blocked -> Mock Provider Skipped -> Security Event Logged,PASSED,49.21,"Decision=BLOCKED, risk=0.9997, provider_calls=0"
+Workflow C: Document Injection,Synthetic TXT injection -> Document Guard scanned -> Detected & Blocked,PASSED,18.38,"Decision=BLOCKED, risk=0.9999, chunks=1"
+Workflow D: Privacy Protection,Synthetic credential submitted -> Privacy Guard redacts key before LLM/Logs,PASSED,52.26,"Redacted prompt: 'My OpenAI API key is [REDACTED_API_KEY:OPENAI], pl...', redaction_count=1"
+Workflow E: Multi-Turn & Isolation,Multi-turn escalation blocked in Session A; Session B independently isolated and permitted,PASSED,111.3,Sess A turn 2 risk=0.9999 (BLOCKED); Sess B turn 1 risk=0.0013 (ALLOWED)
+Workflow F: Security Analytics,Aggregate operational events -> Verify KPIs -> Export CSV & PDF reports,PASSED,26.21,"Total events logged=9, CSV size=1814 chars, PDF size=3949B"

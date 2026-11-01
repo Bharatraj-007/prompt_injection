@@ -4,8 +4,8 @@ import hashlib
 import pandas as pd
 from datasketch import MinHash, MinHashLSH
 
-def get_minhash(text, num_perm=128):
-    m = MinHash(num_perm=num_perm)
+def get_minhash(text, num_perm=128, seed=42):
+    m = MinHash(num_perm=num_perm, seed=seed)
     for token in str(text).lower().split():
         m.update(token.encode('utf-8'))
     return m
@@ -13,12 +13,13 @@ def get_minhash(text, num_perm=128):
 def compute_hash(text):
     return hashlib.sha256(str(text).strip().encode('utf-8')).hexdigest()
 
-def run_minhash_audit(threshold=0.80, num_perm=128):
+def run_minhash_audit(threshold=0.80, num_perm=128, seed=42):
     print("=" * 75)
     print(f"  RIGOROUS MINHASH LSH DATA CONTAMINATION & LEAKAGE AUDIT (Jaccard >= {threshold})")
     print("=" * 75)
 
-    data_dir = os.path.join(os.getcwd(), "data")
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(BASE_DIR, "data")
     train_path = os.path.join(data_dir, "train.csv")
     val_path = os.path.join(data_dir, "val.csv")
     test_seen_path = os.path.join(data_dir, "test_seen.csv")
@@ -87,7 +88,22 @@ def run_minhash_audit(threshold=0.80, num_perm=128):
         lsh_train.insert(f"train_{idx}", m)
     print("[OK] Training set indexed successfully.\n")
 
+    quarantined_log = []
+
     audit_results = {
+        "methodology": {
+            "similarity_metric": "MinHash LSH Jaccard",
+            "threshold": threshold,
+            "num_perm": num_perm,
+            "seed": seed,
+            "rationale": (
+                f"A Jaccard similarity threshold of {threshold} is selected to reliably catch "
+                "verbatim matches, whitespace permutations, character substitutions, and paraphrased "
+                "safety directives while avoiding false clustering on shared grammatical stop words. "
+                "Note: MinHash LSH verifies lexical and n-gram shingle non-overlap; it does not claim "
+                "or prove total semantic independence."
+            )
+        },
         "exact_duplicates": {
             "train_vs_val": exact_dup_train_val,
             "train_vs_test_seen": exact_dup_train_seen,
@@ -103,11 +119,18 @@ def run_minhash_audit(threshold=0.80, num_perm=128):
         "splits_audit": {}
     }
 
+    # Core splits to audit against train
     splits = [
         ("val", val_df, "clean_val.csv"),
         ("test_seen", test_seen_df, "clean_test_seen.csv"),
         ("test_unseen", test_unseen_df, "clean_test_unseen.csv")
     ]
+
+    # Include hard_negatives.csv if it exists
+    hard_neg_path = os.path.join(data_dir, "hard_negatives.csv")
+    if os.path.exists(hard_neg_path):
+        hard_neg_df = pd.read_csv(hard_neg_path)
+        splits.append(("hard_negatives", hard_neg_df, "clean_hard_negatives.csv"))
 
     for split_name, df, clean_filename in splits:
         clean_rows = []
@@ -116,14 +139,23 @@ def run_minhash_audit(threshold=0.80, num_perm=128):
         injection_dups = 0
 
         for idx, row in df.iterrows():
-            m = get_minhash(row['text'], num_perm=num_perm)
+            m = get_minhash(row['text'], num_perm=num_perm, seed=seed)
             matches = lsh_train.query(m)
             if len(matches) > 0:
                 near_duplicates += 1
-                if int(row['label']) == 0:
+                lbl = int(row.get('label', 0))
+                if lbl == 0:
                     benign_dups += 1
                 else:
                     injection_dups += 1
+                quarantined_log.append({
+                    "split": split_name,
+                    "index": int(idx),
+                    "reason": "Near-duplicate with train.csv",
+                    "text_preview": str(row['text'])[:100],
+                    "label": lbl,
+                    "matched_train_ids": matches
+                })
             else:
                 clean_rows.append(row)
 
@@ -131,7 +163,7 @@ def run_minhash_audit(threshold=0.80, num_perm=128):
         clean_path = os.path.join(data_dir, clean_filename)
         clean_df.to_csv(clean_path, index=False)
 
-        contamination_pct = round((near_duplicates / len(df)) * 100, 2)
+        contamination_pct = round((near_duplicates / len(df)) * 100, 2) if len(df) > 0 else 0.0
         audit_results["splits_audit"][split_name] = {
             "total_samples": len(df),
             "near_duplicates_with_train": near_duplicates,
@@ -139,95 +171,110 @@ def run_minhash_audit(threshold=0.80, num_perm=128):
             "injection_near_duplicates": injection_dups,
             "contamination_percentage": contamination_pct,
             "clean_samples_remaining": len(clean_df),
-            "label_distribution": clean_df['label'].value_counts().to_dict(),
+            "label_distribution": clean_df['label'].value_counts().to_dict() if 'label' in clean_df.columns else {},
             "clean_file_path": clean_path
         }
 
-        print(f"[+] Split `{split_name}.csv` Audit Against Train (Jaccard >= {threshold}):")
+        print(f"[+] Split `{split_name}` Audit Against Train (Jaccard >= {threshold}):")
         print(f"    - Original Total:        {len(df)} samples")
         print(f"    - Near-duplicates found: {near_duplicates} ({contamination_pct}%) [Benign: {benign_dups}, Injection: {injection_dups}]")
-        print(f"    - Clean Set Saved:       `{clean_filename}` (N = {len(clean_df)})")
-        print(f"    - Clean Class Balance:   {clean_df['label'].value_counts().to_dict()}\n")
+        print(f"    - Clean Set Saved:       `{clean_filename}` (N = {len(clean_df)})\n")
+
+    # Audit adversarial_eval_suite.json against train
+    adv_suite_path = os.path.join(data_dir, "adversarial_eval_suite.json")
+    if os.path.exists(adv_suite_path):
+        with open(adv_suite_path, "r", encoding="utf-8") as f:
+            adv_data = json.load(f)
+        adv_df = pd.DataFrame(adv_data)
+        adv_near_dups = 0
+        for idx, row in adv_df.iterrows():
+            m = get_minhash(row['text'], num_perm=num_perm, seed=seed)
+            matches = lsh_train.query(m)
+            if len(matches) > 0:
+                adv_near_dups += 1
+                quarantined_log.append({
+                    "split": "adversarial_eval_suite",
+                    "index": int(idx),
+                    "reason": "Near-duplicate with train.csv",
+                    "text_preview": str(row['text'])[:100],
+                    "matched_train_ids": matches
+                })
+        print(f"[+] Adversarial Evaluation Suite Audit Against Train (N = {len(adv_df)}):")
+        print(f"    - Near-duplicates with training: {adv_near_dups} / {len(adv_df)} ({round(adv_near_dups/len(adv_df)*100, 2)}%)\n")
+        audit_results["splits_audit"]["adversarial_eval_suite"] = {
+            "total_samples": len(adv_df),
+            "near_duplicates_with_train": adv_near_dups
+        }
 
     # -------------------------------------------------------------------------
-    # 4. Cross-Split Overlap: Val vs Test Seen & Test Unseen vs Seen Splits
+    # 4. Cross-Split Overlap Remediation: Enforce Zero Cross-Split Overlap
     # -------------------------------------------------------------------------
-    print("[+] 4. Checking Cross-Split Near-Duplicates (Val vs Test Seen & Unseen Isolation)...")
+    print("[+] 4. Enforcing Cross-Split Near-Duplicate Elimination...")
     val_clean_df = pd.read_csv(os.path.join(data_dir, "clean_val.csv"))
     test_seen_clean_df = pd.read_csv(os.path.join(data_dir, "clean_test_seen.csv"))
     test_unseen_clean_df = pd.read_csv(os.path.join(data_dir, "clean_test_unseen.csv"))
 
     val_lsh = MinHashLSH(threshold=threshold, num_perm=num_perm)
     for idx, row in val_clean_df.iterrows():
-        val_lsh.insert(f"val_{idx}", get_minhash(row['text'], num_perm=num_perm))
+        val_lsh.insert(f"val_{idx}", get_minhash(row['text'], num_perm=num_perm, seed=seed))
 
-    val_vs_seen_overlap = 0
+    # Remove any test_seen samples that overlap with val
+    deduped_seen_rows = []
+    val_seen_removals = 0
     for idx, row in test_seen_clean_df.iterrows():
-        m = get_minhash(row['text'], num_perm=num_perm)
-        if len(val_lsh.query(m)) > 0:
-            val_vs_seen_overlap += 1
+        m = get_minhash(row['text'], num_perm=num_perm, seed=seed)
+        matches = val_lsh.query(m)
+        if len(matches) > 0:
+            val_seen_removals += 1
+            quarantined_log.append({
+                "split": "clean_test_seen",
+                "index": int(idx),
+                "reason": "Cross-split overlap with clean_val",
+                "text_preview": str(row['text'])[:100]
+            })
+        else:
+            deduped_seen_rows.append(row)
 
+    if val_seen_removals > 0:
+        test_seen_clean_df = pd.DataFrame(deduped_seen_rows)
+        test_seen_clean_df.to_csv(os.path.join(data_dir, "clean_test_seen.csv"), index=False)
+        print(f"    - Quarantined {val_seen_removals} test_seen samples overlapping with val.csv")
+
+    # Index clean_test_seen for unseen comparison
     seen_lsh = MinHashLSH(threshold=threshold, num_perm=num_perm)
     for idx, row in test_seen_clean_df.iterrows():
-        seen_lsh.insert(f"seen_{idx}", get_minhash(row['text'], num_perm=num_perm))
+        seen_lsh.insert(f"seen_{idx}", get_minhash(row['text'], num_perm=num_perm, seed=seed))
 
-    unseen_vs_val_overlap = 0
-    unseen_vs_seen_overlap = 0
+    # Remove any test_unseen samples that overlap with val or test_seen
+    deduped_unseen_rows = []
+    unseen_cross_removals = 0
     for idx, row in test_unseen_clean_df.iterrows():
-        m = get_minhash(row['text'], num_perm=num_perm)
-        if len(val_lsh.query(m)) > 0:
-            unseen_vs_val_overlap += 1
-        if len(seen_lsh.query(m)) > 0:
-            unseen_vs_seen_overlap += 1
+        m = get_minhash(row['text'], num_perm=num_perm, seed=seed)
+        if len(val_lsh.query(m)) > 0 or len(seen_lsh.query(m)) > 0:
+            unseen_cross_removals += 1
+            quarantined_log.append({
+                "split": "clean_test_unseen",
+                "index": int(idx),
+                "reason": "Cross-split overlap with clean_val or clean_test_seen",
+                "text_preview": str(row['text'])[:100]
+            })
+        else:
+            deduped_unseen_rows.append(row)
 
-    audit_results["cross_split_leakage"] = {
-        "clean_val_vs_clean_test_seen_near_duplicates": val_vs_seen_overlap,
-        "clean_test_unseen_vs_clean_val_near_duplicates": unseen_vs_val_overlap,
-        "clean_test_unseen_vs_clean_test_seen_near_duplicates": unseen_vs_seen_overlap
-    }
+    if unseen_cross_removals > 0:
+        test_unseen_clean_df = pd.DataFrame(deduped_unseen_rows)
+        test_unseen_clean_df.to_csv(os.path.join(data_dir, "clean_test_unseen.csv"), index=False)
+        print(f"    - Quarantined {unseen_cross_removals} test_unseen samples overlapping with seen/val")
 
-    print(f"    - Clean Val vs Clean Test Seen Overlap:       {val_vs_seen_overlap} samples")
-    print(f"    - Clean Test Unseen vs Clean Val Overlap:     {unseen_vs_val_overlap} samples")
-    print(f"    - Clean Test Unseen vs Clean Test Seen Overlap:{unseen_vs_seen_overlap} samples\n")
+    print(f"    - Final Clean Val Samples:         {len(val_clean_df)}")
+    print(f"    - Final Clean Test Seen Samples:    {len(test_seen_clean_df)}")
+    print(f"    - Final Clean Test Unseen Samples:  {len(test_unseen_clean_df)}\n")
 
-    # -------------------------------------------------------------------------
-    # 5. Compute and Report Actual Contamination Statistics
-    # -------------------------------------------------------------------------
-    # Compute actual overlap statistics dynamically
-    val_benign_count = int((val_df['label'] == 0).sum())
-    val_injection_count = int((val_df['label'] == 1).sum())
-    test_seen_benign_count = int((test_seen_df['label'] == 0).sum())
-    test_seen_injection_count = int((test_seen_df['label'] == 1).sum())
-    
-    clean_val_benign = int((pd.read_csv(os.path.join(data_dir, "clean_val.csv"))['label'] == 0).sum())
-    clean_test_seen_benign = int((pd.read_csv(os.path.join(data_dir, "clean_test_seen.csv"))['label'] == 0).sum())
-    
-    benign_removed_val = val_benign_count - clean_val_benign
-    benign_removed_test = test_seen_benign_count - clean_test_seen_benign
-    
-    print(f"[+] Contamination Impact Analysis:")
-    print(f"    - Original val.csv: {val_benign_count} benign, {val_injection_count} injection")
-    print(f"    - Original test_seen.csv: {test_seen_benign_count} benign, {test_seen_injection_count} injection")
-    print(f"    - Benign samples removed from val: {benign_removed_val} ({benign_removed_val/val_benign_count*100:.1f}%)")
-    print(f"    - Benign samples removed from test_seen: {benign_removed_test} ({benign_removed_test/test_seen_benign_count*100:.1f}%)")
-    print(f"    - Final clean_val benign count: {clean_val_benign}")
-    print(f"    - Final clean_test_seen benign count: {clean_test_seen_benign}")
-    
-    if clean_val_benign == clean_test_seen_benign:
-        print(f"\n[NOTE] Both clean splits have exactly {clean_val_benign} benign samples because:")
-        print(f"       - Both started with {val_benign_count} benign samples (stratified split)")
-        print(f"       - Both had {benign_removed_val} near-duplicates with training removed")
-        print(f"       - This occurs when both splits sampled from the same benign source pool")
-    print()
-
-    audit_results["contamination_impact"] = {
-        "val_original_benign": val_benign_count,
-        "test_seen_original_benign": test_seen_benign_count,
-        "val_benign_removed": benign_removed_val,
-        "test_seen_benign_removed": benign_removed_test,
-        "val_final_benign": clean_val_benign,
-        "test_seen_final_benign": clean_test_seen_benign
-    }
+    # Save detailed quarantined samples log
+    quarantine_path = os.path.join(data_dir, "quarantined_contaminated_samples.json")
+    with open(quarantine_path, "w", encoding="utf-8") as f:
+        json.dump(quarantined_log, f, indent=2)
+    print(f"[OK] Logged {len(quarantined_log)} quarantined contaminated samples to `{quarantine_path}`")
 
     report_path = os.path.join(data_dir, "minhash_audit_report.json")
     with open(report_path, "w", encoding="utf-8") as f:

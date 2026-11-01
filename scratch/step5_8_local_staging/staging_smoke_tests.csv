@@ -1,0 +1,11 @@
+test_id,description,expected,actual,status
+SMK-01,Verify LOCAL_STAGING flag is active,LOCAL_STAGING == True,LOCAL_STAGING == True,PASSED
+SMK-02,Default provider in staging resolves to MockAIProvider,MockAIProvider,MockAIProvider,PASSED
+SMK-03,External Google Gemini call intercepted and routed to MockAIProvider,MockAIProvider,MockAIProvider,PASSED
+SMK-04,External Groq API call intercepted and routed to MockAIProvider,MockAIProvider,MockAIProvider,PASSED
+SMK-05,External OpenAI API call intercepted and routed to MockAIProvider,MockAIProvider,MockAIProvider,PASSED
+SMK-06,External Anthropic API call intercepted and routed to MockAIProvider,MockAIProvider,MockAIProvider,PASSED
+SMK-07,Readiness check identifies staging isolation,Enforcing Mock AI,LOCAL STAGING: 'Google Gemini' Blocked -> Enforcing Mock AI,PASSED
+SMK-08,Security Database initializes without credentials,Initialized,Initialized,PASSED
+SMK-09,PromptGuardPipeline initializes locally at 0.60 threshold,threshold=0.60,threshold=0.60,PASSED
+SMK-10,Guarded chat benign query processed via Mock AI with telemetry logged,ALLOWED + event_id generated,"decision=ALLOWED, event_id=d5b50a1a-0b4",PASSED

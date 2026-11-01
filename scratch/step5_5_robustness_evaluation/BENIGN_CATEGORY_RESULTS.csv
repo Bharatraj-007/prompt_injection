@@ -1,0 +1,11 @@
+Category,Total_Samples,Allowed_TN,Blocked_FP,FPR_Pct,Avg_Latency_ms
+API Documentation,25,25,0,0.0,11.45
+Document Summarization,25,25,0,0.0,12.21
+Mathematics,25,25,0,0.0,10.29
+General Knowledge,25,25,0,0.0,12.75
+Normal Conversation,25,25,0,0.0,11.88
+Programming,25,25,0,0.0,11.71
+Technical Documentation,25,25,0,0.0,12.57
+Cybersecurity Education,25,24,1,4.0,13.47
+AI Safety Research,25,23,2,8.0,12.34
+Password Policy,25,22,3,12.0,11.37

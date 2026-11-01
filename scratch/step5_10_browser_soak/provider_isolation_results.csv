@@ -1,0 +1,7 @@
+provider_name,requested_model,intercepted,effective_provider,network_calls_blocked,status
+Google Gemini,gemini-flash-latest,YES,MockAIProvider,TRUE,PASSED
+Groq API,qwen/qwen3.8-27b,YES,MockAIProvider,TRUE,PASSED
+OpenAI API,gpt-4o,YES,MockAIProvider,TRUE,PASSED
+Anthropic API,claude-3-5-sonnet-20241022,YES,MockAIProvider,TRUE,PASSED
+Mock AI (Offline Demo),mock-helpful-assistant,N/A,MockAIProvider,TRUE,PASSED
+Local LLM,Qwen/Qwen2.5-1.5B-Instruct,N/A,MockAIProvider,TRUE,PASSED

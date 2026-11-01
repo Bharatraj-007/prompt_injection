@@ -1,0 +1,8 @@
+Module,PrimaryFile,IntegrationFiles,FunctionalityVerified,Status,PassRate,TestCoverage
+AI Security Chat,guarded_chat.py,"app.py, guard.py, ai_provider.py, privacy_guard.py, security_database.py","Interactive prompt evaluation, multi-turn tracking, mock provider response, blocked attack refusal",PASSED,100%,test_guarded_chat.py (14 tests)
+Document Scanner,document_guard.py,"app.py, guard.py, security_database.py","TXT/PDF/DOCX extraction, sliding-window chunk scoring, hidden character detection, credential flagging",PASSED,100%,test_document_guard.py (7 tests)
+Privacy Protection,privacy_guard.py,"app.py, guarded_chat.py, security_database.py","Regex redaction of emails, API keys (Groq/OpenAI/Gemini/Anthropic), passwords, JWTs, Bearer tokens, credit cards",PASSED,100%,test_privacy_guard.py (7 tests)
+Conversation Guard,conversation_guard.py,"app.py, guarded_chat.py","Multi-turn semantic drift tracking, crescendo detection, session separation, state unpoisoning after blocked turns",PASSED,100%,test_conversation_guard.py (6 tests)
+Security Analytics,security_analytics.py,"app.py, security_database.py","KPI dashboard aggregation, attack layer breakdown, CSV export, PDF security audit report generation",PASSED,100%,test_security_database.py (3 tests)
+Red-Team Benchmark,redteam_benchmark.py,"app.py, guard.py","Dynamic offline dataset evaluation, confusion matrix generation, category-wise recall/FPR, CSV export",PASSED,100%,test_redteam_benchmark.py (3 tests)
+Deep Pipeline Inspection,app.py,"guard.py, rules.py","Six presets (Custom, Override, DAN, Extraction, Base64, Benign), per-layer transparency, canary inspection",PASSED,100%,test_deep_pipeline_presets.py (14 tests)

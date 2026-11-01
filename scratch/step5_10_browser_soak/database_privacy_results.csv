@@ -1,0 +1,13 @@
+audit_category,pattern_searched,records_scanned,leaks_found,leak_details,status
+Raw Groq API Keys,"gsk_[a-zA-Z0-9_-]{20,}",422,0,Clean (Zero leaks),PASSED
+Raw Anthropic API Keys,"sk-ant-[a-zA-Z0-9_-]{20,}",422,0,Clean (Zero leaks),PASSED
+Raw OpenAI API Keys,"sk-[a-zA-Z0-9_-]{20,}",422,0,Clean (Zero leaks),PASSED
+Raw Gemini API Keys,"AIzaSy[a-zA-Z0-9_-]{20,}|AQ\.[a-zA-Z0-9_-]{20,}",422,0,Clean (Zero leaks),PASSED
+Generic API Key Assignments,"(?i)\bapi[_-]?key\s*[:=]\s*['\""]?[a-zA-Z0-9]{16,}",422,0,Clean (Zero leaks),PASSED
+Plaintext Passwords,SecretPassword987!|TopSecretPassword123!,422,0,Clean (Zero leaks),PASSED
+JWT Tokens,"eyJ[a-zA-Z0-9_-]{10,}\.eyJ[a-zA-Z0-9_-]{10,}\.[a-zA-Z0-9_-]{10,}",422,0,Clean (Zero leaks),PASSED
+Bearer Headers with Token,"(?i)bearer\s+[a-zA-Z0-9_\-\.]{20,}",422,0,Clean (Zero leaks),PASSED
+Email Addresses,dev\.lead@internal\.network|researcher\.alpha@corp\.internal,422,0,Clean (Zero leaks),PASSED
+Credit Card Numbers,4000-1234-5678-9017|4000123456789017,422,0,Clean (Zero leaks),PASSED
+Raw Document Contents,Architecture Whitepaper: Microservices resiliency,422,0,Clean (Zero leaks),PASSED
+Sensitive Exception Strings,(?i)credential=gsk_|secret_key=sk-,422,0,Clean (Zero leaks),PASSED

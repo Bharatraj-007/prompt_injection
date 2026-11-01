@@ -46,9 +46,8 @@ LABEL2ID: Dict[str, int] = {
 }
 
 # Decision threshold for the hybrid security pipeline
-# This will be empirically optimized on clean_val.csv during evaluation
-# Default: 0.50 (will be updated by evaluate.py threshold sweep)
-BLOCK_THRESHOLD = 0.50
+# Calibrated to 0.60 for Arm C Candidate (Step 4D.15 deployment)
+BLOCK_THRESHOLD = 0.60
 
 # Training Hyperparameters (as specified in requirements - do not modify without justification)
 NUM_EPOCHS = 3
@@ -63,9 +62,55 @@ SEEDS = [42, 7, 123]
 FUSION_METHOD = "noisy_or"  # Options: "noisy_or", "weighted_average"
 
 # Security limits (Fix S001, S002, S003, S017)
-MAX_INPUT_LENGTH = 50000  # Maximum characters in user input
+MAX_INPUT_LENGTH = 50000  # Maximum characters in user input (hard cap)
 MAX_DECODE_SIZE = 10000   # Maximum hex/base64 string length to decode
 REGEX_TIMEOUT_SECONDS = 2  # Timeout for regex operations
+
+# Stage 2: Sliding-Window & Boundary Protection Limits (Fix 128-token blindspot)
+SLIDING_WINDOW_SIZE = 128       # Window size for transformer inference (matches training distribution)
+SLIDING_WINDOW_STRIDE = 64      # 50% overlap between adjacent windows to prevent boundary splits
+MAX_INSPECT_TOKENS = 2048       # Maximum total tokens inspected via sliding window (~1500 words)
+MAX_SLIDING_WINDOWS = 32        # Upper bound on number of windows to prevent unbounded computation
+MAX_SAFE_INPUT_LENGTH = 12000   # Character threshold beyond which oversized input is explicitly rejected
+
+# Load environment variables from .env
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(BASE_DIR, ".env"), override=False)
+except ImportError:
+    # Manual .env loader fallback
+    env_file = os.path.join(BASE_DIR, ".env")
+    if os.path.exists(env_file):
+        with open(env_file, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    os.environ.setdefault(k.strip(), v.strip().strip("'\""))
+
+# LLM as a Judge configurations for Defender
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+GROK_API_KEY = os.environ.get("GROK_API_KEY", "")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+GROQ_BASE_URL = "https://api.groq.com/openai/v1"
+XAI_BASE_URL = os.environ.get("XAI_BASE_URL", "https://api.x.ai/v1")
+
+DEFAULT_GROQ_MODEL = os.environ.get("DEFAULT_GROQ_MODEL", "qwen/qwen3.8-27b")
+FAST_GROQ_MODEL = os.environ.get("FAST_GROQ_MODEL", "meta-llama/llama-prompt-guard-2-86m")
+DEFAULT_GROK_MODEL = os.environ.get("DEFAULT_GROK_MODEL", "grok-2-latest")
+DEFAULT_GEMINI_MODEL = os.environ.get("DEFAULT_GEMINI_MODEL", "gemini-flash-latest")
+DEFAULT_LOCAL_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
+
+LLM_JUDGE_TEMPERATURE = 0.0
+LLM_JUDGE_TIMEOUT = 15  # seconds
+LLM_JUDGE_THRESHOLD = 0.50
+
+# Staging Environment & Local Isolation Configuration (Step 5.8)
+APP_ENV = os.environ.get("APP_ENV", "production").lower()
+LOCAL_STAGING = (
+    os.environ.get("LOCAL_STAGING", "").lower() in ("1", "true", "yes")
+    or APP_ENV in ("staging", "local_staging")
+)
 
 # Validate paths on import
 if not os.path.exists(DATA_DIR):

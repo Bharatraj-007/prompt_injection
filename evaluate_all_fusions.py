@@ -45,10 +45,13 @@ def run_evaluation():
     tokenizer = guard.layer3.tokenizer
     device = guard.layer3.device
 
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(BASE_DIR, "data")
+
     # Load splits
-    test_seen_df = pd.read_csv("data/clean_test_seen.csv")
-    test_unseen_df = pd.read_csv("data/clean_test_unseen.csv")
-    hard_neg_df = pd.read_csv("data/hard_negatives.csv")
+    test_seen_df = pd.read_csv(os.path.join(data_dir, "clean_test_seen.csv"))
+    test_unseen_df = pd.read_csv(os.path.join(data_dir, "clean_test_unseen.csv"))
+    hard_neg_df = pd.read_csv(os.path.join(data_dir, "hard_negatives.csv"))
 
     print(f"[+] Loaded Clean Test Seen:   {len(test_seen_df)} samples")
     print(f"[+] Loaded Clean Test Unseen: {len(test_unseen_df)} samples")
@@ -79,6 +82,8 @@ def run_evaluation():
             has_decoded_list.append(bool(l1["decoded_payloads"]))
 
         def batch_predict(batch_texts):
+            if model is None or tokenizer is None:
+                return np.zeros(len(batch_texts), dtype=float)
             scores = []
             for i in range(0, len(batch_texts), batch_size):
                 chunk = batch_texts[i:i + batch_size]

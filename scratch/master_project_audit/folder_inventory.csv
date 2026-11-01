@@ -1,0 +1,238 @@
+Folder,File,RelativePath,Category,SizeBytes,Extension,FolderPurpose,Status,CoveredByTests
+.,.env,.env,Dependencies,514,,Root Project Directory,Active,Yes
+.,.env.example,.env.example,Dependencies,561,.example,Root Project Directory,Active,Yes
+.,.gitignore,.gitignore,Dependencies,684,,Root Project Directory,Active,Yes
+.,ai_provider.py,ai_provider.py,Application source code,33285,.py,Root Project Directory,Active,Yes
+.,app.py,app.py,UI components,56794,.py,Root Project Directory,Active,Yes
+.,architecture_diagram.py,architecture_diagram.py,Application source code,3330,.py,Root Project Directory,Active,Yes
+.,config.py,config.py,Configuration,4714,.py,Root Project Directory,Active,Yes
+.,conversation_guard.py,conversation_guard.py,Security modules,11596,.py,Root Project Directory,Active,Yes
+.,data_prep.py,data_prep.py,Training scripts,11669,.py,Root Project Directory,Active,Yes
+.,document_guard.py,document_guard.py,Document-processing modules,25305,.py,Root Project Directory,Active,Yes
+.,download_all_data.py,download_all_data.py,Application source code,3249,.py,Root Project Directory,Active,Yes
+.,environment.yml,environment.yml,Dependencies,797,.yml,Root Project Directory,Active,Yes
+.,evaluate.py,evaluate.py,Evaluation scripts,32312,.py,Root Project Directory,Active,Yes
+.,evaluate_all_fusions.py,evaluate_all_fusions.py,Evaluation scripts,9641,.py,Root Project Directory,Active,Yes
+.,evaluate_llm_judge.py,evaluate_llm_judge.py,Evaluation scripts,7392,.py,Root Project Directory,Active,Yes
+.,guard.py,guard.py,Security modules,57272,.py,Root Project Directory,Active,Yes
+.,guarded_chat.py,guarded_chat.py,Security modules,18574,.py,Root Project Directory,Active,Yes
+.,LICENSE,LICENSE,Dependencies,1066,,Root Project Directory,Active,Yes
+.,llm_judge.py,llm_judge.py,Application source code,37697,.py,Root Project Directory,Active,Yes
+.,minhash_audit.py,minhash_audit.py,Application source code,13552,.py,Root Project Directory,Active,Yes
+.,package.json,package.json,Configuration,999,.json,Root Project Directory,Active,Yes
+.,privacy_guard.py,privacy_guard.py,Privacy modules,12529,.py,Root Project Directory,Active,Yes
+.,README.md,README.md,Documentation,16250,.md,Root Project Directory,Active,Yes
+.,redteam_benchmark.py,redteam_benchmark.py,Evaluation scripts,30250,.py,Root Project Directory,Active,Yes
+.,requirements-frozen.txt,requirements-frozen.txt,Documentation,418,.txt,Root Project Directory,Active,Yes
+.,requirements.txt,requirements.txt,Documentation,725,.txt,Root Project Directory,Active,Yes
+.,run_complete_pipeline.bat,run_complete_pipeline.bat,Dependencies,2161,.bat,Root Project Directory,Active,Yes
+.,security_analytics.py,security_analytics.py,Analytics modules,10915,.py,Root Project Directory,Active,Yes
+.,security_database.py,security_database.py,Database modules,12306,.py,Root Project Directory,Active,Yes
+.,train.py,train.py,Training scripts,29440,.py,Root Project Directory,Active,Yes
+.,train_all.py,train_all.py,Training scripts,1584,.py,Root Project Directory,Active,Yes
+.pytest_cache,.gitignore,.pytest_cache/.gitignore,Dependencies,37,,General Subdirectory,Active,Yes
+.pytest_cache,CACHEDIR.TAG,.pytest_cache/CACHEDIR.TAG,Dependencies,191,.tag,General Subdirectory,Active,Yes
+.pytest_cache,README.md,.pytest_cache/README.md,Documentation,302,.md,General Subdirectory,Active,Yes
+.pytest_cache/v/cache,lastfailed,.pytest_cache/v/cache/lastfailed,Dependencies,2,,General Subdirectory,Active,Yes
+.pytest_cache/v/cache,nodeids,.pytest_cache/v/cache/nodeids,Dependencies,17880,,General Subdirectory,Active,Yes
+.streamlit,config.toml,.streamlit/config.toml,Dependencies,34,.toml,Streamlit Configuration,Active,Yes
+.vscode,settings.json,.vscode/settings.json,Configuration,68,.json,IDE Configuration,Active,N/A
+audit_reports,API_TEST_RESULTS.md,audit_reports/API_TEST_RESULTS.md,Documentation,1904,.md,Archived Audit Reports,Historical,N/A
+audit_reports,APPLICATION_SECURITY_REPORT.md,audit_reports/APPLICATION_SECURITY_REPORT.md,Documentation,1577,.md,Archived Audit Reports,Historical,N/A
+audit_reports,AUTHENTICATION_SECURITY_REPORT.md,audit_reports/AUTHENTICATION_SECURITY_REPORT.md,Documentation,1204,.md,Archived Audit Reports,Historical,N/A
+audit_reports,AUTOMATED_TEST_RESULTS.md,audit_reports/AUTOMATED_TEST_RESULTS.md,Documentation,1593,.md,Archived Audit Reports,Historical,N/A
+audit_reports,BACKEND_AUDIT_REPORT.md,audit_reports/BACKEND_AUDIT_REPORT.md,Documentation,2697,.md,Archived Audit Reports,Historical,N/A
+audit_reports,BUG_FIX_LOG.md,audit_reports/BUG_FIX_LOG.md,Documentation,1058,.md,Archived Audit Reports,Historical,N/A
+audit_reports,BUILD_DEPLOYMENT_REPORT.md,audit_reports/BUILD_DEPLOYMENT_REPORT.md,Documentation,857,.md,Archived Audit Reports,Historical,N/A
+audit_reports,CODE_QUALITY_REPORT.md,audit_reports/CODE_QUALITY_REPORT.md,Documentation,903,.md,Archived Audit Reports,Historical,N/A
+audit_reports,DATABASE_AUDIT_REPORT.md,audit_reports/DATABASE_AUDIT_REPORT.md,Documentation,1872,.md,Archived Audit Reports,Historical,N/A
+audit_reports,FINAL_PROJECT_AUDIT_REPORT.md,audit_reports/FINAL_PROJECT_AUDIT_REPORT.md,Documentation,7309,.md,Archived Audit Reports,Historical,N/A
+audit_reports,FRONTEND_AUDIT_REPORT.md,audit_reports/FRONTEND_AUDIT_REPORT.md,Documentation,4154,.md,Archived Audit Reports,Historical,N/A
+audit_reports,PERFORMANCE_REPORT.md,audit_reports/PERFORMANCE_REPORT.md,Documentation,964,.md,Archived Audit Reports,Historical,N/A
+audit_reports,PROJECT_ARCHITECTURE_REPORT.md,audit_reports/PROJECT_ARCHITECTURE_REPORT.md,Documentation,6846,.md,Archived Audit Reports,Historical,N/A
+audit_reports,PROMPT_GUARD_INTEGRATION_REPORT.md,audit_reports/PROMPT_GUARD_INTEGRATION_REPORT.md,Documentation,1809,.md,Archived Audit Reports,Historical,N/A
+audit_reports,STEP4D16_FALLBACK_TEST_REPORT.md,audit_reports/STEP4D16_FALLBACK_TEST_REPORT.md,Documentation,1434,.md,Archived Audit Reports,Historical,N/A
+audit_reports,STEP4D16_FINAL_VERIFICATION_REPORT.md,audit_reports/STEP4D16_FINAL_VERIFICATION_REPORT.md,Documentation,7032,.md,Archived Audit Reports,Historical,N/A
+audit_reports,STEP4D16_INTEGRITY_REPORT.md,audit_reports/STEP4D16_INTEGRITY_REPORT.md,Documentation,1136,.md,Archived Audit Reports,Historical,N/A
+data,adversarial_eval_suite.json,data/adversarial_eval_suite.json,Dataset files,64764,.json,Dataset Storage,Active,Yes
+data,clean_test_seen.csv,data/clean_test_seen.csv,Dataset files,223079,.csv,Dataset Storage,Active,Yes
+data,clean_test_unseen.csv,data/clean_test_unseen.csv,Dataset files,140005,.csv,Dataset Storage,Active,Yes
+data,clean_val.csv,data/clean_val.csv,Dataset files,244192,.csv,Dataset Storage,Active,Yes
+data,epoch_history_seed_42.json,data/epoch_history_seed_42.json,Dataset files,136,.json,Dataset Storage,Active,Yes
+data,fusion_ablation_hard_negatives.csv,data/fusion_ablation_hard_negatives.csv,Dataset files,409,.csv,Dataset Storage,Active,Yes
+data,fusion_ablation_test_seen.csv,data/fusion_ablation_test_seen.csv,Dataset files,573,.csv,Dataset Storage,Active,Yes
+data,fusion_ablation_test_unseen.csv,data/fusion_ablation_test_unseen.csv,Dataset files,574,.csv,Dataset Storage,Active,Yes
+data,hard_negatives.csv,data/hard_negatives.csv,Dataset files,43312,.csv,Dataset Storage,Active,Yes
+data,hard_negatives_heldout.csv,data/hard_negatives_heldout.csv,Dataset files,43792,.csv,Dataset Storage,Active,Yes
+data,minhash_audit_report.json,data/minhash_audit_report.json,Dataset files,2551,.json,Dataset Storage,Active,Yes
+data,obfuscation_benchmark_suite.json,data/obfuscation_benchmark_suite.json,Dataset files,132729,.json,Dataset Storage,Active,Yes
+data,quarantined_contaminated_samples.json,data/quarantined_contaminated_samples.json,Dataset files,294251,.json,Dataset Storage,Active,Yes
+data,removed_near_duplicates_seen.csv,data/removed_near_duplicates_seen.csv,Dataset files,71621,.csv,Dataset Storage,Active,Yes
+data,security_events.db,data/security_events.db,Database modules,172032,.db,Dataset Storage,Active,Yes
+data,test_seen.csv,data/test_seen.csv,Dataset files,304208,.csv,Dataset Storage,Active,Yes
+data,test_unseen.csv,data/test_unseen.csv,Dataset files,142799,.csv,Dataset Storage,Active,Yes
+data,train.csv,data/train.csv,Dataset files,1544977,.csv,Dataset Storage,Active,Yes
+data,val.csv,data/val.csv,Dataset files,319847,.csv,Dataset Storage,Active,Yes
+docs,CHANGELOG.md,docs/CHANGELOG.md,Documentation,3227,.md,Documentation,Active,N/A
+docs,EVIDENCE_REPORT.md,docs/EVIDENCE_REPORT.md,Documentation,23507,.md,Documentation,Active,N/A
+docs,historical_minhash_audit_report_20261006.json,docs/historical_minhash_audit_report_20261006.json,Configuration,1938,.json,Documentation,Active,N/A
+docs,TECHNICAL_AUDIT_REPORT.md,docs/TECHNICAL_AUDIT_REPORT.md,Documentation,25556,.md,Documentation,Active,N/A
+models/deberta_seed_42,config.json,models/deberta_seed_42/config.json,Model architecture,979,.json,DeBERTa Baseline Checkpoint,Active,Yes
+models/deberta_seed_42,model.safetensors,models/deberta_seed_42/model.safetensors,Model checkpoints,368871884,.safetensors,DeBERTa Baseline Checkpoint,Active,Yes
+models/deberta_seed_42,tokenizer.json,models/deberta_seed_42/tokenizer.json,Tokenizer files,8340141,.json,DeBERTa Baseline Checkpoint,Active,Yes
+models/deberta_seed_42,tokenizer_config.json,models/deberta_seed_42/tokenizer_config.json,Tokenizer files,532,.json,DeBERTa Baseline Checkpoint,Active,Yes
+models/distilbert-base_best,config.json,models/distilbert-base_best/config.json,Model architecture,691,.json,Archived Best Checkpoint,Archived,Yes
+models/distilbert-base_best,model.safetensors,models/distilbert-base_best/model.safetensors,Model checkpoints,267832560,.safetensors,Archived Best Checkpoint,Archived,Yes
+models/distilbert-base_best,tokenizer.json,models/distilbert-base_best/tokenizer.json,Tokenizer files,711649,.json,Archived Best Checkpoint,Archived,Yes
+models/distilbert-base_best,tokenizer_config.json,models/distilbert-base_best/tokenizer_config.json,Tokenizer files,336,.json,Archived Best Checkpoint,Archived,Yes
+models/distilbert_seed_123,config.json,models/distilbert_seed_123/config.json,Model architecture,825,.json,DistilBERT Seed 123 Model,Active,Yes
+models/distilbert_seed_123,model.safetensors,models/distilbert_seed_123/model.safetensors,Model checkpoints,267832560,.safetensors,DistilBERT Seed 123 Model,Active,Yes
+models/distilbert_seed_123,tokenizer.json,models/distilbert_seed_123/tokenizer.json,Tokenizer files,711661,.json,DistilBERT Seed 123 Model,Active,Yes
+models/distilbert_seed_123,tokenizer_config.json,models/distilbert_seed_123/tokenizer_config.json,Tokenizer files,336,.json,DistilBERT Seed 123 Model,Active,Yes
+models/distilbert_seed_42,config.json,models/distilbert_seed_42/config.json,Model architecture,691,.json,DistilBERT Seed 42 Model,Active,Yes
+models/distilbert_seed_42,model.safetensors,models/distilbert_seed_42/model.safetensors,Model checkpoints,267832560,.safetensors,DistilBERT Seed 42 Model,Active,Yes
+models/distilbert_seed_42,tokenizer.json,models/distilbert_seed_42/tokenizer.json,Tokenizer files,711661,.json,DistilBERT Seed 42 Model,Active,Yes
+models/distilbert_seed_42,tokenizer_config.json,models/distilbert_seed_42/tokenizer_config.json,Tokenizer files,336,.json,DistilBERT Seed 42 Model,Active,Yes
+models/distilbert_seed_7,config.json,models/distilbert_seed_7/config.json,Model architecture,825,.json,DistilBERT Seed 7 Model,Active,Yes
+models/distilbert_seed_7,model.safetensors,models/distilbert_seed_7/model.safetensors,Model checkpoints,267832560,.safetensors,DistilBERT Seed 7 Model,Active,Yes
+models/distilbert_seed_7,tokenizer.json,models/distilbert_seed_7/tokenizer.json,Tokenizer files,711661,.json,DistilBERT Seed 7 Model,Active,Yes
+models/distilbert_seed_7,tokenizer_config.json,models/distilbert_seed_7/tokenizer_config.json,Tokenizer files,336,.json,DistilBERT Seed 7 Model,Active,Yes
+models/modernbert_seed_42,config.json,models/modernbert_seed_42/config.json,Model architecture,2065,.json,ModernBERT Baseline Checkpoint,Active,Yes
+models/modernbert_seed_42,model.safetensors,models/modernbert_seed_42/model.safetensors,Model checkpoints,598439784,.safetensors,ModernBERT Baseline Checkpoint,Active,Yes
+models/modernbert_seed_42,tokenizer.json,models/modernbert_seed_42/tokenizer.json,Tokenizer files,3583497,.json,ModernBERT Baseline Checkpoint,Active,Yes
+models/modernbert_seed_42,tokenizer_config.json,models/modernbert_seed_42/tokenizer_config.json,Tokenizer files,367,.json,ModernBERT Baseline Checkpoint,Active,Yes
+models/prompt_injection_detector,config.json,models/prompt_injection_detector/config.json,Model architecture,691,.json,Production Model Checkpoint,Active,Yes
+models/prompt_injection_detector,model.safetensors,models/prompt_injection_detector/model.safetensors,Model checkpoints,267832560,.safetensors,Production Model Checkpoint,Active,Yes
+models/prompt_injection_detector,tokenizer.json,models/prompt_injection_detector/tokenizer.json,Tokenizer files,711661,.json,Production Model Checkpoint,Active,Yes
+models/prompt_injection_detector,tokenizer_config.json,models/prompt_injection_detector/tokenizer_config.json,Tokenizer files,336,.json,Production Model Checkpoint,Active,Yes
+plots,ablation_study.png,plots/ablation_study.png,Reports and generated artifacts,48898,.png,Evaluation Visualization,Active,N/A
+plots,architecture_diagram.png,plots/architecture_diagram.png,Reports and generated artifacts,209084,.png,Evaluation Visualization,Active,N/A
+plots,latency_chart.png,plots/latency_chart.png,Reports and generated artifacts,39640,.png,Evaluation Visualization,Active,N/A
+plots,plot1_training_loss_vs_epoch.png,plots/plot1_training_loss_vs_epoch.png,Reports and generated artifacts,46625,.png,Evaluation Visualization,Active,N/A
+plots,plot2_validation_loss_vs_epoch.png,plots/plot2_validation_loss_vs_epoch.png,Reports and generated artifacts,38902,.png,Evaluation Visualization,Active,N/A
+plots,plot3_validation_f1_vs_epoch.png,plots/plot3_validation_f1_vs_epoch.png,Reports and generated artifacts,35750,.png,Evaluation Visualization,Active,N/A
+plots,plot4_validation_accuracy_vs_epoch.png,plots/plot4_validation_accuracy_vs_epoch.png,Reports and generated artifacts,42889,.png,Evaluation Visualization,Active,N/A
+plots,plot5_seen_vs_unseen_performance.png,plots/plot5_seen_vs_unseen_performance.png,Reports and generated artifacts,55223,.png,Evaluation Visualization,Active,N/A
+plots,plot6_confusion_matrix.png,plots/plot6_confusion_matrix.png,Reports and generated artifacts,52198,.png,Evaluation Visualization,Active,N/A
+plots,plot7_roc_curve.png,plots/plot7_roc_curve.png,Reports and generated artifacts,68308,.png,Evaluation Visualization,Active,N/A
+plots,plot8_pr_curve.png,plots/plot8_pr_curve.png,Reports and generated artifacts,44680,.png,Evaluation Visualization,Active,N/A
+scratch,apply_staging_app.py,scratch/apply_staging_app.py,Application source code,3041,.py,Scratch & Audit Output,Active,Yes
+scratch,run_step5_3_verification.py,scratch/run_step5_3_verification.py,Application source code,18911,.py,Scratch & Audit Output,Active,Yes
+scratch,update_app_providers.py,scratch/update_app_providers.py,Application source code,2380,.py,Scratch & Audit Output,Active,Yes
+scratch,verify_all.py,scratch/verify_all.py,Application source code,3496,.py,Scratch & Audit Output,Active,Yes
+scratch/master_project_audit,inspect_datasets.py,scratch/master_project_audit/inspect_datasets.py,Application source code,1081,.py,General Subdirectory,Active,Yes
+scratch/master_project_audit,run_full_master_audit.py,scratch/master_project_audit/run_full_master_audit.py,Application source code,74049,.py,General Subdirectory,Active,Yes
+scratch/step5_10_browser_soak,browser_workflow_results.csv,scratch/step5_10_browser_soak/browser_workflow_results.csv,Reports and generated artifacts,3708,.csv,General Subdirectory,Active,Yes
+scratch/step5_10_browser_soak,database_privacy_results.csv,scratch/step5_10_browser_soak/database_privacy_results.csv,Reports and generated artifacts,1237,.csv,General Subdirectory,Active,Yes
+scratch/step5_10_browser_soak,performance_results.json,scratch/step5_10_browser_soak/performance_results.json,Configuration,807,.json,General Subdirectory,Active,Yes
+scratch/step5_10_browser_soak,production_integrity.json,scratch/step5_10_browser_soak/production_integrity.json,Configuration,630,.json,General Subdirectory,Active,Yes
+scratch/step5_10_browser_soak,provider_isolation_results.csv,scratch/step5_10_browser_soak/provider_isolation_results.csv,Reports and generated artifacts,485,.csv,General Subdirectory,Active,Yes
+scratch/step5_10_browser_soak,run_step5_10_soak_audit.py,scratch/step5_10_browser_soak/run_step5_10_soak_audit.py,Application source code,56400,.py,General Subdirectory,Active,Yes
+scratch/step5_10_browser_soak,session_state_results.csv,scratch/step5_10_browser_soak/session_state_results.csv,Reports and generated artifacts,1474,.csv,General Subdirectory,Active,Yes
+scratch/step5_10_browser_soak,soak_test_results.csv,scratch/step5_10_browser_soak/soak_test_results.csv,Reports and generated artifacts,19206,.csv,General Subdirectory,Active,Yes
+scratch/step5_10_browser_soak,STEP5_10_FINAL_REPORT.md,scratch/step5_10_browser_soak/STEP5_10_FINAL_REPORT.md,Documentation,11812,.md,General Subdirectory,Active,Yes
+scratch/step5_10_browser_soak,step5_10_soak_telemetry.db,scratch/step5_10_browser_soak/step5_10_soak_telemetry.db,Database modules,204800,.db,General Subdirectory,Active,Yes
+scratch/step5_1a_false_positive_investigation,BENIGN_PROMPT_DIAGNOSTICS.csv,scratch/step5_1a_false_positive_investigation/BENIGN_PROMPT_DIAGNOSTICS.csv,Reports and generated artifacts,1283,.csv,General Subdirectory,Active,Yes
+scratch/step5_1a_false_positive_investigation,FALSE_POSITIVE_ROOT_CAUSE.md,scratch/step5_1a_false_positive_investigation/FALSE_POSITIVE_ROOT_CAUSE.md,Documentation,6381,.md,General Subdirectory,Active,Yes
+scratch/step5_1a_false_positive_investigation,MODEL_SCORE_ANALYSIS.md,scratch/step5_1a_false_positive_investigation/MODEL_SCORE_ANALYSIS.md,Documentation,4715,.md,General Subdirectory,Active,Yes
+scratch/step5_1a_false_positive_investigation,STEP5_1A_FINAL_REPORT.md,scratch/step5_1a_false_positive_investigation/STEP5_1A_FINAL_REPORT.md,Documentation,4577,.md,General Subdirectory,Active,Yes
+scratch/step5_1a_false_positive_investigation,THRESHOLD_INCONSISTENCY_REPORT.md,scratch/step5_1a_false_positive_investigation/THRESHOLD_INCONSISTENCY_REPORT.md,Documentation,3842,.md,General Subdirectory,Active,Yes
+scratch/step5_1_guarded_chat,AI_PROVIDER_INTEGRATION.md,scratch/step5_1_guarded_chat/AI_PROVIDER_INTEGRATION.md,Documentation,4407,.md,General Subdirectory,Active,Yes
+scratch/step5_1_guarded_chat,ARCHITECTURE_REPORT.md,scratch/step5_1_guarded_chat/ARCHITECTURE_REPORT.md,Documentation,6619,.md,General Subdirectory,Active,Yes
+scratch/step5_1_guarded_chat,SECURITY_FLOW_REPORT.md,scratch/step5_1_guarded_chat/SECURITY_FLOW_REPORT.md,Documentation,4997,.md,General Subdirectory,Active,Yes
+scratch/step5_1_guarded_chat,STEP5_1_FINAL_REPORT.md,scratch/step5_1_guarded_chat/STEP5_1_FINAL_REPORT.md,Documentation,7276,.md,General Subdirectory,Active,Yes
+scratch/step5_1_guarded_chat,TEST_RESULTS.md,scratch/step5_1_guarded_chat/TEST_RESULTS.md,Documentation,5389,.md,General Subdirectory,Active,Yes
+scratch/step5_1_guarded_chat,UI_IMPLEMENTATION_REPORT.md,scratch/step5_1_guarded_chat/UI_IMPLEMENTATION_REPORT.md,Documentation,3745,.md,General Subdirectory,Active,Yes
+scratch/step5_2_security_platform,PHASE0_ARCHITECTURE_AUDIT.md,scratch/step5_2_security_platform/PHASE0_ARCHITECTURE_AUDIT.md,Documentation,8359,.md,General Subdirectory,Active,Yes
+scratch/step5_3_security_verification,ARITHMETIC_EXEMPTION_AUDIT.md,scratch/step5_3_security_verification/ARITHMETIC_EXEMPTION_AUDIT.md,Documentation,4775,.md,General Subdirectory,Active,Yes
+scratch/step5_3_security_verification,DATABASE_AND_DASHBOARD_AUDIT.md,scratch/step5_3_security_verification/DATABASE_AND_DASHBOARD_AUDIT.md,Documentation,4882,.md,General Subdirectory,Active,Yes
+scratch/step5_3_security_verification,DOCUMENT_GUARD_AUDIT.md,scratch/step5_3_security_verification/DOCUMENT_GUARD_AUDIT.md,Documentation,6117,.md,General Subdirectory,Active,Yes
+scratch/step5_3_security_verification,FULL_REGRESSION_RESULTS.md,scratch/step5_3_security_verification/FULL_REGRESSION_RESULTS.md,Documentation,6403,.md,General Subdirectory,Active,Yes
+scratch/step5_3_security_verification,INTEGRATION_SECURITY_REVIEW.md,scratch/step5_3_security_verification/INTEGRATION_SECURITY_REVIEW.md,Documentation,5371,.md,General Subdirectory,Active,Yes
+scratch/step5_3_security_verification,MULTITURN_SECURITY_AUDIT.md,scratch/step5_3_security_verification/MULTITURN_SECURITY_AUDIT.md,Documentation,5404,.md,General Subdirectory,Active,Yes
+scratch/step5_3_security_verification,PRIVACY_GUARD_AUDIT.md,scratch/step5_3_security_verification/PRIVACY_GUARD_AUDIT.md,Documentation,7136,.md,General Subdirectory,Active,Yes
+scratch/step5_3_security_verification,REDTEAM_BENCHMARK_AUDIT.md,scratch/step5_3_security_verification/REDTEAM_BENCHMARK_AUDIT.md,Documentation,6535,.md,General Subdirectory,Active,Yes
+scratch/step5_3_security_verification,STEP5_3_FINAL_VERIFICATION_REPORT.md,scratch/step5_3_security_verification/STEP5_3_FINAL_VERIFICATION_REPORT.md,Documentation,9770,.md,General Subdirectory,Active,Yes
+scratch/step5_3_security_verification,verification_empirical_results.json,scratch/step5_3_security_verification/verification_empirical_results.json,Configuration,11887,.json,General Subdirectory,Active,Yes
+scratch/step5_5a_preset_validation,false_positive_analysis.csv,scratch/step5_5a_preset_validation/false_positive_analysis.csv,Reports and generated artifacts,4082,.csv,General Subdirectory,Active,Yes
+scratch/step5_5a_preset_validation,generate_step5_5a_reports.py,scratch/step5_5a_preset_validation/generate_step5_5a_reports.py,Application source code,29644,.py,General Subdirectory,Active,Yes
+scratch/step5_5a_preset_validation,initial_eval.py,scratch/step5_5a_preset_validation/initial_eval.py,Application source code,6630,.py,General Subdirectory,Active,Yes
+scratch/step5_5a_preset_validation,patch_app_inspect.py,scratch/step5_5a_preset_validation/patch_app_inspect.py,Application source code,5368,.py,General Subdirectory,Active,Yes
+scratch/step5_5a_preset_validation,patch_app_presets.py,scratch/step5_5a_preset_validation/patch_app_presets.py,Application source code,6249,.py,General Subdirectory,Active,Yes
+scratch/step5_5a_preset_validation,patch_benchmark_import.py,scratch/step5_5a_preset_validation/patch_benchmark_import.py,Application source code,600,.py,General Subdirectory,Active,Yes
+scratch/step5_5a_preset_validation,patch_guard.py,scratch/step5_5a_preset_validation/patch_guard.py,Application source code,2599,.py,General Subdirectory,Active,Yes
+scratch/step5_5a_preset_validation,patch_imports.py,scratch/step5_5a_preset_validation/patch_imports.py,Application source code,634,.py,General Subdirectory,Active,Yes
+scratch/step5_5a_preset_validation,patch_tabs.py,scratch/step5_5a_preset_validation/patch_tabs.py,Application source code,2515,.py,General Subdirectory,Active,Yes
+scratch/step5_5a_preset_validation,pipeline_validation.json,scratch/step5_5a_preset_validation/pipeline_validation.json,Configuration,2394,.json,General Subdirectory,Active,Yes
+scratch/step5_5a_preset_validation,preset_test_results.csv,scratch/step5_5a_preset_validation/preset_test_results.csv,Reports and generated artifacts,9032,.csv,General Subdirectory,Active,Yes
+scratch/step5_5a_preset_validation,STEP5_5A_FINAL_REPORT.md,scratch/step5_5a_preset_validation/STEP5_5A_FINAL_REPORT.md,Documentation,14597,.md,General Subdirectory,Active,Yes
+scratch/step5_5b_false_positive_analysis,attack_regression_results.csv,scratch/step5_5b_false_positive_analysis/attack_regression_results.csv,Reports and generated artifacts,9831,.csv,General Subdirectory,Active,Yes
+scratch/step5_5b_false_positive_analysis,benign_robustness_results.csv,scratch/step5_5b_false_positive_analysis/benign_robustness_results.csv,Reports and generated artifacts,17863,.csv,General Subdirectory,Active,Yes
+scratch/step5_5b_false_positive_analysis,false_positive_root_causes.csv,scratch/step5_5b_false_positive_analysis/false_positive_root_causes.csv,Reports and generated artifacts,3034,.csv,General Subdirectory,Active,Yes
+scratch/step5_5b_false_positive_analysis,inspect_fps.py,scratch/step5_5b_false_positive_analysis/inspect_fps.py,Application source code,1644,.py,General Subdirectory,Active,Yes
+scratch/step5_5b_false_positive_analysis,layer_score_analysis.csv,scratch/step5_5b_false_positive_analysis/layer_score_analysis.csv,Reports and generated artifacts,14086,.csv,General Subdirectory,Active,Yes
+scratch/step5_5b_false_positive_analysis,run_forensic_evaluation.py,scratch/step5_5b_false_positive_analysis/run_forensic_evaluation.py,Application source code,38653,.py,General Subdirectory,Active,Yes
+scratch/step5_5b_false_positive_analysis,STEP5_5B_FINAL_REPORT.md,scratch/step5_5b_false_positive_analysis/STEP5_5B_FINAL_REPORT.md,Documentation,11478,.md,General Subdirectory,Active,Yes
+scratch/step5_5_robustness_evaluation,ATTACK_CATEGORY_RESULTS.csv,scratch/step5_5_robustness_evaluation/ATTACK_CATEGORY_RESULTS.csv,Reports and generated artifacts,877,.csv,General Subdirectory,Active,Yes
+scratch/step5_5_robustness_evaluation,BENIGN_CATEGORY_RESULTS.csv,scratch/step5_5_robustness_evaluation/BENIGN_CATEGORY_RESULTS.csv,Reports and generated artifacts,446,.csv,General Subdirectory,Active,Yes
+scratch/step5_5_robustness_evaluation,dataset_generator.py,scratch/step5_5_robustness_evaluation/dataset_generator.py,Application source code,52812,.py,General Subdirectory,Active,Yes
+scratch/step5_5_robustness_evaluation,evaluation_empirical_data.json,scratch/step5_5_robustness_evaluation/evaluation_empirical_data.json,Configuration,11004,.json,General Subdirectory,Active,Yes
+scratch/step5_5_robustness_evaluation,run_expanded_evaluation.py,scratch/step5_5_robustness_evaluation/run_expanded_evaluation.py,Application source code,17032,.py,General Subdirectory,Active,Yes
+scratch/step5_6_release_audit,end_to_end_test_results.csv,scratch/step5_6_release_audit/end_to_end_test_results.csv,Reports and generated artifacts,1127,.csv,General Subdirectory,Active,Yes
+scratch/step5_6_release_audit,KNOWN_LIMITATIONS.md,scratch/step5_6_release_audit/KNOWN_LIMITATIONS.md,Documentation,4712,.md,General Subdirectory,Active,Yes
+scratch/step5_6_release_audit,module_integration_results.csv,scratch/step5_6_release_audit/module_integration_results.csv,Reports and generated artifacts,1885,.csv,General Subdirectory,Active,Yes
+scratch/step5_6_release_audit,performance_results.json,scratch/step5_6_release_audit/performance_results.json,Configuration,748,.json,General Subdirectory,Active,Yes
+scratch/step5_6_release_audit,release_readiness_checklist.md,scratch/step5_6_release_audit/release_readiness_checklist.md,Documentation,2408,.md,General Subdirectory,Active,Yes
+scratch/step5_6_release_audit,run_full_release_audit.py,scratch/step5_6_release_audit/run_full_release_audit.py,Application source code,37462,.py,General Subdirectory,Active,Yes
+scratch/step5_6_release_audit,security_regression_results.csv,scratch/step5_6_release_audit/security_regression_results.csv,Reports and generated artifacts,1619,.csv,General Subdirectory,Active,Yes
+scratch/step5_6_release_audit,STEP5_6_FINAL_REPORT.md,scratch/step5_6_release_audit/STEP5_6_FINAL_REPORT.md,Documentation,8761,.md,General Subdirectory,Active,Yes
+scratch/step5_6_release_audit,test_audit_security.db,scratch/step5_6_release_audit/test_audit_security.db,Database modules,45056,.db,General Subdirectory,Active,Yes
+scratch/step5_7b_independent_verification,independent_verification.json,scratch/step5_7b_independent_verification/independent_verification.json,Configuration,3368,.json,General Subdirectory,Active,Yes
+scratch/step5_7b_independent_verification,regex_performance_results.csv,scratch/step5_7b_independent_verification/regex_performance_results.csv,Reports and generated artifacts,857,.csv,General Subdirectory,Active,Yes
+scratch/step5_7b_independent_verification,regression_results.csv,scratch/step5_7b_independent_verification/regression_results.csv,Reports and generated artifacts,574,.csv,General Subdirectory,Active,Yes
+scratch/step5_7b_independent_verification,run_step5_7b_audit.py,scratch/step5_7b_independent_verification/run_step5_7b_audit.py,Application source code,60158,.py,General Subdirectory,Active,Yes
+scratch/step5_7b_independent_verification,STEP5_7B_FINAL_REPORT.md,scratch/step5_7b_independent_verification/STEP5_7B_FINAL_REPORT.md,Documentation,8067,.md,General Subdirectory,Active,Yes
+scratch/step5_7b_independent_verification,unseen_benign_controls.csv,scratch/step5_7b_independent_verification/unseen_benign_controls.csv,Reports and generated artifacts,16179,.csv,General Subdirectory,Active,Yes
+scratch/step5_7b_independent_verification,unseen_extraction_attacks.csv,scratch/step5_7b_independent_verification/unseen_extraction_attacks.csv,Reports and generated artifacts,23163,.csv,General Subdirectory,Active,Yes
+scratch/step5_7_extraction_remediation,benign_control_results.csv,scratch/step5_7_extraction_remediation/benign_control_results.csv,Reports and generated artifacts,7511,.csv,General Subdirectory,Active,Yes
+scratch/step5_7_extraction_remediation,extraction_attack_results.csv,scratch/step5_7_extraction_remediation/extraction_attack_results.csv,Reports and generated artifacts,9261,.csv,General Subdirectory,Active,Yes
+scratch/step5_7_extraction_remediation,layer_analysis.csv,scratch/step5_7_extraction_remediation/layer_analysis.csv,Reports and generated artifacts,1137,.csv,General Subdirectory,Active,Yes
+scratch/step5_7_extraction_remediation,regression_results.csv,scratch/step5_7_extraction_remediation/regression_results.csv,Reports and generated artifacts,1654,.csv,General Subdirectory,Active,Yes
+scratch/step5_7_extraction_remediation,run_step5_7_remediation.py,scratch/step5_7_extraction_remediation/run_step5_7_remediation.py,Application source code,46269,.py,General Subdirectory,Active,Yes
+scratch/step5_7_extraction_remediation,STEP5_7_FINAL_REPORT.md,scratch/step5_7_extraction_remediation/STEP5_7_FINAL_REPORT.md,Documentation,9354,.md,General Subdirectory,Active,Yes
+scratch/step5_8_local_staging,performance_results.json,scratch/step5_8_local_staging/performance_results.json,Configuration,824,.json,General Subdirectory,Active,Yes
+scratch/step5_8_local_staging,production_integrity.json,scratch/step5_8_local_staging/production_integrity.json,Configuration,612,.json,General Subdirectory,Active,Yes
+scratch/step5_8_local_staging,run_step5_8_staging_evaluation.py,scratch/step5_8_local_staging/run_step5_8_staging_evaluation.py,Application source code,43618,.py,General Subdirectory,Active,Yes
+scratch/step5_8_local_staging,security_regression_results.csv,scratch/step5_8_local_staging/security_regression_results.csv,Reports and generated artifacts,1485,.csv,General Subdirectory,Active,Yes
+scratch/step5_8_local_staging,staging_smoke_tests.csv,scratch/step5_8_local_staging/staging_smoke_tests.csv,Reports and generated artifacts,1173,.csv,General Subdirectory,Active,Yes
+scratch/step5_8_local_staging,STEP5_8_STAGING_REPORT.md,scratch/step5_8_local_staging/STEP5_8_STAGING_REPORT.md,Documentation,8386,.md,General Subdirectory,Active,Yes
+scratch/step5_8_local_staging,telemetry_privacy_tests.csv,scratch/step5_8_local_staging/telemetry_privacy_tests.csv,Reports and generated artifacts,1135,.csv,General Subdirectory,Active,Yes
+scratch/step5_9_acceptance_audit,benchmark_results.csv,scratch/step5_9_acceptance_audit/benchmark_results.csv,Reports and generated artifacts,726,.csv,General Subdirectory,Active,Yes
+scratch/step5_9_acceptance_audit,database_privacy_audit.csv,scratch/step5_9_acceptance_audit/database_privacy_audit.csv,Reports and generated artifacts,1160,.csv,General Subdirectory,Active,Yes
+scratch/step5_9_acceptance_audit,performance_results.json,scratch/step5_9_acceptance_audit/performance_results.json,Configuration,572,.json,General Subdirectory,Active,Yes
+scratch/step5_9_acceptance_audit,production_integrity.json,scratch/step5_9_acceptance_audit/production_integrity.json,Configuration,615,.json,General Subdirectory,Active,Yes
+scratch/step5_9_acceptance_audit,provider_isolation_results.csv,scratch/step5_9_acceptance_audit/provider_isolation_results.csv,Reports and generated artifacts,484,.csv,General Subdirectory,Active,Yes
+scratch/step5_9_acceptance_audit,run_step5_9_acceptance.py,scratch/step5_9_acceptance_audit/run_step5_9_acceptance.py,Application source code,43213,.py,General Subdirectory,Active,Yes
+scratch/step5_9_acceptance_audit,STEP5_9_ACCEPTANCE_REPORT.md,scratch/step5_9_acceptance_audit/STEP5_9_ACCEPTANCE_REPORT.md,Documentation,10796,.md,General Subdirectory,Active,Yes
+scratch/step5_9_acceptance_audit,step5_9_acceptance_telemetry.db,scratch/step5_9_acceptance_audit/step5_9_acceptance_telemetry.db,Database modules,61440,.db,General Subdirectory,Active,Yes
+scratch/step5_9_acceptance_audit,ui_workflow_results.csv,scratch/step5_9_acceptance_audit/ui_workflow_results.csv,Reports and generated artifacts,4289,.csv,General Subdirectory,Active,Yes
+tests,test_boundary_defense.py,tests/test_boundary_defense.py,Tests,3676,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_conversation_guard.py,tests/test_conversation_guard.py,Tests,4359,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_deep_pipeline_presets.py,tests/test_deep_pipeline_presets.py,Tests,9214,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_document_guard.py,tests/test_document_guard.py,Tests,4999,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_evaluation_metrics.py,tests/test_evaluation_metrics.py,Tests,1941,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_fusion.py,tests/test_fusion.py,Tests,3077,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_guarded_chat.py,tests/test_guarded_chat.py,Tests,13522,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_leakage_and_splits.py,tests/test_leakage_and_splits.py,Tests,2804,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_llm_judge.py,tests/test_llm_judge.py,Tests,7211,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_normalization.py,tests/test_normalization.py,Tests,5123,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_normalization_fixes.py,tests/test_normalization_fixes.py,Tests,9599,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_output_guard.py,tests/test_output_guard.py,Tests,2795,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_privacy_guard.py,tests/test_privacy_guard.py,Tests,4507,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_redteam_benchmark.py,tests/test_redteam_benchmark.py,Tests,2246,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_rules.py,tests/test_rules.py,Tests,4105,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_security_database.py,tests/test_security_database.py,Tests,2316,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_stage1_preprocessing_remediation.py,tests/test_stage1_preprocessing_remediation.py,Tests,8711,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_staging_telemetry.py,tests/test_staging_telemetry.py,Tests,12528,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_step4c4_remediation.py,tests/test_step4c4_remediation.py,Tests,11548,.py,Unit & Integration Test Suite,Active,Yes
+tests,test_training_safety.py,tests/test_training_safety.py,Tests,2090,.py,Unit & Integration Test Suite,Active,Yes

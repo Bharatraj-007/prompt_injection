@@ -27,8 +27,9 @@ def prepare_large_scale_data(seed=42):
     random.seed(seed)
     np.random.seed(seed)  # Fix R001 - set all random seeds
     
-    raw_dir = os.path.join(os.getcwd(), "raw_data")
-    processed_dir = os.path.join(os.getcwd(), "data")
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    raw_dir = os.path.join(BASE_DIR, "raw_data")
+    processed_dir = os.path.join(BASE_DIR, "data")
     os.makedirs(processed_dir, exist_ok=True)
     
     all_injections = []
@@ -106,26 +107,41 @@ def prepare_large_scale_data(seed=42):
         except Exception as e:
             print(f"[!] Error loading Lakera Ignore: {e}")
 
-    # 5. Databricks Dolly 15k (Benign instructions)
+    # 5. Databricks Dolly 15k (Benign instructions - strictly for training pool only)
     dolly_path = os.path.join(raw_dir, "dolly")
     if os.path.exists(dolly_path):
         try:
             ds = load_from_disk(dolly_path)
             df = pd.DataFrame(ds['train'] if 'train' in ds else ds)
-            count = 0
             for _, row in df.iterrows():
                 text = str(row.get('instruction', '')) + " " + str(row.get('input', ''))
                 text = text.strip()
                 if text and len(text) > 15:
-                    if count < 777:
-                        # Reserved specifically for OOD Unseen Benign evaluation!
-                        unseen_benign.append({'text': text, 'label': 0, 'source': 'dolly_unseen_ood'})
-                        count += 1
-                    else:
-                        all_benign.append({'text': text, 'label': 0, 'source': 'dolly'})
-            print(f"[OK] Loaded Dolly: {count} reserved for OOD test, remainder added to training pool")
+                    all_benign.append({'text': text, 'label': 0, 'source': 'dolly'})
+            print(f"[OK] Loaded Dolly: {len(df)} samples into training pool (0 reserved for OOD test to eliminate source leakage)")
         except Exception as e:
             print(f"[!] Error loading Dolly: {e}")
+
+    # 6. Stanford Alpaca (Independent OOD Benign Instructions - strictly isolated from training)
+    alpaca_path = os.path.join(raw_dir, "alpaca")
+    if os.path.exists(alpaca_path):
+        try:
+            ds = load_from_disk(alpaca_path)
+            df = pd.DataFrame(ds['train'] if 'train' in ds else ds)
+            for _, row in df.iterrows():
+                inst = str(row.get('instruction', ''))
+                inp = str(row.get('input', ''))
+                text = (inst + " " + inp).strip()
+                if text and len(text) > 15:
+                    unseen_benign.append({'text': text, 'label': 0, 'source': 'alpaca_unseen_ood'})
+            print(f"[OK] Loaded Alpaca (GENUINE OOD BENIGN): {len(unseen_benign)} samples (strictly isolated from training)")
+        except Exception as e:
+            print(f"[!] Error loading Alpaca: {e}")
+    else:
+        logger.warning(
+            "Alpaca dataset folder not found in raw_data/alpaca. "
+            "Please run `python download_all_data.py` to fetch Alpaca for genuine OOD benign evaluation."
+        )
 
     # Convert to DataFrames and Deduplicate by exact text SHA-256 hash
     inj_df = pd.DataFrame(all_injections).drop_duplicates(subset=['text'])
@@ -174,8 +190,13 @@ def prepare_large_scale_data(seed=42):
         logger.info(f"Found hard_negatives.csv, merging into training set...")
         hard_neg_df = pd.read_csv(hard_neg_path)
         
-        # Deduplicate: remove any hard negatives already in train_df
-        hard_neg_df = hard_neg_df[~hard_neg_df['text'].isin(train_df['text'])]
+        # Prevent Data Leakage: ensure no hard negatives exist in val, test_seen, or test_unseen splits
+        hard_neg_df = hard_neg_df[
+            ~hard_neg_df['text'].isin(train_df['text']) &
+            ~hard_neg_df['text'].isin(val_df['text']) &
+            ~hard_neg_df['text'].isin(test_seen_df['text']) &
+            ~hard_neg_df['text'].isin(test_unseen_df['text'])
+        ]
         
         if len(hard_neg_df) > 0:
             # Add source column if not present

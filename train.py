@@ -100,12 +100,42 @@ def verify_model_architecture(model, tokenizer, expected_num_labels=2):
         "status": "VERIFIED_VALID"
     }
 
+def check_model_weights_valid(model_dir: str) -> bool:
+    """Verifies that saved checkpoint weights contain no NaN or Inf values."""
+    try:
+        from transformers import AutoModelForSequenceClassification
+        m = AutoModelForSequenceClassification.from_pretrained(model_dir)
+        for name, param in m.named_parameters():
+            if torch.isnan(param).any() or torch.isinf(param).any():
+                logger.error(f"Parameter '{name}' in {model_dir} contains NaN or Inf values!")
+                return False
+        return True
+    except Exception as e:
+        logger.error(f"Failed to inspect weights in {model_dir}: {e}")
+        return False
+
 class RobustTrainer(Trainer):
     """
     Custom Trainer that overrides _load_best_model to reload checkpoints through
     AutoModelForSequenceClassification.from_pretrained(), avoiding raw PyTorch
     LayerNorm beta/gamma mismatch warnings and guaranteeing complete parameter restoration.
+    Supports balanced class weighting for imbalanced datasets.
     """
+    def __init__(self, *args, class_weights=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.class_weights = class_weights
+
+    def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
+        labels = inputs.get("labels")
+        outputs = model(**inputs)
+        logits = outputs.get("logits")
+        if self.class_weights is not None:
+            weight = self.class_weights.to(logits.device)
+            loss = F.cross_entropy(logits.view(-1, self.model.config.num_labels), labels.view(-1), weight=weight)
+        else:
+            loss = outputs.get("loss")
+        return (loss, outputs) if return_outputs else loss
+
     def _load_best_model(self) -> None:
         best_ckpt = self.state.best_model_checkpoint
         if best_ckpt and os.path.exists(best_ckpt):
@@ -227,7 +257,8 @@ def train_model(
     print(f"     0 -> {LABEL_MAPPING[0]}")
     print(f"     1 -> {LABEL_MAPPING[1]}")
 
-    data_dir = os.path.join(os.getcwd(), "data")
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(BASE_DIR, "data")
     train_path = os.path.join(data_dir, "train.csv")
     val_path = os.path.join(data_dir, "clean_val.csv")
     clean_test_seen_path = os.path.join(data_dir, "clean_test_seen.csv")
@@ -250,11 +281,18 @@ def train_model(
     print(f"[+] Loaded Clean Test Unseen:  {len(test_unseen_df)} samples (N = {len(test_unseen_df)})")
     print(f"[+] Hyperparameters: Model={model_name}, Epochs={epochs}, Batch Size={batch_size}, LR={lr}, Max Length={max_length}\n")
 
+    from sklearn.utils.class_weight import compute_class_weight
+    classes = np.array([0, 1])
+    class_weights = compute_class_weight('balanced', classes=classes, y=train_df['label'].values)
+    class_weights_tensor = torch.tensor(class_weights, dtype=torch.float).to(device)
+    logger.info(f"Computed training class weights: Benign={class_weights[0]:.4f}, Injection={class_weights[1]:.4f}")
+
     models_base_dir = os.path.join(os.getcwd(), "models")
     os.makedirs(models_base_dir, exist_ok=True)
 
     multiseed_results = []
-    best_overall_f1 = -1.0
+    best_overall_val_f1 = -1.0
+    best_selected_seed = None
     best_seed_dir = None
 
     for seed in seeds:
@@ -308,6 +346,8 @@ def train_model(
             per_device_eval_batch_size=batch_size,
             num_train_epochs=epochs,
             weight_decay=0.01,
+            warmup_ratio=0.1,
+            max_grad_norm=1.0,
             fp16=use_fp16,
             dataloader_num_workers=0,
             dataloader_pin_memory=use_fp16,
@@ -340,6 +380,7 @@ def train_model(
             eval_dataset=val_ds,
             compute_metrics=compute_metrics_eval,
             processing_class=tokenizer,
+            class_weights=class_weights_tensor
         )
 
         t_start = time.time()
@@ -397,7 +438,7 @@ def train_model(
         print(f"  SEED {seed} BEST CHECKPOINT SELECTION")
         print(f"{'='*50}")
         print(f"  Best Checkpoint Path: {best_ckpt}")
-        print(f"  Best Metric (eval_loss): {best_metric_val}")
+        print(f"  Best Metric (eval_f1): {best_metric_val}")
         for ep_int, ep_data in epoch_logs.items():
             print(f"  - Epoch {ep_int}: Train Loss = {ep_data.get('train_loss')}, Val Loss = {ep_data.get('eval_loss')}, Val F1 = {ep_data.get('eval_f1')}, Val Acc = {ep_data.get('eval_accuracy')}")
         print(f"{'='*50}\n")
@@ -428,10 +469,21 @@ def train_model(
         lat_dict = measure_latency_standardized(reloaded_model, tokenizer, device, test_seen_df['text'].values)
         print(f"[+] Latency: Forward = {lat_dict['forward_latency_mean_ms']} ± {lat_dict['forward_latency_std_ms']} ms | E2E = {lat_dict['e2e_latency_mean_ms']} ± {lat_dict['e2e_latency_std_ms']} ms")
 
+        eval_trainer = Trainer(model=reloaded_model, processing_class=tokenizer)
+
+        # -------------------------------------------------------------------
+        # Evaluate on Clean Validation Set (clean_val.csv) for Model Selection
+        # -------------------------------------------------------------------
+        val_preds_raw = eval_trainer.predict(val_ds)
+        val_preds = np.argmax(val_preds_raw.predictions, axis=1)
+        val_metrics = compute_metrics_dict(val_df['label'].values, val_preds)
+        val_ci = bootstrap_ci(val_df['label'].values, val_preds)
+        val_metrics["f1_95_ci"] = val_ci
+        print(f"[OK] Seed {seed} Clean Validation Results:   Acc={val_metrics['accuracy']}, F1={val_metrics['f1']} (95% CI: {val_ci}), FPR={val_metrics['fpr']}")
+
         # -------------------------------------------------------------------
         # Evaluate on Clean Test Seen (N = 1,208)
         # -------------------------------------------------------------------
-        eval_trainer = Trainer(model=reloaded_model, processing_class=tokenizer)
         seen_preds_raw = eval_trainer.predict(test_seen_ds)
         seen_logits = torch.tensor(seen_preds_raw.predictions)
         seen_probs = torch.softmax(seen_logits, dim=-1)[:, 1].numpy()
@@ -506,27 +558,35 @@ def train_model(
             "test_unseen_f1": unseen_metrics['f1'],
             "test_unseen_fpr": unseen_metrics['fpr'],
             "forward_latency_ms": lat_dict['forward_latency_mean_ms'],
-            "e2e_latency_ms": lat_dict['e2e_latency_mean_ms']
+            "e2e_latency_ms": lat_dict['e2e_latency_mean_ms'],
+            "val_f1": val_metrics['f1'],
+            "val_acc": val_metrics['accuracy']
         }
         multiseed_results.append(seed_summary)
 
-        if seen_metrics['f1'] > best_overall_f1:
-            best_overall_f1 = seen_metrics['f1']
+        # Select best seed checkpoint strictly based on VALIDATION F1 (Zero test leakage)
+        if val_metrics['f1'] > best_overall_val_f1:
+            best_overall_val_f1 = val_metrics['f1']
+            best_selected_seed = seed
             best_seed_dir = seed_output_dir
 
     # -------------------------------------------------------------------
-    # Save the Best Seed Model to `models/prompt_injection_detector`
+    # Safe Checkpoint Promotion to `models/prompt_injection_detector`
     # -------------------------------------------------------------------
     default_guard_model_dir = MODEL_DIR
-    if best_seed_dir:
-        import shutil
-        os.makedirs(default_guard_model_dir, exist_ok=True)
-        for item in os.listdir(best_seed_dir):
-            s = os.path.join(best_seed_dir, item)
-            d = os.path.join(default_guard_model_dir, item)
-            if os.path.isfile(s) and item not in ["predictions.json", "epoch_history.json"]:
-                shutil.copy2(s, d)
-        print(f"\n[OK] Copied best seed model weights, tokenizer, and config ({best_seed_dir}) to `{default_guard_model_dir}`")
+    if best_seed_dir and best_overall_val_f1 > 0.0:
+        # Checkpoint validation: verify weights do not contain NaN or Inf
+        if not check_model_weights_valid(best_seed_dir):
+            logger.error(f"[X] Selected checkpoint {best_seed_dir} contains NaN/Inf values! Promotion aborted.")
+        else:
+            import shutil
+            os.makedirs(default_guard_model_dir, exist_ok=True)
+            for item in os.listdir(best_seed_dir):
+                s = os.path.join(best_seed_dir, item)
+                d = os.path.join(default_guard_model_dir, item)
+                if os.path.isfile(s) and item not in ["predictions.json", "epoch_history.json"]:
+                    shutil.copy2(s, d)
+            print(f"\n[OK] Promoted Seed {best_selected_seed} to `{default_guard_model_dir}` based strictly on Validation F1 = {best_overall_val_f1:.4f} (Zero Test Leakage).")
 
     # -------------------------------------------------------------------
     # Multi-Seed Empirical Test Summary (Mean +/- Std)

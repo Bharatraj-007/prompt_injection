@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-10-30T15:22:35Z",
+  "cold_start": {
+    "pipeline_initialization_ms": 579.22,
+    "total_subsystems_initialization_ms": 756.82
+  },
+  "warm_execution": {
+    "iterations": 100,
+    "mean_latency_ms": 12.24,
+    "median_p50_ms": 10.95,
+    "p95_latency_ms": 16.14,
+    "p99_latency_ms": 17.17,
+    "min_latency_ms": 9.81,
+    "max_latency_ms": 17.21
+  },
+  "resource_utilization": {
+    "process_rss_mb": 1088.89,
+    "process_vms_mb": 3000.43,
+    "cpu_percent": 10.9,
+    "gpu_available": true,
+    "gpu_device": "NVIDIA GeForce RTX 4050 Laptop GPU"
+  },
+  "stability_metrics": {
+    "total_audit_requests": 129,
+    "error_count": 0,
+    "failed_requests": 0,
+    "unhandled_exceptions": 0
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-10-30 22:02:48",
+  "environment": "LOCAL_STAGING",
+  "app_startup_time_seconds": 7.37,
+  "warm_request_latency_ms": {
+    "mean": 39.73,
+    "median_p50": 40.18,
+    "p95": 47.3,
+    "p99": 51.69,
+    "min": 23.33,
+    "max": 51.81
+  },
+  "telemetry_write_latency_ms": {
+    "mean": 8.06,
+    "median_p50": 8.09,
+    "p95": 8.52
+  },
+  "memory_rss_mb": {
+    "start": 1057.31,
+    "end": 1060.58,
+    "growth": 3.27
+  },
+  "pytest_results": {
+    "total": 177,
+    "passed": 177,
+    "failed": 0,
+    "exit_code": 0
+  }
+}

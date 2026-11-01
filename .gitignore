@@ -56,6 +56,16 @@ data/
 # Logs
 *.log
 
+# Environment & Secret variables
+.env
+*.env
+.env.*
+
 # OS
 .DS_Store
 Thumbs.db
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3

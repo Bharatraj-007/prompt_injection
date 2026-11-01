@@ -1,68 +1,76 @@
+"""
+Architecture Diagram Generator for 7-Layer Hybrid Prompt Injection Defense
+Generates high-resolution architecture diagrams for publication and documentation.
+"""
 import os
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
 def generate_diagram():
-    fig, ax = plt.subplots(figsize=(10, 8), dpi=200)
+    fig, ax = plt.subplots(figsize=(11, 9), dpi=200)
     ax.axis('off')
 
     # Colors
-    c_input = "#34495E"
-    c_l1 = "#3498DB"
-    c_l2 = "#E67E22"
-    c_l3 = "#9B59B6"
-    c_l4 = "#E74C3C"
-    c_l5 = "#2ECC71"
-    c_l6 = "#F1C40F"
-    c_output = "#1ABC9C"
+    c_input = "#2C3E50"
+    c_l1 = "#2980B9"
+    c_l2 = "#D35400"
+    c_l3 = "#8E44AD"
+    c_l7 = "#16A085"
+    c_l4 = "#C0392B"
+    c_l5 = "#27AE60"
+    c_l6 = "#F39C12"
+    c_output = "#2C3E50"
 
     # Draw boxes
     boxes = [
-        ("Raw Input Prompt\n(System + Untrusted User Text)", 0.35, 0.88, c_input),
-        ("Layer 1: Preprocessing\n(NFKC Unicode, Hidden Char Strip, Base64 Decode)", 0.35, 0.76, c_l1),
-        ("Layer 2: Rule Filter\n(Multi-Lingual Regex & Heuristics)", 0.15, 0.62, c_l2),
-        ("Layer 3: Transformer Model\n(DeBERTa-v3 / DistilBERT Classifier)", 0.55, 0.62, c_l3),
-        ("Layer 4: Score Fusion & Thresholding\n(Noisy-OR: 1 - (1-rule)*(1-model))", 0.35, 0.48, c_l4),
-        ("Layer 5: Prompt Hardening & Canary Token\n(Inject dynamic dynamic token instructions)", 0.35, 0.34, c_l5),
-        ("Target LLM Inference\n(Generates Raw Response)", 0.35, 0.22, c_input),
-        ("Layer 6: Output Guard\n(Canary Leakage & Secret Redaction)", 0.35, 0.10, c_l6),
-        ("Guarded Final Output\n(ALLOWED / BLOCKED)", 0.35, -0.02, c_output)
+        ("Raw Untrusted Input Prompt\n(Direct / Indirect / Obfuscated Vectors)", 0.50, 0.92, 0.52, 0.06, c_input),
+        ("Layer 1: Preprocessing & Obfuscation Decoding\n(NFKC Unicode, Hidden Characters, Hex / Base64 Decoding)", 0.50, 0.81, 0.58, 0.06, c_l1),
+        ("Layer 2: Rule Filter\n(Regex Heuristics)", 0.20, 0.68, 0.26, 0.06, c_l2),
+        ("Layer 3: DistilBERT Model\n(Fine-Tuned Embeddings)", 0.50, 0.68, 0.26, 0.06, c_l3),
+        ("Layer 7: LLM as a Judge\n(Groq / xAI / Local GPU)", 0.80, 0.68, 0.26, 0.06, c_l7),
+        ("Layer 4: Multi-Layer Probabilistic Score Fusion\n(Noisy-OR Formulation: 1 - (1-r)*(1-m)*(1-j))", 0.50, 0.54, 0.60, 0.06, c_l4),
+        ("Layer 5: Canary Hardening & Boundary Defense\n(Demarcation Enclosures & Cryptographic Secrets)", 0.50, 0.41, 0.58, 0.06, c_l5),
+        ("Target LLM Generation Step\n(Customer Assistant / Task Executor)", 0.50, 0.28, 0.50, 0.06, c_input),
+        ("Layer 6: Output Guard & Canary Verifier\n(Egress Inspection, Canary Leak Audit, Redaction)", 0.50, 0.15, 0.58, 0.06, c_l6),
+        ("Guarded Final Output\n(ALLOWED / BLOCKED / REDACTED)", 0.50, 0.02, 0.50, 0.06, c_output)
     ]
 
-    for label, x, y, col in boxes:
+    for label, x, y, w, h, col in boxes:
         box = patches.FancyBboxPatch(
-            (x - 0.2, y - 0.04), 0.4, 0.07,
-            boxstyle="round,pad=0.02", ec="black", fc=col, alpha=0.85
+            (x - w / 2, y - h / 2), w, h,
+            boxstyle="round,pad=0.015", ec="black", fc=col, alpha=0.90
         )
         ax.add_patch(box)
-        ax.text(x, y, label, ha="center", va="center", color="white", fontsize=9, fontweight="bold")
+        ax.text(x, y, label, ha="center", va="center", color="white", fontsize=8.5, fontweight="bold")
 
     # Connectors
     arrows = [
-        ((0.35, 0.84), (0.35, 0.80)),
-        ((0.35, 0.72), (0.20, 0.66)),
-        ((0.35, 0.72), (0.50, 0.66)),
-        ((0.20, 0.58), (0.30, 0.52)),
-        ((0.50, 0.58), (0.40, 0.52)),
-        ((0.35, 0.44), (0.35, 0.38)),
-        ((0.35, 0.30), (0.35, 0.26)),
-        ((0.35, 0.18), (0.35, 0.14)),
-        ((0.35, 0.06), (0.35, 0.02))
+        ((0.50, 0.89), (0.50, 0.84)),  # Input -> L1
+        ((0.35, 0.78), (0.20, 0.71)),  # L1 -> L2
+        ((0.50, 0.78), (0.50, 0.71)),  # L1 -> L3
+        ((0.65, 0.78), (0.80, 0.71)),  # L1 -> L7
+        ((0.20, 0.65), (0.35, 0.57)),  # L2 -> L4
+        ((0.50, 0.65), (0.50, 0.57)),  # L3 -> L4
+        ((0.80, 0.65), (0.65, 0.57)),  # L7 -> L4
+        ((0.50, 0.51), (0.50, 0.44)),  # L4 -> L5
+        ((0.50, 0.38), (0.50, 0.31)),  # L5 -> Target LLM
+        ((0.50, 0.25), (0.50, 0.18)),  # Target LLM -> L6
+        ((0.50, 0.12), (0.50, 0.05))   # L6 -> Final Output
     ]
 
     for start, end in arrows:
         ax.annotate(
             "", xy=end, xytext=start,
-            arrowprops=dict(arrowstyle="->", color="black", lw=1.5)
+            arrowprops=dict(arrowstyle="->", color="#1A252F", lw=1.6)
         )
 
-    plt.title("Multi-Layered Prompt Injection Detection & Defense Architecture", fontsize=12, fontweight="bold", pad=20)
+    plt.title("7-Layer Hybrid Defense Pipeline Architecture with LLM as a Judge", fontsize=13, fontweight="bold", pad=25)
     plots_dir = os.path.join(os.getcwd(), "plots")
     os.makedirs(plots_dir, exist_ok=True)
     out_path = os.path.join(plots_dir, "architecture_diagram.png")
     plt.savefig(out_path, bbox_inches='tight')
     plt.close()
-    print(f"[OK] Saved architecture diagram to {out_path}")
+    print(f"[OK] Generated 7-layer architecture diagram: {out_path}")
 
 if __name__ == "__main__":
     generate_diagram()

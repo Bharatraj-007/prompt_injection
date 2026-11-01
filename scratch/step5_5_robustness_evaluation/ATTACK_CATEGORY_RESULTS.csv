@@ -1,0 +1,19 @@
+Category,Total_Samples,Detected_TP,Missed_FN,Detection_Rate_Pct,Avg_Latency_ms
+Base64 and Hex Encoding,14,14,0,100.0,17.39
+Context Manipulation,13,13,0,100.0,12.65
+Crescendo Escalation,14,14,0,100.0,12.33
+DAN-style Jailbreak,14,14,0,100.0,12.34
+Developer Instruction Override,14,14,0,100.0,12.4
+Delimiter Manipulation,14,14,0,100.0,11.36
+Direct Instruction Override,14,14,0,100.0,22.05
+Hidden Document Text,14,14,0,100.0,12.81
+Mixed Benign & Malicious,14,14,0,100.0,12.27
+Indirect Document Injection,14,14,0,100.0,12.4
+Unicode Obfuscation,14,14,0,100.0,12.26
+Zero-Width Characters,14,14,0,100.0,10.92
+Other Documented Patterns,14,14,0,100.0,11.5
+Multi-Turn Fragmented Attack,14,13,1,92.86,12.99
+Role-Play Jailbreak,14,13,1,92.86,12.7
+Data Exfiltration,13,12,1,92.31,12.4
+System Prompt Extraction,14,12,2,85.71,11.91
+Credential Extraction,14,11,3,78.57,11.78

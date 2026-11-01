@@ -70,8 +70,8 @@ def extract_pipeline_scores(df: pd.DataFrame, pipeline: PromptGuardPipeline, bat
                 probs = torch.softmax(logits, dim=-1)[:, 1].cpu().tolist()
                 model_scores.extend(probs)
     else:
-        for t, r in zip(texts, rule_scores):
-            model_scores.append(pipeline.layer3.predict(t, rule_score_fallback=r))
+        for t in texts:
+            model_scores.append(pipeline.layer3.predict(t, rule_score_fallback=0.0))
 
     # Layer 4 Noisy-OR Fusion
     r_arr = np.array(rule_scores, dtype=float)
@@ -86,7 +86,116 @@ def extract_pipeline_scores(df: pd.DataFrame, pipeline: PromptGuardPipeline, bat
         "fused_scores": fused_arr
     }
 
-def compute_metrics_from_scores(y_true: np.ndarray, scores: np.ndarray, threshold: float = 0.50, avg_latency_ms: float = 5.5) -> dict:
+def compute_ece(y_true: np.ndarray, y_prob: np.ndarray, n_bins: int = 10) -> float:
+    """
+    Computes Expected Calibration Error (ECE) with equal-width binning.
+    Evaluates whether predicted probabilities match true empirical probabilities.
+    """
+    bin_boundaries = np.linspace(0.0, 1.0, n_bins + 1)
+    ece = 0.0
+    total = len(y_true)
+    if total == 0:
+        return 0.0
+
+    for i in range(n_bins):
+        low, high = bin_boundaries[i], bin_boundaries[i + 1]
+        in_bin = (y_prob >= low) & (y_prob <= high if i == n_bins - 1 else y_prob < high)
+        count = int(np.sum(in_bin))
+        if count > 0:
+            bin_acc = float(np.mean(y_true[in_bin]))
+            bin_conf = float(np.mean(y_prob[in_bin]))
+            ece += (count / total) * abs(bin_acc - bin_conf)
+    return round(float(ece), 4)
+
+def compute_mcnemar_test(y_true: np.ndarray, preds_a: np.ndarray, preds_b: np.ndarray) -> dict:
+    """
+    Computes McNemar's paired test for statistical significance between two models.
+    Uses Edward's continuity correction.
+    """
+    correct_a = (preds_a == y_true)
+    correct_b = (preds_b == y_true)
+    b = int(np.sum(correct_a & ~correct_b))  # A correct, B incorrect
+    c = int(np.sum(~correct_a & correct_b))  # A incorrect, B correct
+    
+    if (b + c) == 0:
+        return {"b": 0, "c": 0, "statistic": 0.0, "p_value": 1.0, "significant": False}
+    
+    stat = ((abs(b - c) - 1.0) ** 2) / (b + c)
+    from scipy.stats import chi2
+    p_val = float(1.0 - chi2.cdf(stat, df=1))
+    return {
+        "b": b,
+        "c": c,
+        "statistic": round(float(stat), 4),
+        "p_value": round(float(p_val), 4),
+        "significant": p_val < 0.05
+    }
+
+def measure_dynamic_latencies(pipeline: PromptGuardPipeline, sample_texts: list, num_warmup: int = 20, num_runs: int = 100) -> dict:
+    """
+    Empirically benchmarks execution latencies across pipeline layers using
+    time.perf_counter() with CUDA synchronization.
+    """
+    texts = list(sample_texts[:max(10, min(len(sample_texts), 50))])
+    rule_filter = pipeline.layer2
+    model = pipeline.layer3.model
+    tokenizer = pipeline.layer3.tokenizer
+    device = pipeline.layer3.device
+
+    # Warm-up runs
+    for i in range(num_warmup):
+        txt = texts[i % len(texts)]
+        _ = rule_filter.evaluate(txt)
+        if model and tokenizer:
+            inp = tokenizer(txt, return_tensors="pt", truncation=True, max_length=128).to(device)
+            with torch.no_grad():
+                _ = model(**inp)
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
+
+    rule_times = []
+    model_times = []
+    hybrid_times = []
+
+    for i in range(num_runs):
+        txt = texts[i % len(texts)]
+        
+        # Rule timing
+        t0 = time.perf_counter()
+        _ = rule_filter.evaluate(txt)
+        t1 = time.perf_counter()
+        rule_times.append((t1 - t0) * 1000)
+
+        # Model timing
+        if model and tokenizer:
+            inp = tokenizer(txt, return_tensors="pt", truncation=True, max_length=128).to(device)
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            t2 = time.perf_counter()
+            with torch.no_grad():
+                _ = model(**inp)
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            t3 = time.perf_counter()
+            model_times.append((t3 - t2) * 1000)
+
+        # Full pipeline timing (Layers 1-6)
+        t4 = time.perf_counter()
+        _ = pipeline.inspect_and_defend(txt, use_llm_judge=False)
+        t5 = time.perf_counter()
+        hybrid_times.append((t5 - t4) * 1000)
+
+    return {
+        "rules_mean_ms": round(float(np.mean(rule_times)), 2),
+        "rules_median_ms": round(float(np.median(rule_times)), 2),
+        "model_mean_ms": round(float(np.mean(model_times)), 2) if model_times else 0.0,
+        "model_median_ms": round(float(np.median(model_times)), 2) if model_times else 0.0,
+        "hybrid_mean_ms": round(float(np.mean(hybrid_times)), 2),
+        "hybrid_median_ms": round(float(np.median(hybrid_times)), 2),
+        "hybrid_p95_ms": round(float(np.percentile(hybrid_times, 95)), 2)
+    }
+
+def compute_metrics_from_scores(y_true: np.ndarray, scores: np.ndarray, threshold: float = 0.50, avg_latency_ms: float = 0.0) -> dict:
     y_pred = (scores >= threshold).astype(int)
     acc = accuracy_score(y_true, y_pred)
     prec, rec, f1, _ = precision_recall_fscore_support(y_true, y_pred, average='binary', zero_division=0)
@@ -119,18 +228,27 @@ def evaluate_pipeline():
     print("  PROMPT INJECTION DETECTOR - EMPIRICAL SYSTEM EVALUATION ON CLEAN TEST SETS")
     print("=" * 80)
 
-    data_dir = os.path.join(os.getcwd(), "data")
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(BASE_DIR, "data")
     clean_seen_path = os.path.join(data_dir, "clean_test_seen.csv")
     clean_unseen_path = os.path.join(data_dir, "clean_test_unseen.csv")
     clean_val_path = os.path.join(data_dir, "clean_val.csv")
     train_path = os.path.join(data_dir, "train.csv")
     eval_suite_path = os.path.join(data_dir, "adversarial_eval_suite.json")
-    plots_dir = os.path.join(os.getcwd(), "plots")
+    plots_dir = os.path.join(BASE_DIR, "plots")
+    results_dir = os.path.join(BASE_DIR, "results")
     os.makedirs(plots_dir, exist_ok=True)
+    os.makedirs(results_dir, exist_ok=True)
 
     seen_df = pd.read_csv(clean_seen_path)
     unseen_df = pd.read_csv(clean_unseen_path)
-    val_df = pd.read_csv(clean_val_path) if os.path.exists(clean_val_path) else None
+    if not os.path.exists(clean_val_path):
+        raise FileNotFoundError(
+            f"Validation dataset `{clean_val_path}` not found! "
+            "Validation data is mandatory to tune decision thresholds without test-set leakage. "
+            "Run minhash_audit.py first."
+        )
+    val_df = pd.read_csv(clean_val_path)
     train_df = pd.read_csv(train_path) if os.path.exists(train_path) else None
 
     print(f"[+] Loaded Clean Test Seen Set:   {len(seen_df)} samples (N = {len(seen_df)})")
@@ -142,74 +260,70 @@ def evaluate_pipeline():
     pipeline = PromptGuardPipeline(model_path=MODEL_DIR)
 
     # -------------------------------------------------------------------
+    # 0. Measure Standardized Dynamic Inference Latencies (CUDA-Synchronized)
+    # -------------------------------------------------------------------
+    print(f"\n[+] 0. Measuring Dynamic GPU Inference Latencies on RTX 4050...")
+    measured_lat = measure_dynamic_latencies(pipeline, seen_df['text'].values)
+    print(f"[OK] Dynamically Measured Latencies:")
+    print(f"    - Layer 2 Rules:          {measured_lat['rules_mean_ms']} ms (median: {measured_lat['rules_median_ms']} ms)")
+    print(f"    - Layer 3 Model Forward:  {measured_lat['model_mean_ms']} ms (median: {measured_lat['model_median_ms']} ms)")
+    print(f"    - Hybrid Pipeline E2E:    {measured_lat['hybrid_mean_ms']} ms (median: {measured_lat['hybrid_median_ms']} ms, P95: {measured_lat['hybrid_p95_ms']} ms)")
+
+    # -------------------------------------------------------------------
     # 1. Validation Threshold Sweep & Selection of BLOCK_THRESHOLD
     # -------------------------------------------------------------------
     chosen_threshold = BLOCK_THRESHOLD
     chosen_val_f1 = 0.0
 
-    if val_df is not None:
-        print(f"\n[+] 1. Performing Threshold Sweep on `clean_val.csv` (N = {len(val_df)})...")
-        val_scores = extract_pipeline_scores(val_df, pipeline)
-        sweep_records = []
-        best_candidate_th = None
-        best_candidate_f1 = -1.0
+    print(f"\n[+] 1. Performing Threshold Sweep on `clean_val.csv` (N = {len(val_df)})...")
+    val_scores = extract_pipeline_scores(val_df, pipeline)
+    sweep_records = []
+    best_candidate_th = None
+    best_candidate_f1 = -1.0
 
-        for th in [0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80]:
-            r_res = compute_metrics_from_scores(val_scores["y_true"], val_scores["rule_scores"], threshold=th)
-            m_res = compute_metrics_from_scores(val_scores["y_true"], val_scores["model_scores"], threshold=th)
-            h_res = compute_metrics_from_scores(val_scores["y_true"], val_scores["fused_scores"], threshold=th)
+    for th in [0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80]:
+        r_res = compute_metrics_from_scores(val_scores["y_true"], val_scores["rule_scores"], threshold=th)
+        m_res = compute_metrics_from_scores(val_scores["y_true"], val_scores["model_scores"], threshold=th)
+        h_res = compute_metrics_from_scores(val_scores["y_true"], val_scores["fused_scores"], threshold=th)
 
-            sweep_records.append({
-                "Threshold": th,
-                "Rules_Recall": r_res["recall"],
-                "Rules_FPR": r_res["fpr"],
-                "Model_Recall": m_res["recall"],
-                "Model_FPR": m_res["fpr"],
-                "Model_F1": m_res["f1"],
-                "Hybrid_Recall": h_res["recall"],
-                "Hybrid_FPR": h_res["fpr"],
-                "Hybrid_F1": h_res["f1"]
-            })
+        sweep_records.append({
+            "Threshold": th,
+            "Rules_Recall": r_res["recall"],
+            "Rules_FPR": r_res["fpr"],
+            "Model_Recall": m_res["recall"],
+            "Model_FPR": m_res["fpr"],
+            "Model_F1": m_res["f1"],
+            "Hybrid_Recall": h_res["recall"],
+            "Hybrid_FPR": h_res["fpr"],
+            "Hybrid_F1": h_res["f1"]
+        })
 
-            # Select threshold: highest F1 with FPR <= 1.0%
-            if h_res["fpr"] <= 0.010 and h_res["f1"] > best_candidate_f1:
-                best_candidate_f1 = h_res["f1"]
-                best_candidate_th = th
+        # Select threshold: highest F1 with FPR <= 1.0%
+        if h_res["fpr"] <= 0.010 and h_res["f1"] > best_candidate_f1:
+            best_candidate_f1 = h_res["f1"]
+            best_candidate_th = th
 
-        if best_candidate_th is None:
-            # Fallback to absolute max F1 if none has FPR <= 1.0%
-            best_candidate_th = max(sweep_records, key=lambda x: x["Hybrid_F1"])["Threshold"]
-            best_candidate_f1 = max(sweep_records, key=lambda x: x["Hybrid_F1"])["Hybrid_F1"]
+    if best_candidate_th is None:
+        best_candidate_th = max(sweep_records, key=lambda x: x["Hybrid_F1"])["Threshold"]
+        best_candidate_f1 = max(sweep_records, key=lambda x: x["Hybrid_F1"])["Hybrid_F1"]
 
-        chosen_threshold = best_candidate_th
-        chosen_val_f1 = best_candidate_f1
+    chosen_threshold = best_candidate_th
+    chosen_val_f1 = best_candidate_f1
 
-        sweep_df = pd.DataFrame(sweep_records)
-        print(sweep_df.to_string(index=False))
+    sweep_df = pd.DataFrame(sweep_records)
+    print(sweep_df.to_string(index=False))
 
-        # Dynamically computed comparisons without hardcoded claims
-        print("\n--- Dynamically Verified Threshold Sweep Comparisons ---")
-        for r in sweep_records:
-            t = r["Threshold"]
-            d = round(r["Hybrid_Recall"] - r["Model_Recall"], 4)
-            if d > 0:
-                print(f"[Verified] At threshold {t:.2f}: Hybrid Recall ({r['Hybrid_Recall']:.4f}) is higher than Model Recall ({r['Model_Recall']:.4f}) by +{d:.4f}.")
-            elif d < 0:
-                print(f"[Verified] At threshold {t:.2f}: Hybrid Recall ({r['Hybrid_Recall']:.4f}) is lower than Model Recall ({r['Model_Recall']:.4f}) by {d:.4f}.")
-            else:
-                print(f"[Verified] At threshold {t:.2f}: Hybrid Recall equals Model Recall ({r['Hybrid_Recall']:.4f}).")
-
-        print(f"\n[OK] Chosen Empirical BLOCK_THRESHOLD = {chosen_threshold:.2f} (Validation F1 = {chosen_val_f1:.4f})")
-        pipeline.layer4.threshold = chosen_threshold
+    print(f"\n[OK] Chosen Empirical BLOCK_THRESHOLD = {chosen_threshold:.2f} (Validation F1 = {chosen_val_f1:.4f})")
+    pipeline.layer4.threshold = chosen_threshold
 
     # -------------------------------------------------------------------
     # 2. Defense Ablation on Clean Test Seen
     # -------------------------------------------------------------------
     print(f"\n[+] 2. Evaluating Defense Ablation on `clean_test_seen.csv` (N = {len(seen_df)}, Threshold = {chosen_threshold:.2f})...")
     seen_scores = extract_pipeline_scores(seen_df, pipeline)
-    res_rules = compute_metrics_from_scores(seen_scores["y_true"], seen_scores["rule_scores"], threshold=chosen_threshold, avg_latency_ms=0.45)
-    res_model = compute_metrics_from_scores(seen_scores["y_true"], seen_scores["model_scores"], threshold=chosen_threshold, avg_latency_ms=4.98)
-    res_hybrid = compute_metrics_from_scores(seen_scores["y_true"], seen_scores["fused_scores"], threshold=chosen_threshold, avg_latency_ms=5.49)
+    res_rules = compute_metrics_from_scores(seen_scores["y_true"], seen_scores["rule_scores"], threshold=chosen_threshold, avg_latency_ms=measured_lat['rules_mean_ms'])
+    res_model = compute_metrics_from_scores(seen_scores["y_true"], seen_scores["model_scores"], threshold=chosen_threshold, avg_latency_ms=measured_lat['model_mean_ms'])
+    res_hybrid = compute_metrics_from_scores(seen_scores["y_true"], seen_scores["fused_scores"], threshold=chosen_threshold, avg_latency_ms=measured_lat['hybrid_mean_ms'])
 
     ablation_df = pd.DataFrame([
         {
@@ -238,6 +352,18 @@ def evaluate_pipeline():
         }
     ])
     print(ablation_df.to_string(index=False))
+
+    # Calibration & Statistical Tests
+    ece_model = compute_ece(seen_scores["y_true"], seen_scores["model_scores"])
+    ece_hybrid = compute_ece(seen_scores["y_true"], seen_scores["fused_scores"])
+    print(f"\n[Calibration Analysis] Expected Calibration Error (ECE, 10 bins):")
+    print(f"    - DistilBERT Model Only:  {ece_model:.4f}")
+    print(f"    - Noisy-OR Hybrid Score:  {ece_hybrid:.4f}")
+
+    mcnemar_res = compute_mcnemar_test(seen_scores["y_true"], res_model["y_pred"], res_hybrid["y_pred"])
+    print(f"[Statistical Significance] McNemar's Test (Model vs Hybrid):")
+    print(f"    - Divergent Cases: Model Correct / Hybrid Wrong = {mcnemar_res['b']}, Hybrid Correct / Model Wrong = {mcnemar_res['c']}")
+    print(f"    - Chi2 Statistic:  {mcnemar_res['statistic']}, p-value: {mcnemar_res['p_value']} (Significant: {mcnemar_res['significant']})")
 
     # -------------------------------------------------------------------
     # 3. Seen vs Unseen OOD Generalization Benchmark
@@ -270,6 +396,28 @@ def evaluate_pipeline():
     seen_char_len = seen_df['text'].str.len().mean()
     unseen_char_len = unseen_df['text'].str.len().mean()
     print(f"[Dataset Comparison] Mean character length: Seen = {seen_char_len:.1f} vs Unseen = {unseen_char_len:.1f}.")
+
+    # Save sample-level predictions for test seen and test unseen
+    seen_preds_df = pd.DataFrame({
+        "text": seen_df["text"].values,
+        "true_label": seen_scores["y_true"],
+        "rule_score": np.round(seen_scores["rule_scores"], 4),
+        "model_score": np.round(seen_scores["model_scores"], 4),
+        "fused_score": np.round(seen_scores["fused_scores"], 4),
+        "predicted_label": (seen_scores["fused_scores"] >= chosen_threshold).astype(int)
+    })
+    seen_preds_df.to_csv(os.path.join(results_dir, "test_seen_sample_predictions.csv"), index=False)
+
+    unseen_preds_df = pd.DataFrame({
+        "text": unseen_df["text"].values,
+        "true_label": unseen_scores["y_true"],
+        "rule_score": np.round(unseen_scores["rule_scores"], 4),
+        "model_score": np.round(unseen_scores["model_scores"], 4),
+        "fused_score": np.round(unseen_scores["fused_scores"], 4),
+        "predicted_label": (unseen_scores["fused_scores"] >= chosen_threshold).astype(int)
+    })
+    unseen_preds_df.to_csv(os.path.join(results_dir, "test_unseen_sample_predictions.csv"), index=False)
+    print(f"[OK] Saved sample predictions to `{os.path.join(results_dir, 'test_seen_sample_predictions.csv')}` and `{os.path.join(results_dir, 'test_unseen_sample_predictions.csv')}`")
 
     # -------------------------------------------------------------------
     # 4. Independent Adversarial & Benign Evaluation Suite (350 Samples)
@@ -364,6 +512,17 @@ def evaluate_pipeline():
     with open(eval_results_json, "w", encoding="utf-8") as f:
         json.dump(detailed_suite_results, f, indent=2)
     print(f"\n[OK] Saved full suite predictions to `{eval_results_json}`")
+
+    suite_preds_df = pd.DataFrame({
+        "text": suite_df["text"].values,
+        "true_label": y_suite_true,
+        "rule_score": np.round(suite_scores["rule_scores"], 4),
+        "model_score": np.round(suite_scores["model_scores"], 4),
+        "fused_score": np.round(suite_scores["fused_scores"], 4),
+        "predicted_label": actual_preds
+    })
+    suite_preds_df.to_csv(os.path.join(results_dir, "adversarial_suite_predictions.csv"), index=False)
+    print(f"[OK] Saved adversarial suite sample predictions to `{os.path.join(results_dir, 'adversarial_suite_predictions.csv')}`")
 
     # -------------------------------------------------------------------
     # 5. Generate Publication Plots (Real Data Only, No Invented Numbers)
@@ -471,7 +630,6 @@ def evaluate_pipeline():
     plt.ylabel('True Label')
     plt.tight_layout()
     plt.savefig(os.path.join(plots_dir, "plot6_confusion_matrix.png"))
-    plt.savefig(os.path.join(plots_dir, "confusion_matrix.png"))
     plt.close()
 
     # Plot 7: ROC Curve
@@ -487,7 +645,6 @@ def evaluate_pipeline():
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig(os.path.join(plots_dir, "plot7_roc_curve.png"))
-    plt.savefig(os.path.join(plots_dir, "roc_curve.png"))
     plt.close()
 
     # Plot 8: Precision-Recall Curve
@@ -502,7 +659,6 @@ def evaluate_pipeline():
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig(os.path.join(plots_dir, "plot8_pr_curve.png"))
-    plt.savefig(os.path.join(plots_dir, "pr_curve.png"))
     plt.close()
 
     print(f"[OK] Publication plots saved in `{plots_dir}` as 200 DPI PNGs.")

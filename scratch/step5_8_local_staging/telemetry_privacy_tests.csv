@@ -1,0 +1,13 @@
+test_id,name,detail,status
+TLM-01,Normal Request Logging,"Logged decision, risk, latency, and provider",PASSED
+TLM-02,Blocked Attack Logging,Logged BLOCKED decision with Layer 2 Rule Filter,PASSED
+TLM-03,Allowed Benign Request Logging,Verified low risk score logged for benign prompt,PASSED
+TLM-04,API Key Redaction,Groq API key scrubbed from database text,PASSED
+TLM-05,Password Redaction,Password scrubbed before telemetry persistence,PASSED
+TLM-06,Token Redaction,JWT and Bearer token scrubbed before telemetry persistence,PASSED
+TLM-07,Document Content Protection,Only document metadata logged; raw content body omitted,PASSED
+TLM-08,Exception Secret Scrubbing,Exceptions scrubbed of API keys before error_category write,PASSED
+TLM-09,Missing Telemetry Fields,Handled None/empty values safely without database crash,PASSED
+TLM-10,Local Database Persistence,Verified persistence to SQLite file and KPI aggregation,PASSED
+TLM-11,Staging Mode Default Mock,Verified MockAIProvider created with mock_key,PASSED
+TLM-12,External Provider Interception,Verified Gemini and Groq requests return MockAIProvider in staging,PASSED

@@ -1,0 +1,14 @@
+test_name,input_length,has_match,avg_latency_ms,safe_from_redos
+Repeated Whitespace (200 spaces),224,True,0.0622,True
+Repeated Punctuation (200 exclamation marks),222,False,0.011,True
+Repeated Extraction Verbs (50 repetitions),1313,True,1.2778,True
+Repeated Target Words (50 repetitions),2156,True,0.005,True
+Long Sequence of Filler Words (500 words),2525,False,0.4377,True
+Nested Delimiters (100 levels),213,False,0.0072,True
+"Max Bounded Input (11,999 characters near-match)",11520,False,3.5905,True
+Near-Match 1 (Verb + benign noun),47,False,0.0312,True
+Near-Match 2 (Explanatory verb + target),56,False,0.0112,True
+Near-Match 3 (Verb + distant unrelated target),48,False,0.0285,True
+Unicode & Accented Input,68,False,0.0135,True
+Cyrillic Homoglyphs & Mixed Characters,45,False,0.0096,True
+Binary & Null Byte Ingestion,34,False,0.0071,True

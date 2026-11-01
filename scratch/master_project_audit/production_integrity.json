@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-10-30 23:03:34",
+  "project_path": "D:\\prompt_injection",
+  "production_checkpoint_path": "D:\\prompt_injection\\models\\prompt_injection_detector\\model.safetensors",
+  "expected_sha256": "b5d574ff13f79a7d3b6bd76e387b216644c47bce1af761d15c58fd868519d1ba",
+  "observed_sha256": "b5d574ff13f79a7d3b6bd76e387b216644c47bce1af761d15c58fd868519d1ba",
+  "sha256_match": true,
+  "production_threshold_constant": "BLOCK_THRESHOLD",
+  "production_threshold_value": 0.6,
+  "threshold_match": true,
+  "model_architecture": "DistilBertForSequenceClassification",
+  "total_parameters": 66955010,
+  "trainable_parameters": 66955010,
+  "git_head_commit": "5f82e6774633e070e81f099b421d8e710f5a63ab",
+  "git_branch": "remediation",
+  "git_cached_diff_empty": true,
+  "production_code_modifications_count": 0
+}

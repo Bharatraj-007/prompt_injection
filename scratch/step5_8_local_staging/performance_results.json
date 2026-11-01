@@ -1,0 +1,34 @@
+{
+  "timestamp": "2026-10-30 21:40:56",
+  "environment": "LOCAL_STAGING",
+  "provider_mode": "MockAIProvider (Deterministic Offline)",
+  "startup_time_seconds": 0.833,
+  "total_requests": 50,
+  "successful_requests": 50,
+  "failed_requests": 0,
+  "memory_rss_before_mb": 989.9,
+  "memory_rss_after_mb": 990.83,
+  "memory_growth_mb": 0.93,
+  "request_latency_ms": {
+    "mean": 40.82,
+    "median_p50": 41.49,
+    "p95": 54.86,
+    "p99": 61.67,
+    "min": 21.22,
+    "max": 62.32
+  },
+  "telemetry_write_latency_ms": {
+    "mean": 0.08,
+    "median_p50": 0.08,
+    "p95": 0.12,
+    "p99": 0.15,
+    "min": 0.04,
+    "max": 0.15
+  },
+  "performance_assessment": {
+    "p95_under_100ms": true,
+    "zero_exceptions": true,
+    "memory_stable": true,
+    "telemetry_sub_millisecond": true
+  }
+}

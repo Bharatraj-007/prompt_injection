@@ -1,0 +1,86 @@
+{
+  "application_module_audit.csv": {
+    "size_bytes": 1698,
+    "sha256": "95c5cddf30719a39d10bd50397acf1369ea93b077b1d0bff938fa8bb61a147cc"
+  },
+  "architecture_integration_audit.md": {
+    "size_bytes": 2581,
+    "sha256": "9aa15bc711e2994b5c7721cb3535bd684ee7e79f0c80e6005592991ce76b4219"
+  },
+  "category_performance.csv": {
+    "size_bytes": 1517,
+    "sha256": "b435f2303ecf1da2f5b8456068846bf82d77d8d50611f184e76d08c0c905f3d6"
+  },
+  "confusion_matrix.csv": {
+    "size_bytes": 369,
+    "sha256": "dac53d37dbec9ad346d82870eded43fd13f0374639b3d54dec24bfd5f776188b"
+  },
+  "dataset_quality_audit.md": {
+    "size_bytes": 2313,
+    "sha256": "8c18d6dc73919d65d8faf9d14d8e426f7e8fa420837931c0adec68ff077215b3"
+  },
+  "dependency_deployment_audit.md": {
+    "size_bytes": 2061,
+    "sha256": "7acbdedc85ac1711f729dc206659cbf01e6c56ea54165e7dc6c8e3c02eddac54"
+  },
+  "end_to_end_integration_report.md": {
+    "size_bytes": 1939,
+    "sha256": "9929a332a154474b15e84e10362c6450314d15eb04de7b553d41d69db5f4fd98"
+  },
+  "false_negative_analysis.csv": {
+    "size_bytes": 4690,
+    "sha256": "5ab99b853d5528f6c53913e371be3a4431825a3c0e5a173e9a10d73a0bb6fc3d"
+  },
+  "false_positive_analysis.csv": {
+    "size_bytes": 2,
+    "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+  },
+  "folder_inventory.csv": {
+    "size_bytes": 35725,
+    "sha256": "25aad3661106d05566bfdab845cb4535390d73840a4a7b033fc14f4b523a3d75"
+  },
+  "inspect_datasets.py": {
+    "size_bytes": 1081,
+    "sha256": "f51bde8cd4b2ae5759914b293221ecafaa161b88f6e2674b95d2400acbda78cc"
+  },
+  "model_accuracy_report.md": {
+    "size_bytes": 3752,
+    "sha256": "148910f8b92676bae7d7cedc9bfedb3344bd918af8485d07575b797e2b63a2a4"
+  },
+  "model_architecture_audit.md": {
+    "size_bytes": 2786,
+    "sha256": "a20079af6665d4892183757a8ece5db4ec04ebbdef183af0517c8ca5c4e7d366"
+  },
+  "model_performance_report.md": {
+    "size_bytes": 1532,
+    "sha256": "621e3236f3b6fd0c985045238549f0c365835e7c5cf42a417e9154156fd66432"
+  },
+  "prioritized_remediation_roadmap.md": {
+    "size_bytes": 1806,
+    "sha256": "8cf2702435e7fb2661763594a1c8edeaf393dc95b12d86a0911615f8560caf2e"
+  },
+  "production_integrity.json": {
+    "size_bytes": 833,
+    "sha256": "1f745af11319d2804555a68ee427e48ba66773eaa314e22d7a086e191a7c1951"
+  },
+  "run_full_master_audit.py": {
+    "size_bytes": 74049,
+    "sha256": "abd9a4e7178c7af6d972fd1848e108d230e9ea7a543cb2e0ea17801c787c176f"
+  },
+  "security_vulnerability_report.md": {
+    "size_bytes": 2885,
+    "sha256": "87a8cc0466fb21840cd6b213979dc04a845a0690348716a6f21d3668175e1742"
+  },
+  "source_code_audit.csv": {
+    "size_bytes": 4313,
+    "sha256": "877e869ef5798ea33b13e65f84a625c1e3096750aac6e886166dd85862abe3dd"
+  },
+  "test_and_code_quality_report.md": {
+    "size_bytes": 3008,
+    "sha256": "d6d4a492998992829be3c9f630133971c88259eb135ac7f10a8b2b796f6c4213"
+  },
+  "threshold_calibration_report.md": {
+    "size_bytes": 2733,
+    "sha256": "bad5324b2a2f466ed72c0b9d44d847ade3cde65ac636a8ead32ac8104754c67c"
+  }
+}

@@ -7,15 +7,17 @@ def download_datasets():
     print("      PROMPT INJECTION DETECTOR & DEFENDER DATASET DOWNLOADER")
     print("=" * 60)
     
-    raw_dir = os.path.join(os.getcwd(), "raw_data")
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    raw_dir = os.path.join(BASE_DIR, "raw_data")
     os.makedirs(raw_dir, exist_ok=True)
     
     try:
         from datasets import load_dataset
-    except ImportError:
-        print("[!] Hugging Face `datasets` library not installed. Installing datasets and huggingface_hub...")
-        subprocess.run([sys.executable, "-m", "pip", "install", "-q", "datasets", "huggingface_hub", "pandas"], check=True)
-        from datasets import load_dataset
+    except ImportError as e:
+        raise ImportError(
+            "Hugging Face `datasets` library not installed. "
+            "Please run `pip install -r requirements.txt` before executing this script."
+        ) from e
 
     hf_datasets = [
         {"name": "deepset/prompt-injections", "config": None, "folder": "deepset"},
@@ -24,6 +26,7 @@ def download_datasets():
         {"name": "Lakera/gandalf_summarization", "config": None, "folder": "lakera_summarization"},
         {"name": "hackaprompt/hackaprompt-dataset", "config": None, "folder": "hackaprompt"},
         {"name": "databricks/databricks-dolly-15k", "config": None, "folder": "dolly"},
+        {"name": "tatsu-lab/alpaca", "config": None, "folder": "alpaca"},
         {"name": "neuralchemy/Prompt-injection-dataset", "config": "full", "folder": "neuralchemy"}
     ]
 
@@ -45,10 +48,9 @@ def download_datasets():
             print(f"[X] Failed to download {ds_name}. Reason: {e}")
             print("     Continuing to next dataset...")
 
-    # Clone GitHub Repositories
+    # Clone External Benchmark GitHub Repositories
     github_repos = [
-        {"name": "BIPIA (Microsoft)", "url": "https://github.com/microsoft/BIPIA.git", "folder": "BIPIA"},
-        {"name": "Prompt Injection (Own Repo)", "url": "https://github.com/Bharatraj-007/prompt_injection.git", "folder": "prompt_injection_repo"}
+        {"name": "BIPIA (Microsoft)", "url": "https://github.com/microsoft/BIPIA.git", "folder": "BIPIA"}
     ]
 
     for repo in github_repos:

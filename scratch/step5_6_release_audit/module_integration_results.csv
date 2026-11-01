@@ -1,0 +1,15 @@
+module,sub_test,status,details
+Module 1: AI Security Chat,Benign Chat & Provider Dispatch,PASSED,"Allowed turn processed in 129.4ms, mock called once."
+Module 1: AI Security Chat,Attack Interception (Zero Provider Leakage),PASSED,"Attack intercepted, call_count=0, risk=1.0000."
+Module 1: AI Security Chat,Pure Arithmetic Bypass (1+1),PASSED,Arithmetic evaluated safely with risk_score=0.0.
+Module 2: Document Scanner,TXT Extraction & Benign Inspection,PASSED,"TXT scanned: 69 chars, risk=0.1244."
+Module 2: Document Scanner,TXT Indirect Injection Detection,PASSED,"TXT attack detected: decision=BLOCKED, risk=0.9999."
+Module 2: Document Scanner,DOCX Parsing & Inspection,PASSED,"DOCX parsed cleanly: 72 chars, risk=0.0112."
+Module 2: Document Scanner,Corrupted Document Handling (Fail-Closed),PASSED,"Corrupt PDF failed closed: decision=BLOCKED, risk=1.0000."
+Module 3: Privacy Protection,Synthetic API Key & Password Redaction,PASSED,Detected 2 items; original credentials masked.
+Module 3: Privacy Protection,False-Positive Redaction Prevention,PASSED,Zero false redactions on benign terminology.
+Module 4: Conversation Guard,Multi-Turn Crescendo Attack Detection,PASSED,"Turn 5 crescendo intercepted: risk=0.7500, vectors=['FRAGMENTED_INSTRUCTION_ASSEMBLY']."
+Module 4: Conversation Guard,Session Isolation & Cross-Session Sanitization,PASSED,Session B unaffected by Session A; independent history len=1.
+Module 5: Security Analytics,"KPI Aggregation, CSV/PDF Export & Secret Sanitization",PASSED,"KPIs verified (3 events), CSV/PDF exported, zero secret leakage in DB."
+Module 6: Red-Team Benchmark,Benchmark Metric Execution & Accuracy,PASSED,"Evaluated 5 samples: TP=5, TN=0, Recall=100.0%, CSV exported."
+Module 7: Deep Pipeline Inspection,All Six Preset Scenarios Integration,PASSED,All 6 presets evaluated through live pipeline; decisions match specifications.

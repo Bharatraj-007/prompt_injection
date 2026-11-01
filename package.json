@@ -1,0 +1,33 @@
+{
+  "name": "prompt-injection-detector-defender",
+  "version": "1.1.0",
+  "description": "Multi-Layered Hybrid Prompt Injection Detection & Defense Architecture with LLM as a Judge (Groq, xAI, Local CUDA GPU)",
+  "author": "Bharatraj",
+  "license": "MIT",
+  "scripts": {
+    "start": "streamlit run app.py",
+    "dev": "streamlit run app.py --server.port 8501",
+    "test": "pytest tests/ -v",
+    "test:cov": "pytest tests/ --cov=guard --cov=llm_judge",
+    "eval": "python evaluate.py",
+    "eval:judge": "python evaluate_llm_judge.py --backend groq",
+    "train": "python train_all.py distilbert",
+    "train:modernbert": "python train_all.py modernbert",
+    "audit": "python minhash_audit.py",
+    "diagram": "python architecture_diagram.py",
+    "nvitop": "python -m nvitop -1"
+  },
+  "keywords": [
+    "prompt-injection",
+    "llm-security",
+    "llm-as-a-judge",
+    "groq",
+    "xai-grok",
+    "transformer",
+    "defense",
+    "guardrails"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

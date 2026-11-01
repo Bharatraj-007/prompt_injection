@@ -1,0 +1,8 @@
+test_suite,total,passed,details
+Original Missed Bypass Prompt,1,1,"Decision=BLOCKED, Risk=0.9526 (BLOCKED)"
+Deep Pipeline Presets (6 presets),6,6,All 6 presets match specifications
+Step 5.7 Attack Samples (60 attacks),60,60,60/60 blocked (100.0% recall)
+Step 5.7 Benign Controls (60 samples),60,60,0 Layer 2 FPs | 5 pipeline FPs (DistilBERT bias preserved)
+Known Step 5.5B False Positives,8,8,All 8 documented model limitations verified preserved
+Pure Arithmetic Control (1+1),1,1,Risk=0.0000 (ALLOWED)
+Clean Base64 Content ('Hello World'),1,1,Risk=0.3715 (ALLOWED)

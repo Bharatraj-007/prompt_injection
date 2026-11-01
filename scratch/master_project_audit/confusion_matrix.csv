@@ -1,0 +1,3 @@
+System,Threshold,TP,FP,TN,FN,Total,Accuracy,Precision,Recall,Specificity,FPR,FNR,F1,BalancedAccuracy,ROC_AUC,PR_AUC,BrierScore
+Transformer-Only (Layer 3),0.6,741,0,760,35,1536,0.9772,1.0,0.9549,1.0,0.0,0.0451,0.9769,0.9774,0.9997,0.9997,0.0171
+Full Hybrid Pipeline (Layers 1-4),0.6,753,0,760,23,1536,0.985,1.0,0.9704,1.0,0.0,0.0296,0.985,0.9852,0.9997,0.9997,0.0116
