@@ -377,6 +377,33 @@ class Layer1Preprocessor:
         return False
 
     @classmethod
+    def is_conversational_greeting(cls, text: str) -> bool:
+        """
+        Detects common isolated greetings and pleasantries (e.g., 'hi', 'hello', 'hey', 'good morning')
+        that contain no instructions, overrides, or jailbreak keywords.
+        Prevents length-bias false positives on short conversational openers.
+        """
+        clean = re.sub(r'[^\w\s]', '', text.strip().lower())
+        words = clean.split()
+        if not words or len(words) > 5:
+            return False
+        
+        common_greetings = {
+            "hi", "hello", "hey", "howdy", "greetings", "good morning", "good afternoon",
+            "good evening", "good day", "thanks", "thank you", "bye", "goodbye",
+            "how are you", "whats up", "what is up", "nice to meet you"
+        }
+        
+        override_keywords = {
+            "ignore", "disregard", "override", "bypass", "system", "prompt", "password", 
+            "secret", "token", "reveal", "leak", "dan", "jailbreak"
+        }
+        if any(w in override_keywords for w in words):
+            return False
+            
+        return clean in common_greetings or (len(words) <= 2 and words[0] in {"hi", "hello", "hey", "thanks"})
+
+    @classmethod
     def extract_base64_payloads(cls, text: str) -> List[str]:
         """
         Identifies and decodes Base64 encoded sub-strings.
@@ -1162,7 +1189,7 @@ class PromptGuardPipeline:
 
         # 3. Layer 3: Model evaluation on raw text, normalized text, and augmented text (take max)
         # When no model is loaded, predict() returns 0.0 so rule score is not fused with itself
-        if Layer1Preprocessor.is_pure_arithmetic(user_input):
+        if Layer1Preprocessor.is_pure_arithmetic(user_input) or Layer1Preprocessor.is_conversational_greeting(user_input):
             m_raw = 0.0
             m_norm = 0.0
             m_aug = 0.0
