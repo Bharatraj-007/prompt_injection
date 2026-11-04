@@ -147,11 +147,11 @@ streamlit run app.py
 
 ### 2. Out-of-Domain Unseen Test Set ($N = 1,536$)
 
-| Test Split | Defense Model | Accuracy | Precision | Recall | F1-Score | FPR |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Clean Test Unseen (OOD)** ($N=1,536$) | Hybrid Pipeline (Noisy-OR) | **0.9844** | **0.9947** | **0.9742** | **0.9844** | **0.53%** |
+| Test Split | Defense Model | Accuracy | Precision | Recall | F1-Score | FPR | Specificity | ROC-AUC |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Clean Test Unseen (OOD)** ($N=1,536$) | Hybrid Pipeline (Layers 1–4) | **0.9850** | **1.0000** | **0.9704** | **0.9850** | **0.00%** | **100.00%** | **0.9997** |
 
-*Empirical Generalization Note*: Clean Test Unseen F1 is $+0.0148$ relative to Clean Test Seen. This difference is driven primarily by prompt length and structure: the unseen set has an average length of 71.0 characters versus 173.2 characters in the seen test set, resulting in lower subword token fragmentation.
+*Empirical Generalization Note*: Final production evaluation reflects full multi-layer defense-in-depth (Layer 1 heuristic normalization, multi-view Base64/Hex decoding, Layer 2 intent rules, and Layer 3 DistilBERT classification with Noisy-OR fusion). Across all 760 benign samples in the unseen test split, zero false positives were recorded (FP = 0, FPR = 0.00%, Precision = 1.0000).
 
 ---
 
