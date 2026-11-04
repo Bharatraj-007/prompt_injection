@@ -35,3 +35,7 @@ pytest-cov>=4.0.0
 # LLM Providers and API Integrations
 groq>=1.7.0
 openai>=1.50.0
+
+# Document parsing (Indirect prompt injection scanner: PDF, DOCX)
+python-docx>=1.0.0
+PyMuPDF>=1.23.0
