@@ -172,7 +172,7 @@ if LOCAL_STAGING:
 
 @st.cache_resource
 def load_guard():
-    """Load PromptGuardPipeline with caching."""
+    """Load PromptGuardPipeline with caching and resilient cloud fallback."""
     try:
         return PromptGuardPipeline(model_path=MODEL_DIR, threshold=BLOCK_THRESHOLD)
     except Exception as e:
@@ -187,19 +187,29 @@ st.sidebar.header("⚖️ LLM as a Judge (Defender)")
 
 enable_llm_judge = st.sidebar.checkbox("Enable Layer 7: LLM Judge", value=True)
 
-judge_options = ["Groq Cloud API", "Local GPU (RTX 4050)", "Heuristic Fallback"]
+judge_options = ["Groq Cloud API", "xAI Grok API", "Local GPU (RTX 4050)", "Heuristic Fallback"]
+default_idx = judge_options.index("Heuristic Fallback") if LOCAL_STAGING else 0
 backend_choice = st.sidebar.selectbox(
     "LLM Judge Provider",
     options=judge_options,
-    index=judge_options.index("Heuristic Fallback") if LOCAL_STAGING else 0
+    index=default_idx
 )
 
 backend_map = {
     "Groq Cloud API": "groq",
+    "xAI Grok API": "xai_grok",
     "Local GPU (RTX 4050)": "local_gpu",
     "Heuristic Fallback": "fallback"
 }
 selected_backend = backend_map[backend_choice]
+
+with st.sidebar.expander("🌐 Cloud & Security Status", expanded=False):
+    if hasattr(guard, "layer3") and guard.layer3.model is not None:
+        source_label = getattr(guard.layer3, "loaded_source", "Active")
+        st.success(f"✅ Layer 3 Classifier: {source_label}")
+    else:
+        st.info("ℹ️ Layer 3: Rules & LLM Judge Mode (No local weights found)")
+    st.caption("Hybrid 7-Layer Defense: Preprocessor, Rules, Classifier, Fusion, Canary, Output Guard & LLM Judge.")
 
 # Model selection based on backend
 if selected_backend == "groq":
@@ -286,7 +296,7 @@ chat_provider_options = ["Google Gemini", "Groq API", "Local LLM", "Mock AI (Off
 chat_provider_choice = st.sidebar.selectbox(
     "Chat Model Provider",
     options=chat_provider_options,
-    index=chat_provider_options.index("Mock AI (Offline Demo)") if LOCAL_STAGING else 0
+    index=chat_provider_options.index("Mock AI (Offline Demo)")
 )
 
 chat_provider_map = {

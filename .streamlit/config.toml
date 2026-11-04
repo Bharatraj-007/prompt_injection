@@ -1,2 +1,17 @@
 [server]
 fileWatcherType = "none"
+headless = true
+port = 8501
+address = "0.0.0.0"
+enableXsrfProtection = true
+maxUploadSize = 25
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+primaryColor = "#3b82f6"
+backgroundColor = "#0b1329"
+secondaryBackgroundColor = "#132145"
+textColor = "#f8fafc"
+font = "sans serif"

@@ -88,27 +88,49 @@ except ImportError:
                     k, v = line.split("=", 1)
                     os.environ.setdefault(k.strip(), v.strip().strip("'\""))
 
-# LLM as a Judge configurations for Defender
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
-GROK_API_KEY = os.environ.get("GROK_API_KEY", "")
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-GROQ_BASE_URL = "https://api.groq.com/openai/v1"
-XAI_BASE_URL = os.environ.get("XAI_BASE_URL", "https://api.x.ai/v1")
+def get_config_var(key: str, default: str = "") -> str:
+    """
+    Safely get configuration variable from:
+    1. streamlit.secrets (if running inside Streamlit Cloud / web environment)
+    2. os.environ
+    3. default value
+    """
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets") and key in st.secrets:
+            return str(st.secrets[key])
+    except Exception:
+        pass
+    return os.environ.get(key, default)
 
-DEFAULT_GROQ_MODEL = os.environ.get("DEFAULT_GROQ_MODEL", "qwen/qwen3.8-27b")
-FAST_GROQ_MODEL = os.environ.get("FAST_GROQ_MODEL", "meta-llama/llama-prompt-guard-2-86m")
-DEFAULT_GROK_MODEL = os.environ.get("DEFAULT_GROK_MODEL", "grok-2-latest")
-DEFAULT_GEMINI_MODEL = os.environ.get("DEFAULT_GEMINI_MODEL", "gemini-flash-latest")
-DEFAULT_LOCAL_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
+
+# Model and Fallback Settings for Online/Cloud Hosting
+HF_MODEL_REPO = get_config_var("HF_MODEL_REPO", "")
+MODEL_PATH = get_config_var("MODEL_PATH", MODEL_DIR)
+MODEL_FALLBACK_POLICY = get_config_var("MODEL_FALLBACK_POLICY", "fail_closed").lower()
+
+# LLM as a Judge configurations for Defender
+GROQ_API_KEY = get_config_var("GROQ_API_KEY", "")
+GROK_API_KEY = get_config_var("GROK_API_KEY", "")
+GEMINI_API_KEY = get_config_var("GEMINI_API_KEY", "")
+OPENAI_API_KEY = get_config_var("OPENAI_API_KEY", "")
+GROQ_BASE_URL = get_config_var("GROQ_BASE_URL", "https://api.groq.com/openai/v1")
+XAI_BASE_URL = get_config_var("XAI_BASE_URL", "https://api.x.ai/v1")
+
+DEFAULT_GROQ_MODEL = get_config_var("DEFAULT_GROQ_MODEL", "qwen/qwen3.8-27b")
+FAST_GROQ_MODEL = get_config_var("FAST_GROQ_MODEL", "meta-llama/llama-prompt-guard-2-86m")
+DEFAULT_GROK_MODEL = get_config_var("DEFAULT_GROK_MODEL", "grok-2-latest")
+DEFAULT_GEMINI_MODEL = get_config_var("DEFAULT_GEMINI_MODEL", "gemini-flash-latest")
+DEFAULT_LOCAL_MODEL = get_config_var("DEFAULT_LOCAL_MODEL", "Qwen/Qwen2.5-1.5B-Instruct")
 
 LLM_JUDGE_TEMPERATURE = 0.0
 LLM_JUDGE_TIMEOUT = 15  # seconds
 LLM_JUDGE_THRESHOLD = 0.50
 
 # Staging Environment & Local Isolation Configuration (Step 5.8)
-APP_ENV = os.environ.get("APP_ENV", "production").lower()
+APP_ENV = get_config_var("APP_ENV", "production").lower()
 LOCAL_STAGING = (
-    os.environ.get("LOCAL_STAGING", "").lower() in ("1", "true", "yes")
+    get_config_var("LOCAL_STAGING", "").lower() in ("1", "true", "yes")
     or APP_ENV in ("staging", "local_staging")
 )
 

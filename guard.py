@@ -36,7 +36,8 @@ from config import (
     MODEL_DIR, BLOCK_THRESHOLD, LABEL_MAPPING, ID2LABEL, LABEL2ID,
     MAX_INPUT_LENGTH, MAX_DECODE_SIZE,
     SLIDING_WINDOW_SIZE, SLIDING_WINDOW_STRIDE, MAX_INSPECT_TOKENS,
-    MAX_SLIDING_WINDOWS, MAX_SAFE_INPUT_LENGTH
+    MAX_SLIDING_WINDOWS, MAX_SAFE_INPUT_LENGTH,
+    HF_MODEL_REPO, MODEL_FALLBACK_POLICY
 )
 
 logger = logging.getLogger(__name__)
@@ -717,28 +718,54 @@ class Layer3TransformerClassifier:
         }
 
     def _load_model(self):
-        """Load model with proper error handling (Fix F018)"""
-        if os.path.exists(self.model_path):
+        """Load model with proper error handling and cloud/HuggingFace Hub support (Fix F018)."""
+        self.loaded_source = None
+        # 1. Try local model path
+        if self.model_path and os.path.exists(self.model_path):
             try:
                 self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
                 self.model = AutoModelForSequenceClassification.from_pretrained(self.model_path)
                 self.model.to(self.device)
                 self.model.eval()
                 self.verification_info = self._verify_model_architecture()
-                logger.info(f"Model loaded successfully from {self.model_path}")
+                self.loaded_source = f"Local Directory ({os.path.basename(self.model_path)})"
+                logger.info(f"Model loaded successfully from local directory: {self.model_path}")
+                return
             except Exception as e:
-                logger.error(f"Failed to load model from {self.model_path}: {e}")
+                logger.error(f"Failed to load local model from {self.model_path}: {e}")
                 self.model = None
                 self.tokenizer = None
-        else:
-            logger.warning(f"Model path does not exist: {self.model_path}")
-            self.model = None
-            self.tokenizer = None
+
+        # 2. Check for configured Hugging Face model repository or model identifier
+        hf_target = HF_MODEL_REPO.strip() or (self.model_path if self.model_path and "/" in self.model_path and not os.path.exists(self.model_path) else "")
+        if hf_target:
+            try:
+                logger.info(f"Loading transformer model from Hugging Face Hub: {hf_target}")
+                self.tokenizer = AutoTokenizer.from_pretrained(hf_target)
+                self.model = AutoModelForSequenceClassification.from_pretrained(hf_target)
+                self.model.to(self.device)
+                self.model.eval()
+                self.verification_info = self._verify_model_architecture()
+                self.loaded_source = f"Hugging Face Hub ({hf_target})"
+                logger.info(f"Model loaded successfully from Hugging Face Hub: {hf_target}")
+                return
+            except Exception as e:
+                logger.error(f"Failed to load Hugging Face model '{hf_target}': {e}")
+                self.model = None
+                self.tokenizer = None
+
+        logger.warning(
+            f"No local model found at '{self.model_path}' and no HF model specified. "
+            f"Classifier operating in '{MODEL_FALLBACK_POLICY}' mode."
+        )
+        self.model = None
+        self.tokenizer = None
+        self.loaded_source = f"Fallback Mode ({MODEL_FALLBACK_POLICY})"
 
     def predict_sliding_window(
         self,
         text: str,
-        fallback_policy: str = "fail_closed"
+        fallback_policy: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Sliding-window inference across long inputs (Stage 2: 128-token blindspot defense).
@@ -750,13 +777,20 @@ class Layer3TransformerClassifier:
         
         If input exceeds `self.max_tokens` (2048), rejects as oversized (fail-closed: 1.0).
         """
+        policy = fallback_policy or MODEL_FALLBACK_POLICY or "fail_closed"
         if not self.model or not self.tokenizer:
+            is_fail_closed = policy == "fail_closed"
+            logger.warning(
+                "Layer 3: DistilBERT weights are not loaded. "
+                f"Operating with fallback_policy='{policy}'. ML detection status flagged."
+            )
             return {
-                "max_prob": 1.0 if fallback_policy == "fail_closed" else 0.0,
+                "max_prob": 1.0 if is_fail_closed else 0.0,
                 "window_probs": [],
                 "num_windows": 0,
                 "is_oversized": False,
-                "status": "UNINITIALIZED"
+                "status": "UNINITIALIZED_FAIL_CLOSED" if is_fail_closed else "UNINITIALIZED_FALLBACK",
+                "missing_weights": True
             }
 
         try:
@@ -838,7 +872,7 @@ class Layer3TransformerClassifier:
         self,
         text: str,
         rule_score_fallback: float = 0.0,
-        fallback_policy: str = "fail_closed",
+        fallback_policy: Optional[str] = None,
         use_sliding_window: Optional[bool] = None
     ) -> float:
         """
@@ -847,10 +881,11 @@ class Layer3TransformerClassifier:
         If use_sliding_window is True (default True), inspects text across overlapping windows.
         If use_sliding_window is False, runs legacy single-window inference (max_length=128).
         """
+        policy = fallback_policy or MODEL_FALLBACK_POLICY or "fail_closed"
         do_sliding = self.use_sliding_window if use_sliding_window is None else use_sliding_window
         
         if do_sliding:
-            res = self.predict_sliding_window(text, fallback_policy=fallback_policy)
+            res = self.predict_sliding_window(text, fallback_policy=policy)
             return res["max_prob"]
 
         if self.model and self.tokenizer:
@@ -1190,7 +1225,12 @@ class PromptGuardPipeline:
             "latency_ms": latency_ms,
             "layer1": l1_res,
             "layer2": l2_res,
-            "layer3": {"model_score": round(max_model_score, 4)},
+            "layer3": {
+                "model_score": round(max_model_score, 4),
+                "model_status": getattr(self.layer3, "status", "ACTIVE") if (self.layer3.model is not None) else "MISSING_WEIGHTS",
+                "missing_weights": bool(self.layer3.model is None or self.layer3.tokenizer is None),
+                "model_source": getattr(self.layer3, "loaded_source", "UNKNOWN")
+            },
             "layer4": l4_res,
             "layer5": l5_res,
             "layer6": {
